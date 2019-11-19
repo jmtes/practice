@@ -1,0 +1,15 @@
+WHAT IS THE DOM?
+
+- Stands for Document Object Model
+- Structured representation of an HTML document
+- Tree of nodes/elements created by the browser
+- The word "node" is used to refer to any HTML element wrapped in a tag. A div is a node!
+- JS can be used to read/write/manipulate the DOM
+- Object Oriented Representation
+
+The browser gives us a window object and inside that we have the document object. This represents the loaded document or web page. We have a root element underneath the document which is the <html> tag. The children of the <html> tag are the <head> and the <body> tags.
+
+JS is used to manipulate these nodes.
+
+Technically, libraries such as jQuery make this easier but it' definitely worth it to learn how to do everything with vanilla JS! Especially with querySelector! You'll have a greater appreciation for these libraries afterward!
+Additionally, not using jQuery makes things faster because you don't have the extra overhead. Using jQuery to select elements from the DOM is like using a sledgehammer to kill a mosquito.
