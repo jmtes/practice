@@ -1,0 +1,28 @@
+ASYNC INTRO
+There are three ways to perform asynchronous operations in JS:
+1. Callbacks
+2. Promises (new to ES6)
+3. Async/Await - Make them look like synchronous operations
+
+
+AJAX
+- AJAX stands for Asynchrnous Javascript and XML
+- Not a language, framework, or library, but a set of web technologies to asynchronously send/receive data from a client and server
+- Makes async requests behind the scenes without having to explicitly reload the webpage
+- XML isn't really used anymore and has been largely replaced with JSON
+- AJAX also works with plain text
+- Makes web pages very interactive
+
+THE XmlHttpRequest OBJECT
+- The core technology in AJAX
+- Provided by the browser's JS environment
+- Methods transfer data between client and server
+- Can be used with protocols other than HTTP
+- Can work with data other than XML such as JSON and plain text
+
+LIBRARIES AND OTHER METHODS FOR HTTP REQUESTS
+- Fetch API (part of the browser and core JS) (RECOMMENDED)
+- Axios (external library)
+- Superagent (external library)
+- jQuery (DOM manipulation library)
+- Node HTTP
