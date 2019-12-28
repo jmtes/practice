@@ -4,7 +4,6 @@ There are three ways to perform asynchronous operations in JS:
 2. Promises (new to ES6)
 3. Async/Await - Make them look like synchronous operations
 
-
 AJAX
 - AJAX stands for Asynchrnous Javascript and XML
 - Not a language, framework, or library, but a set of web technologies to asynchronously send/receive data from a client and server
@@ -13,7 +12,7 @@ AJAX
 - AJAX also works with plain text
 - Makes web pages very interactive
 
-THE XmlHttpRequest OBJECT
+THE XMLHttpRequest OBJECT
 - The core technology in AJAX
 - Provided by the browser's JS environment
 - Methods transfer data between client and server
@@ -26,3 +25,25 @@ LIBRARIES AND OTHER METHODS FOR HTTP REQUESTS
 - Superagent (external library)
 - jQuery (DOM manipulation library)
 - Node HTTP
+
+APIs
+- Stand for Application Programming Interface
+- Contract provided by one piece of software to another
+- Structured request and response
+- All APIs have their own rules and structures
+
+REST APIs
+- Representational State Transfer
+- Architecture style for designing networked apps
+- Relies on a stateless, client-server protocol, almost always HTTP
+- Treats server objects, usually stored in a database, as resources that can be created or destroyed (ex. a post or a user)
+- Because it operates using just HTTP requests and JSON, it can be used with virtually any programming language.
+
+HTTP Requests
+- GET: Retrieve data from a specified resource
+- POST: Submit data to be processed to a specified resource
+- PUT: Update a specified resource
+- DELETE: Delete a specified resource
+- HEAD: Same as GET but does not return a body
+- OPTIONS: Returns the supported HTTP methods
+- PATCH: Update partial resources
