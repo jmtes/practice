@@ -7,9 +7,27 @@
 class EasyHTTP {
   // Make a GET request
   get (url) {
-    window.fetch(url)
-      .then(res => res.json())
-      .then(data => console.log(data))
-      .catch(err => console.log(err));
+    return new Promise((resolve, reject) => {
+      window.fetch(url)
+        .then(res => res.json())
+        .then(data => resolve(data))
+        .catch(err => reject(err));
+    });
+  }
+
+  // Make a POST request
+  post (url, data) {
+    return new Promise((resolve, reject) => {
+      window.fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(res => res.json())
+        .then(data => resolve(data))
+        .catch(err => reject(err));
+    });
   }
 }
