@@ -4,32 +4,25 @@ document.getElementById('button2').addEventListener('click', getJSON);
 
 document.getElementById('button3').addEventListener('click', getExternal);
 
+// In the below .then() functions, 'res' will be a Response object.
+// res.text() and res.json() return Promises, so subsequent .thens need to be tacked on after the ones wherein 'res' is a parameter.
+
 // Get local text file data
 function getText () {
   window.fetch('test.txt')
-    .then(function (res) {
-      // res will be a Response object.
-      // res.text() also returns a Promise, so another .then() needs to be tacked on after this one.
-      return res.text();
-    })
-    .then(function (data) {
+    .then(res => res.text())
+    .then(data => {
       console.log(data);
       document.getElementById('output').innerHTML = data;
     })
-    .catch(function (err) {
-      console.log(err);
-    });
+    .catch(err => console.log(err));
 }
 
 // Get local JSON data
 function getJSON () {
   window.fetch('posts.json')
-    .then(function (res) {
-      // res will be a Response object.
-      // res.text() also returns a Promise, so another .then() needs to be tacked on after this one.
-      return res.json();
-    })
-    .then(function (data) {
+    .then(res => res.json())
+    .then(data => {
       console.log(data);
       let output = '';
       data.forEach(function (datum) {
@@ -37,20 +30,14 @@ function getJSON () {
       });
       document.getElementById('output').innerHTML = output;
     })
-    .catch(function (err) {
-      console.log(err);
-    });
+    .catch(err => console.log(err));
 }
 
 // Get from external API
 function getExternal () {
   window.fetch('https://api.github.com/users')
-    .then(function (res) {
-      // res will be a Response object.
-      // res.text() also returns a Promise, so another .then() needs to be tacked on after this one.
-      return res.json();
-    })
-    .then(function (data) {
+    .then(res => res.json())
+    .then(data => {
       console.log(data);
       let output = '';
       data.forEach(function (user) {
@@ -58,7 +45,5 @@ function getExternal () {
       });
       document.getElementById('output').innerHTML = output;
     })
-    .catch(function (err) {
-      console.log(err);
-    });
+    .catch(err => console.log(err));
 }
