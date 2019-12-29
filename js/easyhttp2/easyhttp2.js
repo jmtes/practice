@@ -30,4 +30,20 @@ class EasyHTTP {
         .catch(err => reject(err));
     });
   }
+
+  // Make a PUT request
+  put (url, data) {
+    return new Promise((resolve, reject) => {
+      window.fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(res => res.json())
+        .then(data => resolve(data))
+        .catch(err => reject(err));
+    });
+  }
 }
