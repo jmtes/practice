@@ -1,3 +1,5 @@
+// Symbols were originally meant to introduce private properties to ES6.
+
 // The thing about symbols is that each one is unique, which makes them valuable when it comes to things like object property identifiers. Their uniqueness is central to their purpose.
 
 // Create a symbol
