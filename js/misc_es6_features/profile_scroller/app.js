@@ -33,7 +33,7 @@ const data = [
   }
 ];
 
-const profiles = profileIterator(data);
+const profiles = profileGenerator(data);
 
 // Load first profile on page load
 nextProfile();
@@ -60,7 +60,7 @@ function nextProfile () {
     `;
   } else {
     // No more profiles
-    window.location.reload();
+    // window.location.reload();
   }
 }
 
@@ -78,4 +78,17 @@ function profileIterator (profiles) {
       };
     }
   };
+}
+
+function * profileGenerator (profiles) {
+  let nextIndex = 0;
+
+  while (true) {
+    yield profiles[nextIndex];
+    if (nextIndex < profiles.length - 1) {
+      nextIndex++;
+    } else {
+      nextIndex = 0;
+    }
+  }
 }
