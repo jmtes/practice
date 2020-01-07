@@ -27,7 +27,7 @@ let a, b;
 // console.log(person1, person2, person3);
 
 // Parse array returned from function
-function getPeople() {
+function getPeople () {
   return ['Sappho', 'Circe', 'Hermes'];
 }
 
