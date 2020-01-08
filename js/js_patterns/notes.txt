@@ -1,0 +1,17 @@
+All programming languages have design patterns that are used in a wide variety of situations.
+
+WHAT IS A PATTERN?
+* It is a reusable solution that can be applied to recurring problems in software design
+* Can be thought of as programming templates, a specific way to write code
+* Situations can vary significantly
+  * Some patterns like the factory and prototype patterns are used for object creation, the module pattern is used for overall structure, the model view controller pattern can apply to whole applications or little blocks of code, etc.
+
+EXAMPLES OF JS PATTERNS
+* Constructor
+* Prototype
+* (Revealing) Module - used for overall structure, allows for public/private functions and vars
+* Singleton - variation of module pattern where we can only ever create one instance of any given object
+* Factory - used to create many objects
+* Observer - allows us to subscribe and unsubscribe to events
+* Mediator - has a central mediator and colleagues(?) that separate off from it
+* State - allows us to have a certain state in our app that we can change
