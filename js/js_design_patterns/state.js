@@ -5,7 +5,7 @@
 // In this example, we have a page with different navigation links (home, about, and contact), each one a state. We will display different content depending on the state we're in.
 
 const PageState = function () {
-  let currentState = new HomeState(this);
+  let currentState = new HomeState();
 
   this.init = function () {
     this.change(new HomeState());
