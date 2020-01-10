@@ -17,7 +17,7 @@ const PageState = function () {
 };
 
 // Home state
-const HomeState = function (page) {
+const HomeState = function () {
   document.getElementById('heading').textContent = null;
   document.getElementById('content').innerHTML = `
     <div class="jumbotron">
@@ -31,7 +31,7 @@ const HomeState = function (page) {
 };
 
 // About state
-const AboutState = function (page) {
+const AboutState = function () {
   document.getElementById('heading').textContent = 'About Us';
   document.getElementById('content').innerHTML = `
     <p>This is the about page.</p>
@@ -39,7 +39,7 @@ const AboutState = function (page) {
 };
 
 // Contact state
-const ContactState = function (page) {
+const ContactState = function () {
   document.getElementById('heading').textContent = 'Contact Us';
   document.getElementById('content').innerHTML = `
     <form>
