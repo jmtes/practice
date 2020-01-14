@@ -22,7 +22,7 @@ function classroom (teacher) {
 var assignment = classroom('Kyle');
 
 // let topic = 'JS'; // This won't bear the topic var for the execution context of assignment() below.
-// var topic = 'JS'; // But this does because it's being put into the global scope!
+var topic = 'JS'; // But this does because it's being put into the global scope!
 assignment(); // "Kyle wants you to study undefined"
 // Unless the line above the function call is uncommented, the value is undefined because there is no identifier called topic in this call's execution context, the global scope, which context-aware functions default to when we don't provide an execution context ourselves.
 
