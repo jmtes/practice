@@ -58,3 +58,5 @@ console.log(incBy3());
 // The outer scope of a closure is usually a function but it doesn't have to be. There just has to be at least one variable in an outer scope that an inner function accesses and closes over, like in a for loop.
 
 // Remember that closures are not over values but over variables themselves!
+
+// Basically, when a function makes reference to variables from an outer scope, and that function is passed around as a value and executed in other scopes, it maintains access to its original scope variables. That's what closure is!
