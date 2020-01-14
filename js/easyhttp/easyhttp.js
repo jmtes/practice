@@ -12,13 +12,15 @@ easyHTTP.prototype.get = function (url, callback) {
   //   }
   // };
 
-  // The 'this' in the above if statement refers to 'this.http'. This will work. However, it is recommended to just use an arrow function like below, which provides a lexical 'this'.
+  // The 'this' in the above if statement resolves to 'this.http'. This will work. However, it is recommended to just use an arrow function like below, which provides a lexical 'this'.
 
   // this.http.onload = () => {
   //   if (this.http.status === 200) {
   //     console.log(this.http.responseText);
   //   }
   // };
+
+  // Above the `this` in `this.http.onload` and the one in `this.http.status` are resolving to the same object!
 
   // Another way to fix this in ES5 without arrow functions is to make another variable like so:
 
