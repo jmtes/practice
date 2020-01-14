@@ -12,7 +12,9 @@ easyHTTP.prototype.get = function (url, callback) {
   //   }
   // };
 
-  // The 'this' in the above if statement resolves to 'this.http'. This will work. However, it is recommended to just use an arrow function like below, which provides a lexical 'this'.
+  // The 'this' in the above if statement resolves to 'this.http'. This will work.
+  // However, it is recommended to just use an arrow function like below, which provides a lexical 'this'.
+  // What that pretty much means is that it just uses the THIS from the code that contains the arrow function!
 
   // this.http.onload = () => {
   //   if (this.http.status === 200) {
