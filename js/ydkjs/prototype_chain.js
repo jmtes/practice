@@ -38,3 +38,5 @@ console.log(otherHomework.topic); // "Python"
 console.log(homework.topic); // Still "JS"
 
 // The topic in otherHomework is "shadowing" the property of the same name on the homework object in the chain.
+
+// I think you can liken the prototype chain to class inheritance in OOP? That's what I got out of this at least.
