@@ -148,6 +148,8 @@ var slotMachine = {
       reel.spin();
     });
   },
+  // MY DISPLAY
+  /*
   display () {
     let r1 = this.reels[0].position;
     let r2 = this.reels[1].position;
@@ -163,22 +165,47 @@ var slotMachine = {
       r3 === 7 ? r3 = 0 : r3++;
     }
   }
+  */
+  // SUGGESTED SOLUTION
+  display () {
+    var lines = [];
+
+    // Display all 3 lines on the slot machine
+    for (let linePos = -1; linePos <= 1; linePos++) {
+      let line = this.reels.map(function getSlot (reel) {
+        // Make new object and link it to the current reel in the reels array, thus getting its position property and value.
+        var slot = Object.create(reel);
+        // These logs will log the same value!
+        // console.log('Reel Position: ' + reel.position);
+        // console.log('Slot Position: ' + slot.position);
+        // Mod position to prevent index error
+        slot.position = (reel.symbols.length + reel.position + linePos) % reel.symbols.length;
+        // Make slot the execution context/THIS of the call to reel.display() so that it returns the symbol at its position
+        return reel.display.call(slot);
+      });
+      // Push the line to the array
+      lines.push(line.join(' | '));
+    }
+    // Print each item/line in the array followed by a newline
+    return lines.join('\n');
+  }
 };
 
 // console.log(reel.symbols.indexOf(slotMachine.reels[0].display()));
 // console.log(slotMachine.reels[0].position);
 // console.log(slotMachine.reels[0].display());
 
+// When testing the suggested solution wrap the calls to slotMachine.display() in a console log!
 console.log('FIRST SPIN!!!');
 slotMachine.spin();
-slotMachine.display();
+console.log(slotMachine.display());
 // ☾ | ☀ | ★
 // ☀ | ♠ | ☾
 // ♠ | ♥ | ☀
 
 console.log('SECOND SPIN!!!');
 slotMachine.spin();
-slotMachine.display();
+console.log(slotMachine.display());
 // ♦ | ♠ | ♣
 // ♣ | ♥ | ☺
 // ☺ | ♦ | ★
