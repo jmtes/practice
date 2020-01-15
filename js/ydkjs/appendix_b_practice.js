@@ -112,3 +112,73 @@ console.log(start3(8)); // [3,4,5,6,7,8]
 console.log(start3(0)); // []
 
 console.log(start4(6)); // [4,5,6]
+
+// PROTOTYPE PRACTICE
+console.log('****** PROTOTYPE PRACTICE ******');
+
+function randMax (max) {
+  return Math.trunc(1E9 * Math.random()) % max;
+}
+
+var reel = {
+  symbols: ['♠', '♥', '♦', '♣', '☺', '★', '☾', '☀'],
+  spin () {
+    // Randomize a position for the reel
+    if (this.position == null) {
+      this.position = randMax(this.symbols.length - 1);
+    }
+    this.position = (this.position + 100 + randMax(100)) % this.symbols.length;
+  },
+  display () {
+    if (this.position == null) {
+      this.position = randMax(this.symbols.length - 1);
+    }
+    return this.symbols[this.position];
+  }
+};
+
+var slotMachine = {
+  reels: [
+    Object.create(reel),
+    Object.create(reel),
+    Object.create(reel)
+  ],
+  spin () {
+    this.reels.forEach(function spinReel (reel) {
+      reel.spin();
+    });
+  },
+  display () {
+    let r1 = this.reels[0].position;
+    let r2 = this.reels[1].position;
+    let r3 = this.reels[2].position;
+
+    for (let i = 0; i < 3; i++) {
+      // console.log(`Iteration ${i}`);
+      console.log(`${reel.symbols[r1]} | ${reel.symbols[r2]} | ${reel.symbols[r3]}`);
+      // console.log(r1 === 7 ? 0 : r1++);
+      r1 === 7 ? r1 = 0 : r1++;
+      // console.log(r1);
+      r2 === 7 ? r2 = 0 : r2++;
+      r3 === 7 ? r3 = 0 : r3++;
+    }
+  }
+};
+
+// console.log(reel.symbols.indexOf(slotMachine.reels[0].display()));
+// console.log(slotMachine.reels[0].position);
+// console.log(slotMachine.reels[0].display());
+
+console.log('FIRST SPIN!!!');
+slotMachine.spin();
+slotMachine.display();
+// ☾ | ☀ | ★
+// ☀ | ♠ | ☾
+// ♠ | ♥ | ☀
+
+console.log('SECOND SPIN!!!');
+slotMachine.spin();
+slotMachine.display();
+// ♦ | ♠ | ♣
+// ♣ | ♥ | ☺
+// ☺ | ♦ | ★
