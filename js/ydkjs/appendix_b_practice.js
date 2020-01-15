@@ -1,5 +1,6 @@
 // PRACTICING COMPARISONS
-/*
+// /*
+console.log('****** COMPARISON PRACTICE ******');
 const dayStart = '07:30';
 const dayEnd = '17:45';
 
@@ -43,4 +44,71 @@ scheduleMeeting('11:30', 60); // true
 scheduleMeeting('17:00', 45); // true
 scheduleMeeting('17:30', 30); // false
 scheduleMeeting('18:00', 15); // false
+// */
+
+// CLOSURE PRACTICE
+console.log('****** CLOSURE PRACTICE ******');
+/*
+// THE SOLUTION I CAME UP WITH LOL
+function range (start, end) {
+  const nums = [start];
+  let i = start + 1;
+  if (typeof end !== 'undefined' && end >= start) {
+    while (i <= end) {
+      nums.push(i);
+      i++;
+    }
+    return nums;
+  } else if (end < start) {
+    return [];
+  } else {
+    return function (end) {
+      if (end >= start) {
+        while (i <= end) {
+          nums.push(i);
+          i++;
+        }
+        return nums;
+      } else {
+        return [];
+      }
+    };
+  }
+}
+
 */
+
+// COOL ELEGANT SUGGESTED SOLUTION
+function range (start, end) {
+  start = Number(start) || 0;
+
+  if (end === undefined) {
+    return function getEnd (end) {
+      return getRange(start, end);
+    };
+  } else {
+    end = Number(end) || 0;
+    return getRange(start, end);
+  }
+
+  function getRange (start, end) {
+    var ret = [];
+    for (let i = start; i <= end; i++) {
+      ret.push(i);
+    }
+    return ret;
+  }
+}
+
+console.log(range(3, 3)); // [3]
+console.log(range(3, 8)); // [3,4,5,6,7,8]
+console.log(range(3, 0)); // []
+
+var start3 = range(3);
+var start4 = range(4);
+
+console.log(start3(3)); // [3]
+console.log(start3(8)); // [3,4,5,6,7,8]
+console.log(start3(0)); // []
+
+console.log(start4(6)); // [4,5,6]
