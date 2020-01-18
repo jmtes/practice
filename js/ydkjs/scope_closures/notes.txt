@@ -36,3 +36,27 @@
 <--- LOOKUP FAILURES --->
 - If a target reference cannot be found and strict-mode is not enabled, the global scope's scope manager will just create an accidental global variable to fulfill that target assignment.
 - This, and many other things, can be prevented with strict mode.
+
+<--- "LOOKUP" IS MOSTLY CONCEPTUAL --->
+- The color of a marble, the meta info of which scope a variable originates from, is USUALLY known during the initial compilation processing and will not change during runtime.
+- Thus, the engine doesn't actually have to look up which scope a source reference comes from during execution because it already knows!
+- Avoiding the need for runtime lookups is a key optimization benefit for lexical scope.
+
+<--- WHEN A MARBLE COLOR ISN'T KNOWN DURING COMPILATION --->
+- Consider a reference to a variable that isn't declared in any scopes in the CURRENT file.
+  - Remember that each JS file is a separate program as far the JS compiler is concerned!
+  - If no declaration is found, that's not necessarily an error. 
+  - Another file in the runtime may have declared that variable in the shared global scope.
+  - If that's the case, the determination of whether the variable was declared in an available scope may need to be deferred to the runtime.
+- Essentially, any reference to a variable in a program that is initially undeclared is left as an uncolored marble during compilation.
+  - That color cannot be determined until other relevant files have been compiled and application runtime begins.
+  - So indeed in this case some sort of runtime "lookup" is performed, but only once at most becuase the marble's color is immutable.
+
+<--- SHADOWING --->
+- When you choose to shadow a variable from an outer scope, from that downward it's now impossible for any marble to be colored as the shadowed variable.
+- It's still possible to access a global identifier that has been shadowed, but not through a typical lexical identifier reference.
+  - For a standalone JS file in a browser environment, once could access a shadowed variable by getting it as an attribute of the window object ( window.<SHADOWED VARIABLE NAME> )
+  - This trick only works for global scope variables that were declared with var or function though.
+  - But it's whatever because doing this isn't very good practice.
+  - Generally, don't shadow global variables that you need to access and don't access global variables that you've shadowed.
+- Variables that exist in any scope other than the global scope are completely inaccessible from an inner scope where they've been shadowed.
