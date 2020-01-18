@@ -142,3 +142,81 @@ function hibernate (arr) {
 }
 
 hibernate([7, 8, 9]);
+
+// EXAMPLE OF ILLEGAL SHADOWING
+
+function something () {
+  var special = 'Javascript';
+  {
+    let special = 42; // This works fine
+    console.log(special); // "42"
+  }
+  console.log(special); // "Javascript"
+}
+
+something();
+
+// This throws a syntax error saying special has already been declared!
+
+// function another () {
+//   let special = 'Python';
+//   {
+//     var special = 'snitch';
+//     console.log(special);
+//   }
+// }
+
+// This is because var puts a variable in the scope of the enclosing FUNCTION rather than just the enclosing BLOCK. Variable declarations made with var are hoisted to the top of the FUNCTION rather than the top of the BLOCK it's in.
+
+// Alternatively, this code would work because the var in whatever would be hoisted just to the top of whatever, rather than to the top of another where special has already been declared with a let:
+
+function another () {
+  let special = 'limbo';
+
+  function whatever () {
+    var special = 'concourse'; // This is fine!
+    console.log(special); // "concourse"
+  }
+
+  whatever();
+  console.log(special); // "limbo"
+}
+
+another();
+
+// FUNCTION NAME SCOPE EXAMPLE
+
+// Consider the following:
+
+function askQuestion () {
+  // ...
+}
+
+// This is a function definition being used as a declaration. The definition will hoist along with the identifier `askQuestion` so that `askQuestion` has the value of the function definition from the get-go.
+
+var makeComment = function () {
+  // ...
+};
+
+// Meanwhile, this is a function expression, a function definition being used as a value. The identifier `makeComment` will hoist to the top of the enclosing scope because of the var, but the function definition will NOT hoist along with it. Thus the value of `makeComment` will be initialized to undefined, and will stay undefined until the program reaches the line where it is assigned the value of the function definition.
+
+// ASSIGNMENT OF A NAMED FUNCTION EXPRESSION
+
+var makeInquiry = function ofTheTeacher () {
+  console.log(ofTheTeacher);
+};
+
+// makeInquiry ends up in the outer scope.
+makeInquiry(); // Logs the function definition
+
+// The ofTheTeacher identifier however is declared as a read-only variable inside of the function itself and is thus inaccessible from the outer scope.
+
+// console.log(ofTheTeacher); // Reference error
+
+// ASSIGNMENT OF AN ANONYMOUS FUNCTION EXPRESSION
+
+var makeQuery = function () {
+  // ...
+};
+
+// Anon function expressions have no name identifiers, so they don't have an effect on either the outer scope or their own.
