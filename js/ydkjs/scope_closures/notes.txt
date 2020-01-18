@@ -6,3 +6,33 @@
 - The key concept is that the lexical scope of a program is controlled entirely by the placement of functions, blocks, and scopes in relation to each other.
 - If a variable is block-scoped with let or const, then it's associated with the nearest enclosing {...} block rather than its enclosing function (as with var).
 - Scopes are planned out during compilation, but they aren't actually allocated in memory until runtime.
+
+<--- SCOPE BUBBLES METAPHOR --->
+- Each scope bubble is entirely contained within its parent scope bubble. A scope is never partially in two different outer scopes.
+- Think of marbles being sorted into buckets by color.
+- Each marble (variable/identifier) is colored based on which bucket (bubble) it's DECLARED in, not the color of the scope it may be ACCESSED from.
+- When the JS engine finds a variable declaration as it's parsing a program during compilation, it asks which scope it's currently in and then sorts that variable into that scope bubble.
+- A scope can reference any variable in any outside scope, but not for any inside scopes.
+- The colored buckets and the marbles they contain are determined during compilation and the info is used for marble color lookups during runtime.
+
+<--- CONVERSATION WITH FRIENDS METAPHOR --->
+- Basically, the compiler asks the scope manager if an identifier exists in the current scope and if not, the scope manager creates it. If so, the declaration is ignored.
+- When the compiler runs into function declarations, loops, block scopes, etc. it requests a new scope bucket AND scope manager. There can be multiple scope managers.
+- Once the engine starts executing the code, it will ask the current scope's manager to look up a target reference if it runs into one and assign to it once it's found.
+- If the engine runs into a source reference, it will ask the scope manager if it knows anything by that identifier and if not, the scope manager will tell the engine to try the next outer scope.
+- When the engine runs into a source reference for a function, it will ask the scope manager to instantiate the function's scope so that it can execute its code.
+
+<--- HOISTING --->
+- All function and variable declarations are hoisted to the top of the block, with functions going to the very top.
+- All variables made with the function declaration are automatically initialized to their associated function references.
+- All declarations made with var will be initialized to undefined.
+- Declarations made with let will not be initialized (in TDZ) and the associated variables cannot be used until its declaration-and-init are executed.
+
+<--- NESTED SCOPE --->
+- Each scope gets its own scope manager instance each time that scope is executed. 
+- Each scope automatically has all its identifiers registered because of hoisting.
+- Any time an identifier reference cannot be found in the current scope, the next outer scope is consulted, and so on until there are no more scopes to consult.
+
+<--- LOOKUP FAILURES --->
+- If a target reference cannot be found and strict-mode is not enabled, the global scope's scope manager will just create an accidental global variable to fulfill that target assignment.
+- This, and many other things, can be prevented with strict mode.
