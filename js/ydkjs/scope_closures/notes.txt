@@ -94,3 +94,18 @@
 <--- SYNONYMOUS GLOBAL VARIABLES AND GLOBAL OBJECT PROPERTIES --->
 - A global object property can be shadowed by a global variable.
 - It's a bad idea to do so though. Do not create a divergence between the global object and the global scope.
+
+<--- THE BROWSER JS ENVIRONMENT --->
+- Can be considered the most pure environment JS can be run in with respect to treatment of global scope.
+  - This doesn't necessarily mean nothing is ever automatically added.
+  - Rather, it means that there's minimal intrusion on the code or interference with its behavior.
+- There are some corner cases such as with window.name though.
+
+<--- WEB WORKERS --->
+- A web platform extension which allows a JS file to run in a separate thread (OS-wise) from the one that's running the main browser-hosted JS.
+  - Because of this, they're restricted in their communications with the main app thread to avoid/control race conditions and stuff.
+  - Thus, they do not have access to the DOM.
+  - Some web APIs are still available to them though, such as navigator.
+- A web worker is treated as a wholly separate program, so it does not share the global scope with the main JS program.
+  - The browser's JS engine is still running the code though, so the same global scope behavior purity can be expected of it.
+- Because a web worker lacks access to the DOM, the window alias for the global scope doesn't exist, so `self` is used instead (eg self.name).
