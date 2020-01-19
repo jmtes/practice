@@ -65,7 +65,28 @@
 - let can shadow var, but var can't shadow let.
   - This is because var puts a variable in the scope of the enclosing FUNCTION rather than just the enclosing BLOCK. Variable declarations made with var are hoisted to the top of the FUNCTION rather than the top of the BLOCK it's in.
 
-<--- FUNCTION NAME SCOPE --->
+<--- ARROW FUNCTION NAME SCOPE --->
+- Other than being anonymous and having no declarative form, arrow functions have the same rules with respect to lexical scope as functions declared with the function keyword do.
+- An arrow function still creates a separate, inner nested scope bucket.
+- Variable declarations inside that bucket have the same behavior as those in functions declared with the function keyword.
 
-
-
+<--- THE GLOBAL SCOPE --->
+- When multiple scripts are loaded in a browser, variable declarations that weren't made in a function scope are processed in the global scope.
+  - Because the global scope is the only shared resource between two separate files, this enables them to work together as modules.
+- JS exposes its built-ins in the global scope:
+  - primtives: undefined, null, Infinity, NaN
+  - natives: Date(), Object(), String(), etc.
+  - global functions: eval(), parseInt(), etc.
+  - namespaces: Math, Atomics, JSON
+  - friends of JS: Intl, WebAssembly
+- The environment that is hosting JS exposes its built-ins in the global scope as well:
+  - console and its methods
+  - the DOM (window, document, etc.)
+  - timers (setTimeout(), etc.)
+  - web platform APIs: fetch, navigator, history, geolocation, WebRTC, etc.
+- Node exposes several elements "globally", but they're technically not in the global scope.
+  - require()
+  - __dirname
+  - module
+  - URL
+- The global scope should NOT be a dumping ground for every variable in your application. However, the global scope is an important glue for virtually every JS app.
