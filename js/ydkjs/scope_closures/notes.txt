@@ -90,3 +90,7 @@
   - module
   - URL
 - The global scope should NOT be a dumping ground for every variable in your application. However, the global scope is an important glue for virtually every JS app.
+
+<--- SYNONYMOUS GLOBAL VARIABLES AND GLOBAL OBJECT PROPERTIES --->
+- A global object property can be shadowed by a global variable.
+- It's a bad idea to do so though. Do not create a divergence between the global object and the global scope.
