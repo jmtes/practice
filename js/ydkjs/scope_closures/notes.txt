@@ -109,3 +109,27 @@
 - A web worker is treated as a wholly separate program, so it does not share the global scope with the main JS program.
   - The browser's JS engine is still running the code though, so the same global scope behavior purity can be expected of it.
 - Because a web worker lacks access to the DOM, the window alias for the global scope doesn't exist, so `self` is used instead (eg self.name).
+
+<--- DEVELOPER TOOLS CONSOLE/REPL --->
+- While dev tools are convenient and useful, they are NOT suitable environments to determine or verify some of the explicit and nuanced behaviors of an actual JS program context.
+
+<--- ES6 MODULES AND THE GLOBAL SCOPE --->
+- ES6 modules encourage a minimization of reliance on the global scope by allowing for the importation of whichever modules you need for the current module's operation. 
+- Thus, you less often see usage of the global scope or its global object.
+- Despite this, there are still plenty of JS and web globals that you will continue to access from the global scope, whether you realize it or not!
+
+<--- NODE --->
+- To reiterate, Node defines a number of "globals" like require(), but they're not actually identifiers in the global scope.
+  - They're simply provided in the available scope to every module.
+  - You can think of them as a bit like parameters provided to every Module function as illustrated in the file ./node.js
+- Refer to ./node.js for notes on how Node wraps modules kind of like functions.
+- Unlike a browser environment, Node treats every JS file it loads, including the main one you start the Node process with, as a module.
+  - Thus, the module wrapping always occurs!
+  - This means your main Node program does NOT act like a JS file loaded in a browser would with respect to scope!
+
+<--- DEFINING GLOBAL VARIABLES IN NODE --->
+- Because Node treats every single JS file as a module, declaring a variable at the top level of a Node file doesn't automatically make it global.
+- To actually make globals in Node, you have to add properties to Node's automatically provided `global`.
+  - It is ostensibly a reference to the real global scope object.
+  - See ./node-globals.js for an example.
+  - Remember that `global` is defined by Node, not JS. It will not work in any other environment.
