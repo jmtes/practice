@@ -159,3 +159,18 @@ console.log(window.user, window.user2); // "Akemi Chen"
 
 // When you make a global object property and declare a global variable with the same name using LET, the global object property will be shadowed.
 // When you make a global object property and declare a global variable with the same name using VAR, it appears it will point to the same target reference that the global property does because reassigning the VAR effectively reassigns the global property value as well.
+// It turns out I was wrong. The VAR declaration was simply ignored because of the existing global property of the same name. However, the assignment wasn't. It was applied to the global object property value.
+
+// This is because var declarations create mirrored properties on the global object, which in this case is window!
+var windowProperty = 'value'; // This will show up as a property in the window object!
+let notAWindowProperty = 'value'; // This won't!
+
+// window.name is a predefined "global" in a browser context
+var name = 42;
+
+console.log(typeof name, name); // "string 42"
+
+// Even though we assigned the NUMBER 42 to the name variable, it and its type are logged as a STRING.
+// This is because window.name is a getter/setter on the global object, which insists on a string value.
+
+
