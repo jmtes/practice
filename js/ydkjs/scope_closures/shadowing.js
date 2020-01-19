@@ -142,3 +142,20 @@ function another () {
 }
 
 another();
+
+// SHADOWING A GLOBAL OBJECT PROPERTY WITH A GLOBAL VARIABLE
+window.user = 'Akemi';
+window.user2 = 'Gaia';
+
+// You cannot access global object properties by just their name like global variables. You have to invoke them using the global object.
+// console.log(user, user2); // Throws a ReferenceError
+console.log(window.user, window.user2); // "Akemi Gaia"
+
+let user = 'Cali';
+var user2 = 'Chen';
+
+console.log(user, user2); // "Cali Chen"
+console.log(window.user, window.user2); // "Akemi Chen"
+
+// When you make a global object property and declare a global variable with the same name using LET, the global object property will be shadowed.
+// When you make a global object property and declare a global variable with the same name using VAR, it appears it will point to the same target reference that the global property does because reassigning the VAR effectively reassigns the global property value as well.
