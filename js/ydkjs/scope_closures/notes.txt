@@ -26,10 +26,16 @@
 - The term for registering a variable at the top of its enclosing scope, even though its declaration may appear further down it.
 - All identifiers are registered to their respective scopes during compile time.
 - Each identifier is created at the beginning of the scope it belongs to EVERY TIME that scope is entered.
-- All function and variable declarations are hoisted to the top of the block, with functions going to the very top.
+- All function and variable declarations are hoisted to the top of the block.
+  - The functions are hoisted first, so they go to the very tippy top.
 - All variables made with the function declaration are automatically initialized to their associated function references.
 - All declarations made with var will be initialized to undefined.
 - Declarations made with let will not be initialized (in TDZ) and the associated variables cannot be used until its declaration-and-init are executed.
+- Hoisting itself is a metaphor.
+  - It often calls to mind images of the JS engine simply reordering code but this isn't accurate.
+  - The JS engine has to fully parse the code in order to accurately find variable/function declarations and scope boundaries.
+    - This all happens in the first phase of the two-phase compilation process.
+- If we want to be accurate, "hoisting" should only refer to the compile-time operation of generating runtime instructions for the automatic registration of a variable at the beginning of its scope each time that scope is entered.
 
 <--- NESTED SCOPE --->
 - Each scope gets its own scope manager instance each time that scope is executed. 
@@ -136,3 +142,18 @@
   - It is ostensibly a reference to the real global scope object.
   - See ./node-globals.js for an example.
   - Remember that `global` is defined by Node, not JS. It will not work in any other environment.
+
+<--- VARIABLE RE-DECLARATION --->
+- The only way to re-declare a variable is to use VAR for all (two or more) of its declarations.
+- Re-declaration has always been allowed with VAR, but ES6 decided to disallow it with LET.
+  - Hence, a SyntaxError is thrown if ever you re-declare a variable and at least one of the declarations was made with LET.
+  - This is because re-declaration is seen as sloppy and bad practice by the TC39 body.
+  - Also they felt that since re-declaration must be disallowed for CONST variables, the same should go for LET variables as well.
+
+<--- REASSIGNING CONST DECLARATIONS --->
+- Not allowed, will throw a TypeError
+  - It is not a SyntaxError because syntax errors represent faults in the program that are caught during compile time and stop it from even executing.
+  - On the other hand, TypeErrors represent faults that arise DURING program execution.
+
+<--- SCOPING WITH LOOPS --->
+- See ./scoping_with_loops.js
