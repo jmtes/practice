@@ -174,3 +174,33 @@
 - The time window wherein a variable (declared with LET or CONST) exists but is still uninitialized (not even to "undefined"!) and therefore cannot be accessed in any way
 - Only the execution of the instructions left by the compiler at the point of the original declaration can peform that initialization, after which the TDZ is over and the variable is free to be used for the rest of the scope.
 - To avoid TDZ errors, just always put your LET and CONST declarations at the top of their enclosing scopes.
+
+<--- PRINCIPLE OF LEAST PRIVILEGE (POLP) --->
+- A defensive posture to software architecture with a focus on system-level component design.
+- Components of a system should be designed to function with least privilege, least access, least exposure.
+- If each piece is connected with minimum-necessary capabilities, the overall system is stronger from a security standpoint.
+  - A compromise or failure of one piece has a minimized impact on the rest of the system.
+
+<--- PRINCIPLE OF LEAST EXPOSURE --->
+- Aims to minimize the exposure of the variables/functions registered in each scope
+- Essentially, default to exposing the bare minimum necessary and keep everything else as private as possible
+- Variables should be declared in the lowest scopes possible in order to effectively "hide" them in scope.
+- Just don't place everything in the global or even outer function scope
+
+<--- WHY YOU SHOULDN'T JUST PLACE ALL YOUR VARIABLES IN THE GLOBAL SCOPE --->
+- Naming collisions
+  - Occurs if you use a common and useful variable/function name in two different parts of the program but the identifier comes from one shared scope
+  - Bugs will likely occur as one part uses the variable/function in a way the other part doesn't expecte
+  - Ex: All your loops using a single global i variable
+- Unexpected behavior
+  - Exposing variables/functions whose usage is otherwise private to a piece of a program allows other developers to use them in ways you didn't intend
+  - Exposure of private details also invites those mith mal-intent to try to work around limitations you have imposed and do things with your software that shouldn't be allowed
+  - Ex: If part of your program assumes an array contains all numbers, but someone else's code accesses and modifies the array to include booleans and strings, your code may then behave unexpectedly.
+- Unintended dependency
+  - Exposing variables/functions unnecessarily invites other developers to use and depend on those otherwise private pieces.
+  - Creates a refactoring hazard in the future because now you cannot as easily refactor that variable/function without potentially breaking other parts of the code.
+
+<--- HIDING IN FUNCTION SCOPE --->
+- LET and CONST are block-scoped declarators, which means that their access is limited to the enclosing code block (denoted by curly braces) and whatever nested scopes it may contain.
+- VAR and FUNCTION declarations are not block-scoped, but they can still be hidden by wrapping a FUNCTION scope around them.
+  - See ./function_scoping.js
