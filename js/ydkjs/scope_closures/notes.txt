@@ -157,3 +157,20 @@
 
 <--- SCOPING WITH LOOPS --->
 - See ./scoping_with_loops.js
+
+<--- UNINITIALIZED --->
+- See ./uninitialized.js
+- With VAR declarations, the variable is hoisted to the top of its scope and automaticallly initialized to "undefined".
+- LET and CONST are not quite the same in this respect though.
+  - They DO hoist, but they are not automatically initialized.
+  - Auto-initialization of their variables is deferred until the moment in the code's sequencing where the original declaration appeared.
+- A variable declared with LET or CONST is in the temporal dead zone, a state of uninitialization, until the program reaches its original declaration statement with the assignment attached.
+  - This is the ONLY way it can be initialized.
+  - An assignment by itself, separate from and coming before a declaration, is insufficient.
+- Do not lump 'auto-registration of a variable at the top of its scope' together with 'auto-initialization' under the single term "hoisting". It should only refer to the former.
+  - See ./let_const_hoisting.js
+
+<--- TEMPORAL DEAD ZONE --->
+- The time window wherein a variable (declared with LET or CONST) exists but is still uninitialized (not even to "undefined"!) and therefore cannot be accessed in any way
+- Only the execution of the instructions left by the compiler at the point of the original declaration can peform that initialization, after which the TDZ is over and the variable is free to be used for the rest of the scope.
+- To avoid TDZ errors, just always put your LET and CONST declarations at the top of their enclosing scopes.
