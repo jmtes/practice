@@ -26,7 +26,7 @@
 <--- HIDING IN FUNCTION SCOPE --->
 - LET and CONST are block-scoped declarators, which means that their access is limited to the enclosing code block (denoted by curly braces) and whatever nested scopes it may contain.
 - VAR and FUNCTION declarations are not block-scoped, but they can still be hidden by wrapping a FUNCTION scope around them.
-  - See ./function_scoping.js
+  - See ./examples/function_scoping.js
 
 <--- IMMEDIATELY INVOKED FUNCTION EXPRESSIONS --->
 - Useful for when we want to create a scope to hide variables/functions
@@ -34,7 +34,7 @@
 - Can be named but are much more commonly kept anonymous
 - Can be standalone or part of another statement
     - Ex: It can be the value assigned to a variable. This means its return will be assigned to that variable.
-    - See ./standalone_iife.js
+    - See ./examples/standalone_iife.js
 - Parentheses are required around standalone IIFEs to distinguish them as function expressions rather than declarations.
     - They're not required for IIFEs that are part of statements though.
     - Regardless, it's good to always wrap your IIFEs with parentheses for consistency and readability.
@@ -53,7 +53,7 @@
 - Unnecessary identifier exposure can also be prevented using LET/CONST declarations with nested blocks.
 - In general, any { .. } curly brace pair which is a statement will act as a block, but NOT NECESSARILY AS A SCOPE.
     - A block only becomes a scope if it needs to, to contain block scoped declarations made with LET/CONST present within it
-- See ./scoping_with_blocks.js
+- See ./examples/scoping_with_blocks.js
 - Blocks can be defined as part of a statement (like an IF or FOR).
 - They can also be defined as bare standalone block statements, as is shown in the script above.
     - An explicit block of this sort without any declarations would not actually be a scope and thus serve no operational purpose.
@@ -75,7 +75,7 @@
 - When around the CASE clauses of a SWITCH statement
 
 <--- VAR --->
-- Refer to ./scoping_with_blocks.js
+- Refer to ./examples/scoping_with_blocks.js
 - Variables declared with VAR are attached to the nearest enclosing function scope, even if it appears inside a block.
 - Only variables that belong to a whole function should be declared with VAR (the `buckets` variable in this example).
     - Thus, it should be used for any variable that is needed across all or most of a function so that such usage is obvious.
@@ -90,7 +90,7 @@
     - Once you answer that, you'll know whether a variable belongs in a block scope (LET) or the function scope (VAR).
 
 <--- LIMITING THE EXPOSURE OF PARAMETERS? --->
-- See ./scoping_with_blocks.js
+- See ./examples/scoping_with_blocks.js
 - Although the parameter `names` isn't used across the whole function, there's no way to limit the scope of a parameter.
     - Hence why it behaves as a function-wide declaration regardless.
 
@@ -101,10 +101,10 @@
 - The ERR variable declared by a CATCH clause is block scoped to it.
 - ES2019 changed CATCH clauses so that their declaration is optional.
     - So if you need to catch that an error occurred but you don't care which, you can omit the ERR declaration.
-- See ./catch_block.js
+- See ./examples/catch_block.js
 
 <--- FUNCTION DECLARATIONS IN BLOCKS (FiB) --->
-- See ./function_declarations_in_blocks.js
+- See ./examples/function_declarations_in_blocks.js
 - One of the most common use-cases for placing a function declaration in a block is to conditionally define a function one way or another depending on some environment state.
     - Doing this is discouraged though, since allowing a program to define multiple versions of a function always makes it harder to reason about and maintain.
 - Honestly FiB is generally a bad idea and not worth it.

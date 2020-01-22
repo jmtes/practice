@@ -82,8 +82,8 @@
 <--- NODE --->
 - To reiterate, Node defines a number of "globals" like require(), but they're not actually identifiers in the global scope.
   - They're simply provided in the available scope to every module.
-  - You can think of them as a bit like parameters provided to every Module function as illustrated in the file ./node.js
-- Refer to ./node.js for notes on how Node wraps modules kind of like functions.
+  - You can think of them as a bit like parameters provided to every Module function as illustrated in the file ./examples/node.js
+- Refer to ./examples/node.js for notes on how Node wraps modules kind of like functions.
 - Unlike a browser environment, Node treats every JS file it loads, including the main one you start the Node process with, as a module.
   - Thus, the module wrapping always occurs!
   - This means your main Node program does NOT act like a JS file loaded in a browser would with respect to scope!
@@ -92,7 +92,7 @@
 - Because Node treats every single JS file as a module, declaring a variable at the top level of a Node file doesn't automatically make it global.
 - To actually make globals in Node, you have to add properties to Node's automatically provided `global`.
   - It is ostensibly a reference to the real global scope object.
-  - See ./node-globals.js for an example.
+  - See ./examples/node-globals.js for an example.
   - Remember that `global` is defined by Node, not JS. It will not work in any other environment.
 
 <--- VARIABLE RE-DECLARATION --->
@@ -108,10 +108,10 @@
   - On the other hand, TypeErrors represent faults that arise DURING program execution.
 
 <--- SCOPING WITH LOOPS --->
-- See ./scoping_with_loops.js
+- See ./examples/scoping_with_loops.js
 
 <--- UNINITIALIZED --->
-- See ./uninitialized.js
+- See ./examples/uninitialized.js
 - With VAR declarations, the variable is hoisted to the top of its scope and automaticallly initialized to "undefined".
 - LET and CONST are not quite the same in this respect though.
   - They DO hoist, but they are not automatically initialized.
@@ -120,7 +120,7 @@
   - This is the ONLY way it can be initialized.
   - An assignment by itself, separate from and coming before a declaration, is insufficient.
 - Do not lump 'auto-registration of a variable at the top of its scope' together with 'auto-initialization' under the single term "hoisting". It should only refer to the former.
-  - See ./let_const_hoisting.js
+  - See ./examples/let_const_hoisting.js
 
 <--- TEMPORAL DEAD ZONE --->
 - The time window wherein a variable (declared with LET or CONST) exists but is still uninitialized (not even to "undefined"!) and therefore cannot be accessed in any way
