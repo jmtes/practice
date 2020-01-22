@@ -1,0 +1,128 @@
+<--- "LOOKUP" IS MOSTLY CONCEPTUAL --->
+- The color of a marble, the meta info of which scope a variable originates from, is USUALLY known during the initial compilation processing and will not change during runtime.
+- Thus, the engine doesn't actually have to look up which scope a source reference comes from during execution because it already knows!
+- Avoiding the need for runtime lookups is a key optimization benefit for lexical scope.
+
+<--- WHEN A MARBLE COLOR ISN'T KNOWN DURING COMPILATION --->
+- Consider a reference to a variable that isn't declared in any scopes in the CURRENT file.
+  - Remember that each JS file is a separate program as far the JS compiler is concerned!
+  - If no declaration is found, that's not necessarily an error. 
+  - Another file in the runtime may have declared that variable in the shared global scope.
+  - If that's the case, the determination of whether the variable was declared in an available scope may need to be deferred to the runtime.
+- Essentially, any reference to a variable in a program that is initially undeclared is left as an uncolored marble during compilation.
+  - That color cannot be determined until other relevant files have been compiled and application runtime begins.
+  - So indeed in this case some sort of runtime "lookup" is performed, but only once at most becuase the marble's color is immutable.
+
+<--- SHADOWING --->
+- When you choose to shadow a variable from an outer scope, from that downward it's now impossible for any marble to be colored as the shadowed variable.
+- It's still possible to access a global identifier that has been shadowed, but not through a typical lexical identifier reference.
+  - For a standalone JS file in a browser environment, once could access a shadowed variable by getting it as an attribute of the window object ( window.<SHADOWED VARIABLE NAME> )
+  - This trick only works for global scope variables that were declared with var or function though.
+  - But it's whatever because doing this isn't very good practice.
+  - Generally, don't shadow global variables that you need to access and don't access global variables that you've shadowed.
+- Variables that exist in any scope other than the global scope are completely inaccessible from an inner scope where they've been shadowed.
+
+<--- ILLEGAL SHADOWING --->
+- let can shadow var, but var can't shadow let.
+  - This is because var puts a variable in the scope of the enclosing FUNCTION rather than just the enclosing BLOCK. Variable declarations made with var are hoisted to the top of the FUNCTION rather than the top of the BLOCK it's in.
+
+<--- ARROW FUNCTION NAME SCOPE --->
+- Other than being anonymous and having no declarative form, arrow functions have the same rules with respect to lexical scope as functions declared with the function keyword do.
+- An arrow function still creates a separate, inner nested scope bucket.
+- Variable declarations inside that bucket have the same behavior as those in functions declared with the function keyword.
+
+<--- THE GLOBAL SCOPE --->
+- When multiple scripts are loaded in a browser, variable declarations that weren't made in a function scope are processed in the global scope.
+  - Because the global scope is the only shared resource between two separate files, this enables them to work together as modules.
+- JS exposes its built-ins in the global scope:
+  - primtives: undefined, null, Infinity, NaN
+  - natives: Date(), Object(), String(), etc.
+  - global functions: eval(), parseInt(), etc.
+  - namespaces: Math, Atomics, JSON
+  - friends of JS: Intl, WebAssembly
+- The environment that is hosting JS exposes its built-ins in the global scope as well:
+  - console and its methods
+  - the DOM (window, document, etc.)
+  - timers (setTimeout(), etc.)
+  - web platform APIs: fetch, navigator, history, geolocation, WebRTC, etc.
+- Node exposes several elements "globally", but they're technically not in the global scope.
+  - require()
+  - __dirname
+  - module
+  - URL
+- The global scope should NOT be a dumping ground for every variable in your application. However, the global scope is an important glue for virtually every JS app.
+
+<--- SYNONYMOUS GLOBAL VARIABLES AND GLOBAL OBJECT PROPERTIES --->
+- A global object property can be shadowed by a global variable.
+- It's a bad idea to do so though. Do not create a divergence between the global object and the global scope.
+
+<--- THE BROWSER JS ENVIRONMENT --->
+- Can be considered the most pure environment JS can be run in with respect to treatment of global scope.
+  - This doesn't necessarily mean nothing is ever automatically added.
+  - Rather, it means that there's minimal intrusion on the code or interference with its behavior.
+- There are some corner cases such as with window.name though.
+
+<--- WEB WORKERS --->
+- A web platform extension which allows a JS file to run in a separate thread (OS-wise) from the one that's running the main browser-hosted JS.
+  - Because of this, they're restricted in their communications with the main app thread to avoid/control race conditions and stuff.
+  - Thus, they do not have access to the DOM.
+  - Some web APIs are still available to them though, such as navigator.
+- A web worker is treated as a wholly separate program, so it does not share the global scope with the main JS program.
+  - The browser's JS engine is still running the code though, so the same global scope behavior purity can be expected of it.
+- Because a web worker lacks access to the DOM, the window alias for the global scope doesn't exist, so `self` is used instead (eg self.name).
+
+<--- DEVELOPER TOOLS CONSOLE/REPL --->
+- While dev tools are convenient and useful, they are NOT suitable environments to determine or verify some of the explicit and nuanced behaviors of an actual JS program context.
+
+<--- ES6 MODULES AND THE GLOBAL SCOPE --->
+- ES6 modules encourage a minimization of reliance on the global scope by allowing for the importation of whichever modules you need for the current module's operation. 
+- Thus, you less often see usage of the global scope or its global object.
+- Despite this, there are still plenty of JS and web globals that you will continue to access from the global scope, whether you realize it or not!
+
+<--- NODE --->
+- To reiterate, Node defines a number of "globals" like require(), but they're not actually identifiers in the global scope.
+  - They're simply provided in the available scope to every module.
+  - You can think of them as a bit like parameters provided to every Module function as illustrated in the file ./node.js
+- Refer to ./node.js for notes on how Node wraps modules kind of like functions.
+- Unlike a browser environment, Node treats every JS file it loads, including the main one you start the Node process with, as a module.
+  - Thus, the module wrapping always occurs!
+  - This means your main Node program does NOT act like a JS file loaded in a browser would with respect to scope!
+
+<--- DEFINING GLOBAL VARIABLES IN NODE --->
+- Because Node treats every single JS file as a module, declaring a variable at the top level of a Node file doesn't automatically make it global.
+- To actually make globals in Node, you have to add properties to Node's automatically provided `global`.
+  - It is ostensibly a reference to the real global scope object.
+  - See ./node-globals.js for an example.
+  - Remember that `global` is defined by Node, not JS. It will not work in any other environment.
+
+<--- VARIABLE RE-DECLARATION --->
+- The only way to re-declare a variable is to use VAR for all (two or more) of its declarations.
+- Re-declaration has always been allowed with VAR, but ES6 decided to disallow it with LET.
+  - Hence, a SyntaxError is thrown if ever you re-declare a variable and at least one of the declarations was made with LET.
+  - This is because re-declaration is seen as sloppy and bad practice by the TC39 body.
+  - Also they felt that since re-declaration must be disallowed for CONST variables, the same should go for LET variables as well.
+
+<--- REASSIGNING CONST DECLARATIONS --->
+- Not allowed, will throw a TypeError
+  - It is not a SyntaxError because syntax errors represent faults in the program that are caught during compile time and stop it from even executing.
+  - On the other hand, TypeErrors represent faults that arise DURING program execution.
+
+<--- SCOPING WITH LOOPS --->
+- See ./scoping_with_loops.js
+
+<--- UNINITIALIZED --->
+- See ./uninitialized.js
+- With VAR declarations, the variable is hoisted to the top of its scope and automaticallly initialized to "undefined".
+- LET and CONST are not quite the same in this respect though.
+  - They DO hoist, but they are not automatically initialized.
+  - Auto-initialization of their variables is deferred until the moment in the code's sequencing where the original declaration appeared.
+- A variable declared with LET or CONST is in the temporal dead zone, a state of uninitialization, until the program reaches its original declaration statement with the assignment attached.
+  - This is the ONLY way it can be initialized.
+  - An assignment by itself, separate from and coming before a declaration, is insufficient.
+- Do not lump 'auto-registration of a variable at the top of its scope' together with 'auto-initialization' under the single term "hoisting". It should only refer to the former.
+  - See ./let_const_hoisting.js
+
+<--- TEMPORAL DEAD ZONE --->
+- The time window wherein a variable (declared with LET or CONST) exists but is still uninitialized (not even to "undefined"!) and therefore cannot be accessed in any way
+- Only the execution of the instructions left by the compiler at the point of the original declaration can peform that initialization, after which the TDZ is over and the variable is free to be used for the rest of the scope.
+- To avoid TDZ errors, just always put your LET and CONST declarations at the top of their enclosing scopes.

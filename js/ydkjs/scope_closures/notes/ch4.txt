@@ -1,0 +1,112 @@
+<--- PRINCIPLE OF LEAST PRIVILEGE (POLP) --->
+- A defensive posture to software architecture with a focus on system-level component design.
+- Components of a system should be designed to function with least privilege, least access, least exposure.
+- If each piece is connected with minimum-necessary capabilities, the overall system is stronger from a security standpoint.
+  - A compromise or failure of one piece has a minimized impact on the rest of the system.
+
+<--- PRINCIPLE OF LEAST EXPOSURE (POLE)--->
+- Aims to minimize the exposure of the variables/functions registered in each scope
+- Essentially, default to exposing the bare minimum necessary and keep everything else as private as possible
+- Variables should be declared in the lowest scopes possible in order to effectively "hide" them in scope.
+- Just don't place everything in the global or even outer function scope
+
+<--- WHY YOU SHOULDN'T JUST PLACE ALL YOUR VARIABLES IN THE GLOBAL SCOPE --->
+- Naming collisions
+  - Occurs if you use a common and useful variable/function name in two different parts of the program but the identifier comes from one shared scope
+  - Bugs will likely occur as one part uses the variable/function in a way the other part doesn't expecte
+  - Ex: All your loops using a single global i variable
+- Unexpected behavior
+  - Exposing variables/functions whose usage is otherwise private to a piece of a program allows other developers to use them in ways you didn't intend
+  - Exposure of private details also invites those mith mal-intent to try to work around limitations you have imposed and do things with your software that shouldn't be allowed
+  - Ex: If part of your program assumes an array contains all numbers, but someone else's code accesses and modifies the array to include booleans and strings, your code may then behave unexpectedly.
+- Unintended dependency
+  - Exposing variables/functions unnecessarily invites other developers to use and depend on those otherwise private pieces.
+  - Creates a refactoring hazard in the future because now you cannot as easily refactor that variable/function without potentially breaking other parts of the code.
+
+<--- HIDING IN FUNCTION SCOPE --->
+- LET and CONST are block-scoped declarators, which means that their access is limited to the enclosing code block (denoted by curly braces) and whatever nested scopes it may contain.
+- VAR and FUNCTION declarations are not block-scoped, but they can still be hidden by wrapping a FUNCTION scope around them.
+  - See ./function_scoping.js
+
+<--- IMMEDIATELY INVOKED FUNCTION EXPRESSIONS --->
+- Useful for when we want to create a scope to hide variables/functions
+- Can be used in any place in a JS program where an expression is allowed
+- Can be named but are much more commonly kept anonymous
+- Can be standalone or part of another statement
+    - Ex: It can be the value assigned to a variable. This means its return will be assigned to that variable.
+    - See ./standalone_iife.js
+- Parentheses are required around standalone IIFEs to distinguish them as function expressions rather than declarations.
+    - They're not required for IIFEs that are part of statements though.
+    - Regardless, it's good to always wrap your IIFEs with parentheses for consistency and readability.
+
+<--- IFFEs AND FUNCTION BOUNDARIES --->
+- Because an IIFE is a full function, the function boundary alters the behavior of certain statements/constructs.
+    - Thus, using one to define a scope can have some unintended consequences depending on the code around it.
+- A RETURN statement in some piece of code would change its meaning if then wrapped in an IIFE
+    - The RETURN would then refer to the IIFE's function
+- Non arrow function IIFEs change the binding of a THIS keyword
+- Statements like BREAK and CONTINUE won't operate across an IIFE boundary to control an outer loop or block
+- Thus, if the code you need to wrap a scope around has a RETURN, THIS, BREAK, or CONTINUE in it, don't go for an IIFE.
+    - Create the scope with a block instead of a function!
+
+<--- SCOPING WITH BLOCKS --->
+- Unnecessary identifier exposure can also be prevented using LET/CONST declarations with nested blocks.
+- In general, any { .. } curly brace pair which is a statement will act as a block, but NOT NECESSARILY AS A SCOPE.
+    - A block only becomes a scope if it needs to, to contain block scoped declarations made with LET/CONST present within it
+- See ./scoping_with_blocks.js
+- Blocks can be defined as part of a statement (like an IF or FOR).
+- They can also be defined as bare standalone block statements, as is shown in the script above.
+    - An explicit block of this sort without any declarations would not actually be a scope and thus serve no operational purpose.
+    - It can be useful as a stylistic signal though.
+
+<--- BLOCK SCOPING AND TDZ --->
+- We've established that the risk of TDZ errors can be minimized by always putting LET/CONST declarations at the top of their enclosing scopes.
+- If you find yourself putting a LET declaration in the middle of a scope block, think about whether or not that variable is actually needed for the entire block.
+    - If not, then you should use an inner explicit block scope to narrow its exposure and stick to POLE!
+    - Even if your program is small and it doesn't seem like over-exposing a variable would be that big a deal, it's good to make a habit of it!
+
+<--- WHEN CURLY BRACES DO NOT DENOTE BLOCKS/SCOPES --->
+- When around object literals
+- When around class definitions
+- When around function bodies
+    - Although this may seem like a block, it technically isn't.
+    - It's simply a single statement for the function body
+    - It IS a function scope, though!
+- When around the CASE clauses of a SWITCH statement
+
+<--- VAR --->
+- Refer to ./scoping_with_blocks.js
+- Variables declared with VAR are attached to the nearest enclosing function scope, even if it appears inside a block.
+- Only variables that belong to a whole function should be declared with VAR (the `buckets` variable in this example).
+    - Thus, it should be used for any variable that is needed across all or most of a function so that such usage is obvious.
+- Clearly signals to other developers "this variable is function-scoped".
+    - Using LET in the top-level scope, especially if not in the first few lines or a function or when all the other declarations in blocks use LET, does not visually draw attention to the difference.
+
+<--- VAR VS LET --->
+- VAR better communicates "function-scoped" than LET does
+- LET both communicates and achieves block-scoping where VAR is insufficient.
+- As long as your program needs both function- and block-scoped variables, the best approach is to use BOTH VAR and LET together, each for their own best purpose.
+- The best way to decide which one you want to use is to ask "What is the most minimal scope exposure that's sufficient for this variable?"
+    - Once you answer that, you'll know whether a variable belongs in a block scope (LET) or the function scope (VAR).
+
+<--- LIMITING THE EXPOSURE OF PARAMETERS? --->
+- See ./scoping_with_blocks.js
+- Although the parameter `names` isn't used across the whole function, there's no way to limit the scope of a parameter.
+    - Hence why it behaves as a function-wide declaration regardless.
+
+<--- BLOCK SCOPING WITH THE CATCH CLAUSE --->
+- A CATCH block is not a scope unless a LET declaration is made inside of it.
+- Variables declared with LET will be block-scoped to that CATCH clause.
+- Variables declared with VAR will still be scoped to the nearest enclosing function.
+- The ERR variable declared by a CATCH clause is block scoped to it.
+- ES2019 changed CATCH clauses so that their declaration is optional.
+    - So if you need to catch that an error occurred but you don't care which, you can omit the ERR declaration.
+- See ./catch_block.js
+
+<--- FUNCTION DECLARATIONS IN BLOCKS (FiB) --->
+- See ./function_declarations_in_blocks.js
+- One of the most common use-cases for placing a function declaration in a block is to conditionally define a function one way or another depending on some environment state.
+    - Doing this is discouraged though, since allowing a program to define multiple versions of a function always makes it harder to reason about and maintain.
+- Honestly FiB is generally a bad idea and not worth it.
+    - Just don't ever place function declarations directly inside any block.
+    - Always place them at the top level scope of a function or in the global scope.

@@ -1,0 +1,8 @@
+<--- DON'T DO THIS EVER --->
+- Just don't use eval() or with. They modify the already compiled/optimized scope at runtime, resulting in performance hits. Use strict mode so you don't even THINK about using them.
+
+<--- LEXICAL SCOPE --->
+- A language whose scope is determined at compiled time has a scope model that is lexical.
+- The key concept is that the lexical scope of a program is controlled entirely by the placement of functions, blocks, and scopes in relation to each other.
+- If a variable is block-scoped with let or const, then it's associated with the nearest enclosing {...} block rather than its enclosing function (as with var).
+- Scopes are planned out during compilation, but they aren't actually allocated in memory until runtime.
