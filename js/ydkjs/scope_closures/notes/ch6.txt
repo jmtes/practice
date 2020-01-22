@@ -1,0 +1,27 @@
+<--- MODULES --->
+- The object containing references to a module's inner functions and is returned by it can be thought of as the module's public API.
+- The inner functions have closure over the inner scope of the module "instance"!
+- See ./examples/modules.js
+
+<--- WHAT ISN'T REALLY A MODULE --->
+- An object with a function property on it alone
+- An object returned from a function invocation which only contains data properties and no closured functions
+
+<--- REQUIREMENTS FOR THE MODULE PATTERN TO BE EXERCSIED --->
+- An outer enclosing function that must be invoked at least once
+  - Each invocation creates a new module instance
+  - If you only care to have one module instance, you can exercise a singleton of sorts by making the module an IIFE and assigning it to a variable!
+- The enclosing function must return at least one inner function
+    - This inner function has closure over the module's private scope and can access/modify that private state
+
+<--- ES6 MODULES --->
+- When loaded via the module system, ES6 treats each file as a separate module.
+- Each module can import both other modules or specific API members, as well as export their own public API members.
+- APIs are static and don't change during runtime.
+- Do not have an inline format, must be defined in separate files (one per module).
+- See ../../../mjsftb/es6_modules/ for examples
+- IMPORT keyword imports one or more members from a module's API into the current scope, each to a bound variable
+- MODULE keyword imports an entire module API to a bound variable
+- EXPORT keyword exports an identifier to the public API for the current module
+- IMPORT, MODULE, and EXPORT can be used as many times in a module's definition as is necessary
+- The contents inside a module file are treated as if enclosed in a scope closure, just like in the function-closure module design pattern.
