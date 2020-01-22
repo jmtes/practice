@@ -11,3 +11,19 @@
 <--- DEFINING CLOSURE --->
 - Closure is when a function is able to remember and access the lexical scope it was defined in at author-time, even when that function is executing outside of that scope.
 - See ./examples/closure_examples.js
+- Essentially, whenever and wherever you treat functions (which access their own respective lexical scopes) as first-class values and pass them around, you are likely to see those functions exercising closure.
+  - Ex timers, event handlers, AJAX requests, cross-window messaging, web workers, async, callback functions
+- IIFEs are one of the most common tools used to create scope which can be closed over.
+  - Even if they are not exercising closure themselves, they are still heavily related to it.
+- See Example E in the above script to see how block scoping and closure work hand in hand!
+
+<--- REVIEW --->
+- Closures are a standard and almost obvious fact of how we write code in a lexically scoped environment where functions are values that can be passed around.
+- Closures can trip us up if we're not careful to recognize them and how they work (like if we use VAR in the head of a for loop).
+- But they enable patterns like modules to work!
+
+<--- MODULES --->
+- Have two key characteristics:
+  - An outer wrapping function being invoked to create the enclosing scope
+  - The return value of the wrapping function must include a reference to at least one inner function
+    - This inner function then has closure over the private inner scope of the wrapper!
