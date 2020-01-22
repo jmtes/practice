@@ -1,0 +1,13 @@
+<--- ENLIGHTENMENT --->
+- Closure is all around you in JS, you just have to recognize and embrace it.
+  - It's what makes the module design pattern work!
+- Closures happen as a result of writing code that relies on lexical scope.
+  - They just happen!
+  - You don't even have to intentionally create closures to take advantage of them! They're created and used for you all over your code!
+  - The only thing you've been missing is the proper mental context to recognize, embrace, and leverage them for yourself.
+- The enlightenment moment should be "Oh, closures are already occurring all over my code, I can finally SEE them now."
+  - And you've already done that! It's mindblowing!
+
+<--- DEFINING CLOSURE --->
+- Closure is when a function is able to remember and access the lexical scope it was defined in at author-time, even when that function is executing outside of that scope.
+- See ./examples/closure_examples.js
