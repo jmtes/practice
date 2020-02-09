@@ -1,0 +1,21 @@
+<--- CALL-SITE --->
+- The location in code where a function is called (not where it's declared).
+- Must be inspected to figure out what a function's THIS is referencing
+- Finding the call-site is generally just a matter of asking "Where is this function called from?"
+  - Certain coding patterns can obscure the true call-site however.
+- It's important to think about the callstack, the stack of functions that have been called to get us to current moment in execution.
+  - The call-site we care about is IN the invocation BEFORE the currently executing function!
+- See ../examples/call_site.js
+- The callstack can be seen using a browser's developer tools!
+  - Simply set a breakpoint at the first line of each function whose call-site you want to trace.
+  - Or you can just insert the `debugger;` statement at that first line!
+  - Once you see the callstack, you can find the function's call-site by looking at the second item from the top!
+
+<--- HOW THE CALL-SITE DETERMINES THE THIS REFERENCE --->
+- You must inspect the call-site and determine which of the 4 rules applies.
+- In the case that multiple rules could apply, there is an order of precedence that determines which rule comes out on top.
+
+<--- DEFAULT BINDING --->
+- Comes from the most common case of function calls: standalone function invocation.
+- Can be thought of as the default rule when none of the other rules apply
+- See ../examples/default_binding.js

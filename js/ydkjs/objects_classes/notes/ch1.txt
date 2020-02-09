@@ -1,0 +1,25 @@
+<--- THIS --->
+- A special identifier keyword that's automatically defined in the scope of every function.
+- See ../examples/why_this.js
+- THIS provides a more elegant way of implicitly "passing along" an object reference, leading to cleaner API design and easier re-use.
+  - The more complex your usage pattern is, passing context around as an explicit parameter is often messier than passing around a THIS context.
+
+<--- THIS DOES NOT REFER TO THE FUNCTION ITSELF --->
+- Use cases for refering to a function from inside itself:
+  - Recursion
+  - Having an event handler that can unbind itself when it's first called
+- See ../examples/what_this_isnt.js
+
+<--- THE SCOPE OF THIS --->
+- THIS does not refer to a function's lexical scope.
+- It is true that internally, scope if kind of like an object with properties for each of the available identifiers.
+  - However, the scope "object" is not accessible to JS code.
+  - It's an inner part of the engine's implementation.
+- See ../examples/this_scope.js
+
+<--- WHAT THIS IS EXACTLY --->
+- THIS is a runtime binding rather than an author-time binding.
+- It is contextual based on the manner in which a function is called, not where it is declared.
+When a function is invoked, an activation record AKA execution context is created.
+  - It contains info on where the function was called (the callstack), how it was invoked, what parameters were passed, etc.
+  - It also contains the THIS reference which will be used for the duration of that function's execution.
