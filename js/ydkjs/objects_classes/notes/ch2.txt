@@ -19,3 +19,60 @@
 - Comes from the most common case of function calls: standalone function invocation.
 - Can be thought of as the default rule when none of the other rules apply
 - See ../examples/default_binding.js
+
+<--- IMPLICIT BINDING --->
+- Applies if the call-site has a context object
+  - AKA an owning or containing object, but these terms are misleading
+- The context object has to be mutated to include a reference on itself to the function
+  - This property function reference is then used to indirectly bind THIS to the object.
+- See ../examples/implicit_binding.js
+
+<--- IMPLICIT BINDING LOSS WITH CALLBACKS --->
+- See ../examples/implicit_binding.js
+- It's quite common for callback functions to lose their THIS binding.
+- Another thing that can happen is the function to which the callback was passed intentionally changing the THIS binding.
+  - Event handlers in popular JS libraries are fond of forcing your callback to have a THIS which points to, say, the DOM element which triggered the event or the event itself.
+  - This can be both useful and infuriating. In the case of the latter, this problem can be "fixed" with hard binding.
+
+<--- EXPLICIT BINDING --->
+- Forces a function call to use a particular object for its THIS binding.
+- Eliminates the need for a property function reference on the object
+- Every function you create will be able to invoke the call() and apply() methods to achieve this binding.
+  - Both take as a first parameter an object to use for the THIS when the function is invoked.
+  - If a primitive value is passed as the THIS binding, it will be wrapped in its object form (new String(), new Boolean(), new Number(), etc.)
+    - This is referred to as "boxing".
+- See ../examples/explicit_binding.js
+
+<--- HARD BINDING --->
+- A variation pattern around explicit binding
+- See ../examples/hard_binding.js
+
+<--- API CALL "CONTEXTS" --->
+- Many libraries' functions and new built-ins in the JS language and host environment provide an optional parameter usually called "context".
+- It's designed as a work-around for you to not have to use bind() to ensure your callback uses a particular THIS.
+- See ../examples/api_call_contexts.js
+
+<--- NEW BINDING --->
+- In traditional class-oriented languages, constructors are special methods attached to classes.
+  - When the class is instantiated with a NEW operator, the constructor of that class is called.
+- JS has a NEW operator and the code pattern to use it looks identical to what we see in those class-oriented languages, but there actually isn't any connection between class-oriented functionality and the usage of NEW in JS.
+- In JS, constructors are just functions that happen to be called with the NEW operator.
+  - They are not attached to classes, nor are they instantiating a class.
+  - They're not even special types of functions.
+  - They're just regular functions that are essentially hijacked by the use of NEW in their invocation.
+- Pretty much any function, including built-in object functions like Number(), can be called with NEW in front of it.
+  - This makes that function call a "constructor call".
+  - There are really no such thing as "constructor functions" in JS, just construction calls OF functions.
+- When a function is invoked with NEW in front of it, otherwise known as a constructor call, the following things are done automatically:
+  1. A brand new object is created.
+  2. The newly created object is prototype-linked.
+  3. The newly created object is set as the THIS binding for that function call.
+  4. Unless the function returns its own alternate object, the NEW-invoked function call will automatically return the newly created object.
+- See ../examples/new_binding.js
+
+<--- BINDING RULE PRECEDENCE --->
+- The precedence of THIS binding rules is as follows, from most to least precedence:
+  2. Explicit binding
+  3. Implicit binding
+  4. Default binding
+- See ../examples/this_binding_precedence.js
