@@ -59,3 +59,22 @@ console.log(user3.name); // "Baz"
 // invalid = new User.call(user3); // "TypeError: User.call is not a constructor"
 
 // We can still use hard binding to test whether explicit binding or new binding takes precedence.
+
+// `obj1`
+var user4 = {};
+
+// `bar`
+var UserAlias = User.bind(user4);
+UserAlias('Ludwig');
+console.log(user4.name); // "Ludwig"
+
+// `baz`
+var user5 = new UserAlias('Heiko');
+console.log(user4.name); // "Ludwig"
+console.log(user5.name); // "Heiko"
+
+// UserAlias is hard-bound to user4, but its invocation in line 72 did NOT change user4.name to "Heiko" as we would have expected.
+
+// Instead, the hard-bound call to UserAlias() IS able to be overridden with NEW.
+
+// Since NEW was applied, we got the newly created object back, which we named user5, and we see that user5.name indeed has the value of "Heiko".
