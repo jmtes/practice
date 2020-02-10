@@ -72,7 +72,42 @@
 
 <--- BINDING RULE PRECEDENCE --->
 - The precedence of THIS binding rules is as follows, from most to least precedence:
-  2. Explicit binding
+  1. New binding
+  2. Explicit/hard binding
   3. Implicit binding
   4. Default binding
+- Questions to ask yourself for determining THIS from a function call's call site:
+  1. Is the function called with NEW? If so, THIS is the newly constructed object.
+  2. Is the function called with call() or apply(), even hidden inside a bind() hard binding? If so, THIS is the explicitly specified object.
+  3. Is the function called with a context? If so, THIS is that context object.
+  4. Otherwise default the THIS to the global object, or undefined if in strict mode.
 - See ../examples/this_binding_precedence.js
+
+<--- WHY NEW OVERRIDING HARD BINDING IS USEFUL --->
+- The primary reason for this behavior is to create a function (that can be used with NEW to construct objects) that essentially ignores the THIS hard binding but which pre-sets some or all of the function's arguments.
+- One of the capabilities of bind() is that any arguments passed after the first THIS binding argument are defaulted as standard arguments to to the underlying function
+  - Essentially, it passes the second argument onwards as parameters to the function you're binding.
+  - This is technically called "partial application", which is a subset of "currying".
+  - See ../examples/partial_application.js
+
+<--- EXCEPTIONS TO THE BINDING RULES --->
+- See ../examples/binding_rule_exceptions.js
+
+<--- IGNORED THIS --->
+- If NULL or UNDEFINED is passed as a THIS binding parameter to call(), apply(), or bind(), those values are ignored.
+- The default binding rule is applied to the invocation instead.
+- It's common to use apply() for spreading out arrays of values as parameters to a function call.
+  - ES6 has the ... spread operator which will let you syntactically spread out an array as parameters without needing apply() and an unnecessary THIS binding.
+- Similarly, bind() can curry parameters (pre-set values).
+- Both apply() and bind() require a THIS binding for the first parameter. If the functions in question don't care about THIS, NULL makes for a good placeholder value.
+
+<--- THE DANGER OF USING NULL AS A THIS PLACEHOLDER --->
+- If you ever use that against a function call (ie. a third party library function you don't control) and that function DOES make a THIS reference, the default binding rule means it might inadvertently reference or mutate the global object.
+- This can lead to very difficult to diagnose/track-down bugs.
+
+<--- A SAFER THIS THAN NULL --->
+- Instead of passing NULL as a placeholder THIS, you can pass an object specifically set up for the THIS that is guaranteed to not create problematic side effects in your program.
+- This is referred to as a demilitarized zone (DMZ) object: nothing more than a completely empty, non-delegated object.
+- If we always pass a DMZ object for THIS bindings we don't care about, we can be sure any hidden/unexpected usage of THIS will be restricted to that empty object.
+  - This insulates the global object from side-effects.
+- See ../examples/dmz.js
