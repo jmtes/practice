@@ -25,3 +25,18 @@ sundarId.call(user2); // "Sundar", not "Hyacinth"
 // The lexical binding of an arrow function cannot be overridden, even with NEW.
 
 sundarId(); // "Sundar"
+
+// COMMON USE CASE: CALLBACKS
+
+function delayedIdentify () {
+  setTimeout(() => {
+    // THIS here is lexically adopted from delayedIdentify()
+    console.log(this.name);
+  }, 1000);
+}
+
+var user3 = {
+  name: 'Gal'
+};
+
+delayedIdentify.call(user3); // "Gal"
