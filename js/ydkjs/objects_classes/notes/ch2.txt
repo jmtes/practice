@@ -79,7 +79,7 @@
 - Questions to ask yourself for determining THIS from a function call's call site:
   1. Is the function called with NEW? If so, THIS is the newly constructed object.
   2. Is the function called with call() or apply(), even hidden inside a bind() hard binding? If so, THIS is the explicitly specified object.
-  3. Is the function called with a context? If so, THIS is that context object.
+  3. Is the function invoked with a context object? If so, THIS is that context object.
   4. Otherwise default the THIS to the global object, or undefined if in strict mode.
 - See ../examples/this_binding_precedence.js
 
@@ -132,3 +132,15 @@
 - Instead, it adopts the THIS binding from the enclosing (function or global) scope.
 - See ../examples/arrow_function_this.js
 - The lexical binding of an arrow function cannot be overridden, even with NEW.
+- The most common use cases for arrow functions are in callbacks such as event handlers and timers.
+- While arrow functions provide an alternative to using bind() to ensure a function's THIS, it's important to note that they essentially disable the traditional THIS mechanism in favor of more widely-understood lexical scoping.
+    - See ../examples/self.js
+
+<--- CONTEXT AWARE OR LEXICAL SCOPING? --->
+- While arrow functions and `self = this` both seem like good solutions to not wanting to use bind(), they essentially flee from THIS instead of understanding and embracing it.
+- If you find yourself writing context-aware code but most of the time you defeat the THIS mechanism with arrow functions or `self = this`, you should either:
+    1. Use only lexical scope and forget the false pretense of context-aware code.
+    2. Embrace context-aware mechanisms completely, including using bind() where necessary, avoiding lexical THIS tricks.
+- A program CAN effectively use both styles of code!
+    - But inside the same functions and lookups, mixing the two mechanisms is usually asking for harder-to-maintain code.
+    - Also it looks like you're working too hard to be clever.
