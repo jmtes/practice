@@ -111,3 +111,24 @@
 - If we always pass a DMZ object for THIS bindings we don't care about, we can be sure any hidden/unexpected usage of THIS will be restricted to that empty object.
   - This insulates the global object from side-effects.
 - See ../examples/dmz.js
+
+<--- INDIRECTION --->
+- Intentionally or not, you can create "indirect references" to functions.
+    - When that function reference is invoked, the default binding rule applies.
+- One of the most common ways indirect references can occur is from an assignment.
+- See ../examples/indirection.js
+
+<--- SOFTENING BINDING --->
+- Hard binding is one strategy for preventing a function call from inadvertently falling back to the default binding rule by forcing it to be bound to a specific THIS.
+- The problem with that though is that it greatly reduces a function's flexibility.
+    - It prevents manual THIS override with both implicit binding and subsequent explicit binding attempts.
+- You can provide a different default for default binding (not the global object or undefined) while still leaving the function able to be manually THIS bound!
+    - This can be done via implicit binding or explicit binding technqiues.
+- See ../examples/soft_binding_utility.js and ../examples/soft_binding_example.js
+
+<--- LEXICAL THIS --->
+- Arrow functions do not abide by the binding rules.
+- An arrow function does not have its own THIS.
+- Instead, it adopts the THIS binding from the enclosing (function or global) scope.
+- See ../examples/arrow_function_this.js
+- The lexical binding of an arrow function cannot be overridden, even with NEW.
