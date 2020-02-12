@@ -1,0 +1,127 @@
+<--- OBJECT SYNTAX --->
+- Objects come in two forms: the declarative (literal) form and the constructed form.
+- See ../examples/object_syntax.js
+- Both forms result in exactly the same sort of object.
+  - The only real difference is that you can add one or more key/value pairs to the literal declaration.
+  - With constructed-form objects, you must addd the properties one by one.
+- It's extremely uncommon to use the constructed form for creating objects, so just stick to using object literals.
+  - The same will be true for most of the built-in objects.
+
+<--- TYPE --->
+- Objects are the general building blocks upon which much of JS is built.
+- They are one of the six primary types in JS:
+  - string
+  - number
+  - boolean
+  - null
+  - undefined
+  - object
+- Simple primitives (string, number, boolean, null, undefined) are NOT themselves objects.
+  - Null is sometimes referred to as an object type, but that's only because of a bug that causes `typeof null` to return 'object' incorrectly.
+  - Null is its own primitive type.
+
+<--- NOT EVERYTHING IS AN OBJECT --->
+- It's a common misconception that "everything in JS is an object".
+- This isn't true!
+
+<--- COMPLEX PRIMITIVES --->
+- By contrast, there ARE a few special object subtypes, which we can call "complex primitives".
+- Functions are a subtype of object called a "callable object".
+  - They are said to be "first-class" in that they are basically just normal objects that can be handled like any other non-callable object.
+  - They just have callable behavior semantics bolted on!
+- Arrays are also a form of objects with extra behavior.
+  - The organization of arrays is slightly more structured than for general objects.
+
+<--- BUILT-IN OBJECTS --->
+- There are several other object sub-types that are usually referred to as built-in objects:
+  - String
+  - Number
+  - Boolean
+  - Object
+  - Function
+  - Array
+  - Date
+  - RegExp
+  - Error
+- For some of them, their names seem to imply they are directly related to their simple primitive counterparts.
+  - Their relationship is more complicated than that, though.
+- These built-ins have the appearance of being actual types or even classes, but they are actually just built-in functions.
+  - Each can be used as a constructor, with the result being a newly constructed object of the subtype in question.
+- See ../examples/built_ins.js
+
+<--- PRIMTIVE TO OBJECT TYPE COERCION --->
+- Primitive values themselves do not have properties or methods.
+- To do something like find the length of a string, a String object is required.
+- JS will automatically coerce the primitive value into its object counterpart though!
+  - Thus, you almost never have to explicitly create the Object form of a primitive value.
+- This coercion happens for string, number, and boolean primitives created using the literal form.
+  - null and undefined have no object wrapper form, only their primitive values.
+  - Date values on the other hand have no literal form and can ONLY be created with their constructed object form.
+- Objects, Arrays, Functions, and RegExps are all objects regardless of whether the literal or constructed form is used.
+  - The simpler literal form is almost universally preferred.
+  - The constructed form does offer more options than the literal form in creation and should only be used if you need those options.
+- Error objects are rarely created explicitly in code.
+  - They are usually created automatically when exceptions are thrown.
+  - They can be created with the contructed form, but it's often unnecessary.
+
+<--- CONTENTS --->
+- The contents of an object consist of values (of any type) stored at specifically named locations, which we call "properties".
+  - Property names are always strings.
+  - If any value besides a primitive string is used as a property, it will be converted to a string first.
+  - This includes numbers, so be careful not to confuse the use of numbers between objects and arrays where they're used as indices.
+  - See Example C in ../examples/contents.js
+- "Contents" implies these values are actually stored inside the object, but that's not the case.
+  - The engine may very well not store them IN some object container.
+  - What IS actually stored in the container are the property names, which act as pointers to where the values are stored.
+- See ../examples/contents.js
+
+<--- PROPERTY ACCESS VS KEY ACCESS --->
+- See ../examples/contents.js
+- Both access the same location and value.
+- The . operator requires an Identifier-compatible property name after it.
+  - To use a property name like "Super-Fun!" you'd have to go with key access because Super-Fun! is not a valid Identifier name.
+- The [''] syntax can take basically any UTF8/unicode compatible string as the name for the property.
+  - Because it uses a string's VALUE to specify the location, the program can programatically build up the value of the string.
+  - See Example B in ../examples/contents.js
+
+<--- COMPUTED PROPERTY NAMES --->
+- The key access syntax is useful if you need to use a computed expression value as the key name.
+  - It's not really helpful when declaring objects using the literal syntax though.
+- ES6 added computed property names where you specify an expression surrounded by [] in the key-name position of an object literal declaration!
+  - See Example D in ../examples/contents.js
+- The most common usage for computed property names will probably be for ES6 symbols.
+  - See Example E in ../examples/contents.js
+
+<--- PROPERTY VS METHOD --->
+- When talking about a property access on an object, some devs like to make a distinction if the value accessed happens to be a function, and so call such properties "methods".
+- It's tempting to think of a function as "belonging" to an object, but technically that is not the case.
+  - Thus, saying a function that just happens to be accessed on an object reference is automatically a "method" is a semantic stretch.
+- It's true that some functions have THIS references in them and that SOMETIMES these THIS references refer to the object reference at the call site.
+  - This doesn't really make the function any more a "method" than any other function though
+  - Because THIS is dynamically bound at the call site during runtime, its relationship to the object is indirect at best.
+- Every time you access a property on an object, that is property access regardless of the type of value you get back.
+  - If you happen to get a function from that access, it's not magically a "method" at that point.
+  - There is nothing special about a function that comes from a property access outside of possible implicit THIS binding.
+- See Example F in ../examples/contents.js
+- One could argue that a funtion BECOMES a method.
+  - Not at definition time, but during runtime just for that invocation depending on how it's called at its call site.
+  - Even this is a bit of a stretch though.
+- The safest conclusion is that "function" and "method" are interchangeable in JS.
+- Even declaring a function expression as part of an object literal doesn't make that function "belong" to the object.
+  - There are still just multiple references to the same function object.
+
+<--- ARRAYS --->
+- Arrays also use the [] access form.
+- When compared to general objects, they have more structure for how and where values are stored.
+  - There are still no restrictions on what type of values are stored though.
+- Arrays assume numeric indexing.
+  - This means values are stored at locations called indices at non-negative integers.
+- See ../examples/arrays.js
+- You COULD use an array as a plain key/value object and never add any numeric indices, but this is a bad idea.
+  - Arrays have behavior and optimizations specific to their intended use, and likewise with plain objects.
+  - Use objects to store key/value pairs and arrays to store values at numeric indices.
+
+<--- DUPLICATING OBJECTS --->
+- New JS developers often request that the language have an object duplication feature.
+- This would be a little complicated because it's not very clear what, by default, should be the algorithm for duplication.
+- See ../examples/object_duplication.js
