@@ -125,3 +125,93 @@
 - New JS developers often request that the language have an object duplication feature.
 - This would be a little complicated because it's not very clear what, by default, should be the algorithm for duplication.
 - See ../examples/object_duplication.js
+
+<--- PROPERTY DESCRIPTORS --->
+- Before ES5, JS gave no direct way for your code to inspect or draw any distinction between the characteristics of properties, such as whether it was read-only or not.
+- As of ES5 though, all properties are described in terms of a property descriptor.
+- See ../examples/property_descriptors.js
+- The default values for WRITABLE, ENUMERABLE, and CONFIGURABLE for any given property are all true.
+- Object.defineProperty() can be used to add a new property with the desired characteristics.
+  - It can also be used to modify an existing property if it's configurable!
+
+<--- WRITABLE--->
+- Determines whether or not you can change the property value.
+- If you try to modify an unwritable property value in strict mode, an error will be thrown.
+- Otherwise, the operation will silently fail.
+
+<--- CONFIGURABLE --->
+- The configurable descriptor determines whether or not you can modify a property's descriptor definiton with defineProperty().
+- Changing a configurable descriptor to false is a one-way action and can't be undone, be careful with doing so!
+- Regardless of strict mode, attempting to redefine a nonconfigurable property will result in an error.
+- There is an exception though: even if a property is not configurable, WRITABLE can always be changed from true to false without error.
+  - It can't, however, change to true if it's already false.
+- An unconfigurable property descriptor also prevents the ability to use the DELETE operator to remove the property.
+  - Doing so would fail silently.
+
+<--- THE DELETE OPERATOR --->
+- It's only used to delete removable (configurable) object properties directly from the object in question.
+- If an object property is the last remaining REFERENCE to some object/function and you delete it, the now unreferenced object/function can be garbage collected.
+- Despite this, it is not proper to think of delete as a tool to free up allocated memory as it does in languages such as C and C++.
+  - It is just an object property removal operation, nothing more.
+
+<--- ENUMERABLE --->
+- Determines if a property will show up in certain object-property enumerations, such as in a FOR...IN loop.
+- Setting to false will keep it from showing up in such enumerations, but it will still be accessible.
+
+<--- IMMUTABILITY --->
+- It is sometimes desired to make properties or obejcts that cannot be changed accidentally or otherwise, and ES5 added support for that in a variety of ways.
+- All of the approaches gone over thus far though create shallow immutability.
+  - This means it only affects the object and its direct property characteristics.
+  - If the object has a reference to another object, the contents of that object are not affected and remain mutable.
+- NOTE: It's not common to create deeply entrenched immutable object in JS programs.
+  - If you find yourself wanting to seal or freeze all your objects, you might want to reconsider your program design and make it more robust to potential changes in objects' values.
+
+<--- APPROACHES TO IMMUTABILITY --->
+- See ../examples/immutability.js
+- Object Constant
+  - Setting a property to be both unwritable and unconfigurable can essentially make it a constant.
+  - The property cannot be changed, redefined, or deleted.
+- Prevent Extensions
+  - Use if you want to prevent an object from having new properties added to it while leaving the rest of its properties alone.
+- Sealing with Object.seal()
+  - Creates a "sealed" object
+  - Takes an existing object, calls preventExtensions() on it, and then marks all its existing properties as unconfigurable.
+  - You cannot add any more properties nor can you reconfigure/delete any existing ones.
+  - You can still modify property values though!
+- Freezing with Object.freeze()
+  - Creates a "frozen" object
+  - Takes an existing object, calls Object.seal() on it, and marks all its data accessor properties as unwritable.
+  - Object properties cannot be added, reconfigured, deleted, or modified.
+  - The contents of any objects referenced in property values can still be modified, just not the reference itself.
+- An object can be "deep frozen" by calling freeze() on it and then recursively iterating over all objects it references and calling freeze() on them as well.
+  - You should be careful with this though because it could affect other (shared) objects you're not intending to affect.
+
+<--- [[GET]] --->
+- See ../examples/get.js
+
+<--- [[PUT]] --->
+- It may be tempting to think that an assignment to a property on an object would just invoke [[Put]] to set or create that property.
+- The situation is more nuanced than that though.
+- When invoking [[Put]], how it behaves differs based on a number of factors, mostly whether or not the property is already present in the object.
+- If the property is present, the [[Put]] algorithm will roughly check:
+  1. Is the property an accessor descriptor? If so, call the setter, if any.
+  2. Is the property a data descriptor with writable of false? If so, throw a TypeError in strict mode, silently fail otherwise.
+  3. Set the value to the existing property as normal.
+- If the property is not yet present on the object, [[Put]] is even more nuanced and complex.
+
+<--- GETTERS AND SETTERS --->
+- The default [[Put]] and [[Get]] operations for objects completely control how values are set to or retrieved from properties.
+- ES5 introduced a way to override part of these default operations through the use of setters and getters.
+  - The override doesn't happen on an object level, but on a per-property level.
+- Getters are properties that call a hidden function to retrieve a value.
+  - When you define a property as a getter, that property will not actually hold a value.
+  - Instead, its access will result in a hidden function call to the getter function.
+  - The return of that function becomes the result of the property access.
+- Setters are properties that call a hidden function to set a value.
+  - When you define a setter for a property, an assignment to that property will result in a hidden function call to the setter function.
+  - Whatever's on the right side of the = assignment will be passed as the parameter to the function.
+- When you define a property to have a setter or getter, its definition becomes an "accessor descriptor" as opposed to a "data descriptor".
+  - The value and writable characteristics get ignored.
+  - Instead, JS considers the SET and GET characteristics of the property.
+  - The configurable and enumerable characteristics are unaffected.
+- See ../examples/setters_getters.js
