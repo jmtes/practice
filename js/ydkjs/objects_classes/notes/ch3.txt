@@ -157,7 +157,6 @@
 <--- ENUMERABLE --->
 - Determines if a property will show up if the object's properties are iterated through, such as in a FOR...IN loop.
 - Setting to false will keep it from showing up in such enumerations, but it will still be accessible.
-- See ../examples/enumeration.js
 - NOTE: The enumeration of an array includes all the numeric indices AND any enumerable properties.
   - Thus, applying a FOR...IN loop on an array can yield unexpected results.
   - It's a good rule of of thumb to only use FOR...IN loops on objects and just use regular FOR loops for arrays.
