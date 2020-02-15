@@ -218,3 +218,26 @@
   - Instead, JS considers the SET and GET characteristics of the property.
   - The configurable and enumerable characteristics are unaffected.
 - See ../examples/setters_getters.js
+
+<--- ITERATION --->
+- The FOR...IN loop iterates over the list of enumerable properties on an object, including its prototype chain.
+  - Note that you're only iterating through the PROPERTIES of the object.
+  - You will have to manually access the properties to get to the values.
+- With numerically indexed arrays, iterating over the values is typically done by looping through indices with a standard FOR loop and referencing array values with each index.
+  - This isn't iterating over the values though.
+- ES5 added several iteration helpers that accept callbacks to apply to each element iterated through in an array:
+  - forEach() will iterate over each value in the array and ignores any callback return values.
+  - every() keeps going until the end of the array OR the callback returns a falsy value.
+  - some() keeps going until the end of the array OR the callback returns a truthy value.
+- The special return values inside every() and some() act somewhat like a BREAK statement in a normal FOR loop.
+- Like with dictionaries in Python, the order of iteration over an object's properties is NOT guaranteed and may vary between JS engines.
+  - Do not rely on any observed ordering for anything that requires consistency across environments.
+
+<--- FOR...OF LOOPS --->
+- The ES6 FOR...OF loop allows you to iterate over an array/object's values instead of its indices/properties.
+- Note that it only works for objects that define their own custom iterators.
+  - Regular objects don't have a built-in iterator because it could prove troublesome for future types of objects.
+  - Arrays have a built-in iterator though, so you don't need to worry about defining any for them.
+- The loop asks for an iterator object (from a default internal function known as @@iterator) of the thing to be iterated.
+  - It will then iterate over the successive return values from calling that iterator object's next() method, once for each loop iteration.
+- See ../examples/iteration.js
