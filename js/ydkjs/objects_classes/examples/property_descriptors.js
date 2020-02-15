@@ -80,9 +80,29 @@ Object.defineProperty(user, 'ssn', {
   enumerable: false
 });
 
-console.log(user); // The ssn property shows up here...
+// The following reveal that user's ssn property certainly exists:
+console.log(user.ssn); // 000 00 0000
+console.log('ssn' in user); // true
+console.log(user.hasOwnProperty('ssn')); // true
+
+console.log(user); // And it shows up here...
 
 // ...But not in this for...in loop:
 for (const property in user) {
   console.log(`${property}: ${user[property]}`);
 }
+
+// The following are other ways of determining a property's enumerabilty:
+console.log(user.propertyIsEnumerable('ssn')); // false
+console.log(user.propertyIsEnumerable('name')); // true
+
+// The Object.keys() method returns an array of all an object's enumerable properties:
+console.log(Object.keys(user)); // The ssn property won't show up here!
+
+// The Object.getPropertyNames() method returns an array of ALL an object's properties regardless of enumerability:
+console.log(Object.getOwnPropertyNames(user)); // The ssn property will show up here!
+
+// NOTE: Neither the Object.keys() nor the Object.getOwnPropertyNames() method consults the prototype chain; both inspect ONLY the direct object specified!
+
+// There's currently no built-in way to get a list of ALL properties in an object's entire prototype chain, which is what the IN operator would consult.
+// You could approximate such a utility by recursively traversing an object's prototype chain and, at each level, capturing the list from Object.keys() -- only enumerable properties.

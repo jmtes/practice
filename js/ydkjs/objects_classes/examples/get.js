@@ -34,3 +34,65 @@ console.log(user2.gender); // undefined
 // 2. The property doesn't exist and the `undefined` was just the default return value from the failed [[Get]]
 
 // There ARE ways you can distinguish the two scenarios though!
+
+// You can ask the object if it has a certain property without asking to get that property's value.
+
+// It can be done with an IN membership test like so:
+console.log('name' in user2); // true
+console.log('gender' in user2); // false
+
+// The IN operator will check to see if the property is either in the object or if it exists at any higher level of the prototype chain.
+
+// Or with the hasOwnProperty() method:
+console.log(user2.hasOwnProperty('name')); // true
+console.log(user2.hasOwnProperty('gender')); // false
+
+// This is the semistandard-compliant way to call hasOwnProperty():
+console.log(Object.prototype.hasOwnProperty.call(user2, 'name'));
+
+// Unlike the IN operator, hasOwnProperty() only checks if user2 has the property and will not consult the prototype chain.
+
+// hasOwnProperty is accessible for all normal objects via delegation to Object.prototype.
+
+// It's possible though to create an object that does not link to Object.prototype, thus ensuring an attempt to invoke hasOwnProperty() with it will fail:
+
+var notPrototypeLinked = Object.create(null);
+
+try {
+  notPrototypeLinked.hasOwnProperty('property');
+} catch (error) {
+  console.log(error); // TypeError: notPrototypeLinked.hasOwnProperty is not a function
+}
+
+// In this scenario, a more robust way of performing such a check would be the following:
+console.log(Object.prototype.hasOwnProperty.call(notPrototypeLinked, 'property')); // false
+
+// This borrows the base hasOwnProperty() method and uses explicit THIS binding to apply it against notPrototypeLinked.
+
+// NOTE ABOUT THE IN OPERATOR
+
+// The IN operator seems like it checks for the existence of a VALUE inside a container, but it actually checks for the existence of a property name.
+
+var user3 = {
+  name: 'Tori',
+  birthday: 'May 6'
+};
+
+console.log('name' in user3); // true
+console.log('Tori' in user3); // false
+
+// This is especially important to note in arrays because such checks will not behave as expected:
+
+var users = ['Joline', 'Janelle', 'Esther'];
+
+console.log('Janelle' in users); // false
+
+// Adding a property to the array like so would return the expected result:
+users.Gabrielle = 'Gabrielle';
+console.log('Gabrielle' in users); // true
+
+// To check for a value inside an array, you'd better just use the includes() method:
+console.log(users.includes('Esther')); // true
+
+// The includes() method only takes into account an array's indexed values; it won't check any named properties:
+console.log(users.includes('Gabrielle')); // false
