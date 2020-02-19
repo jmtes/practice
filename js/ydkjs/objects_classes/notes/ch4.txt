@@ -1,0 +1,56 @@
+<--- INTRO --->
+- The mechanics of classes in object-oriented programming are instantiation, inheritance, and (relative) polymorphism.
+- These concepts don't really map very naturally to JS's object mechanism.
+- Thus, JS developers go to considerable lengths to overcome this using mixins and stuff.
+
+<--- CLASS THEORY --->
+- Class- or object-oriented programming stresses that data intrinsically has associated behavior that operates on it.
+  - This behavior differs depending on the type and nature of the data.
+  - Thus, proper design is to package up (encapsulate) the data and behavior together.
+  - This is sometimes called "data structures" in formal computer science.
+- An example is that a series of characters is usually called a "string".
+  - The characters are the data.
+  - But you almost never care about just the data, you want to do things with it too!
+  - So, the behaviors that can apply to that data are all designed as methods of a String class.
+    - For the example this includes calculating the string's length, appending more characters to it, searching for substrings, etc.
+- Any given string is just an instance of the String class.
+  - This means it's a neatly collected packaging of both the character data and the functionality we can perform on it.
+- Classes also imply a way of classifying a certain data structure.
+  - The way this is done is to think about any given structure as a specific variation of a more general base definition.
+  - See the Car Example section below.
+
+<--- THE CAR EXAMPLE --->
+- A Car can be described as a specific implementation of a more general class of thing called a Vehicle.
+- The definition of a Vehicle class might include things like propulsion, the ability to carry people, etc.
+  - These would all be the behaviors that are common to all the different types of vehicles from planes to trains to automobiles.
+- It does not make sense in our software to redefine the basic essence of "ability to carry people" over and over again for each different type of vehicle.
+  - Thus, we define that capacity once in the Vehicle class.
+  - Then, when we define the Car class, we simply indicate that it inherits or extends the base defintion from Vehicle.
+  - The definition of Car is said to specialize the general Vehicle definition.
+- While the Vehicle and Car classes collectively define the behavior by way of methods, the data in an instance would be things like the unique vehicle ID number of a specific car, etc.
+
+<--- POLYMORPHISM --->
+- The idea that a general behavior from a parent class can be overridden in a child class to give it more specifics.
+- Relative polymorphism lets us reference the base behavior from the overridden behavior.
+- Class theory strongly suggests that a parent class and a child class share the same method name for a certain behavior.
+  - The idea is that the child method overrides that of the parent differentially.
+  - However, doing this in JS code is conducive to frustration and code brittleness.
+
+<--- JS "CLASSES" --->
+- JS doesn't actually have classes.
+- JS has some class-like syntactic elements like the NEW and INSTANCEOF operators and the CLASS keyword!
+  - But these simply try to satisfy the pervasive desire to design with classes.
+  - The classes you have in other languages are not like the "classes" you're faking in JS.
+
+<--- CLASS MECHANICS --->
+- A class is merely an abstract explanation of what anything of that class should do, but it's not itself a thing of that class.
+- You must INSTANTIATE the class before you have a concrete data structure THING to work with.
+
+<--- BUILDING --->
+- An instance is to a class what a building is to an architectural blueprint.
+- A class is a blueprint: to actually GET an object that can be interacted with, we must build (instantiate) something from the class.
+    - The end result of such construction is an instance of the class which we can directly call methods on and access any public data properties from.
+- The instance is a COPY of all the characteristics described by the class.
+- A class is instantiated into an object form by a copy operation.
+- You don't use an object instance to directly access and manipulate its class, but it's usually possible to at least determine WHICH class an instance comes from.
+    - It's like how buildings don't usually have their blueprints framed on a wall inside them.
