@@ -35,6 +35,7 @@
 - Class theory strongly suggests that a parent class and a child class share the same method name for a certain behavior.
   - The idea is that the child method overrides that of the parent differentially.
   - However, doing this in JS code is conducive to frustration and code brittleness.
+- See Line 75 for more.
 
 <--- JS "CLASSES" --->
 - JS doesn't actually have classes.
@@ -52,5 +53,67 @@
     - The end result of such construction is an instance of the class which we can directly call methods on and access any public data properties from.
 - The instance is a COPY of all the characteristics described by the class.
 - A class is instantiated into an object form by a copy operation.
+    - Likewise, subclasses are made with copy operations of properties from a parent class.
 - You don't use an object instance to directly access and manipulate its class, but it's usually possible to at least determine WHICH class an instance comes from.
-    - It's like how buildings don't usually have their blueprints framed on a wall inside them.
+    - It's like how buildings don't usually have their blueprints framed on a wall inside them, but you can find those prints at a public records office or something.
+
+<--- CONSTRUCTOR --->
+- Instances of classes are constructed by a special method of the class called a constructor.
+    - The constructor usually has the same name as the class.
+    - Its job is to initialize any information (state) the instance will need.
+- COnstructors pretty much always need to be called with NEW to let the engine know you want to construct a new class instance.
+
+<--- CLASS INHERITANCE --->
+- You can define a class that inherits from another class.
+- Child classes are specializations of parent classes, which themselves are specializations of your generic object.
+- Once a child class is defined, it is separate and distinct from the parent class.
+    - The child contains an initial copy of the behavior from the parent, but can then override any of those inherited behaviors.
+    - It can even define new behaviors!
+- The child/parent metaphor can get confusing because classes are more appropriately thought of as being the DNA of the parent/child rather than the parent/child themselves.
+    - We have to make (instantiate) a person out of each set of DNA to actually have a physical person to converse with.
+
+<--- POLYMORPHISM CONT. --->
+- Relative polymorphism refers to the idea that any method can reference another method (of the same of different name) at a higher level of the inheritance heirarchy.
+- We say "relative" because we're not defining which inheritance level we want to access.
+    - Rather, we're referencing it by essentially saying "look one level up".
+- A method name can have multiple definitions at different levels of the inheritance chain.
+    - These definitions are automatically selected as appropriate when resolving which methods are being called.
+- The definition for a method polymorphs (changes) depending on which class (level of inheritance) you are referencing an instance of.
+- Understanding these details is necessary to properly contrast similar but distinct behaviors in JS's [[Prototype]] mechanism.
+- See more about SUPER at Line 95.
+- Do not let polymorphism confuse you into thinking a child class is linked to its parent class.
+    - A child class merely gets a copy of what it needs from the parent class.
+    - Class inheritance implies copies!
+
+<--- SUPER IN OTHER LANGUAGES --->
+- The SUPER keyword is a utility provided by traditional class-oriented languages.
+- It is a direct way for the constructor of a child class to reference the constructor of its parent class.
+- With real classes, the constructor belongs to the class.
+- In JS though, it's the reverse: the "class" belongs to its constructor through `Foo.prototype` type references.
+    - This is because the relationship between parent and child exists only between the two .prototype objects of the respective constructors.
+    - The constructors themselves are not directly related.
+    - Thus, there's no simple way to relatively reference one from the other.
+    - ES6 classes "solve" this with SUPER.
+
+<--- SUPER IN JS --->
+- When classes are inherited, there is a way for a class itself (not the object instances created from it) to relatively reference the class it inherits from.
+- This reference is SUPER!
+- It would seem a child class can access behavior in its parent class using a relative polymorphic reference (SUPER).
+    - In reality, the child class is just given a copy of the inherited behavior from its parent class.
+    - If the child "overrides" a method it inherits, both the original and overridden versions of the method are maintained.
+    - Thus, they are both accessible.
+
+<--- MULTIPLE INHERITANCE --->
+- Some class-oriented languages allow you to specify more than one parent class to inherit from.
+    - Multiple inheritance means each parent class definition is copied into the child class.
+- Multiple inheritance raises two big questions: 
+    - If multiple parent classes provide a method of the same name, which version of that method would a reference in the child resolve to?
+    - Would you always have to manually specify it and lose some of the gracefulness of polymorphic inheritance?
+- JS is simpler in that it does not provide a native mechanism for multiple inheritance.
+    - Many see it as a good thing because the complexity savings make up for the "reduced" functionality.
+    - This doesn't stop developers from trying to fake it in various ways though!
+
+<--- MIXINs --->
+- JS's object mechanism does not automatically perform copy behavior when you "inherit" or "instantiate".
+    - There are no "classes" in JS to instantiate, only objects.
+    - Moreover, objects don't get copied to other objects; they get LINKED TOGETHER (see Chapter 5 notes).
