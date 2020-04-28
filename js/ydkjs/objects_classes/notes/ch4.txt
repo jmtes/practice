@@ -141,3 +141,7 @@
 <--- PARASITIC INHERITANCE --->
 - A variation on the explicit mixin pattern.
 - See ../examples/parasitic_inheritance.js
+
+<--- IMPLICIT MIXINS --->
+- Closely related to explicit pseudo-polymorphism and thus come with the same caveats.
+- See ../examples/implicit_mixins.js
