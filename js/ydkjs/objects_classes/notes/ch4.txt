@@ -124,4 +124,20 @@
 - Revisiting our Vehicle and Car example from before, JS will not automatically copy behavior from Vehicle to Car.
 - We can instead create a utility that manually copies.
 	- Such a utility is often called extend(...) by many libraries/frameworks, but we will call it mixin(...) for illustrative purposes.
-- See ../examples/explicit_mixins.js
+    - See ../examples/explicit_mixins.js
+- The name "mixin" comes from an alternate way fo explaining the task: Car has Vehicle's contents mixed-in.
+- As a result of the copy operation, Car will operate somewhat separately from Vehicle.
+    - If you add a property onto Car, it will not affect Vehicle, and vice versa.
+    - There are ways they can still affect each other though, such as if they both share a reference to a common object (such as an array).
+    - The same goes for functions because the function reference is duplicated.
+    - Adding properties on a shared function object will affect all objects that contain that a reference to that function.
+- There is not much benefit derived from copying a property from one object to another as opposed to just redefining the properties on each object.
+    - This is especially true considering the function-object nuance.
+- Only use explicit mixins where it actually helps make more readable code.
+    - Avoid it if you find it making code that is harder to trace or creates unnecessary/unwieldy dependencies between objects.
+    - If it gets harder to properly use mixins than before you used them, you should probablhy stop using them.
+    - See Chapter 6 notes for simpler ways to accompish the same outcomes you'd get with mixins.
+
+<--- PARASITIC INHERITANCE --->
+- A variation on the explicit mixin pattern.
+- See ../examples/parasitic_inheritance.js

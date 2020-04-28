@@ -1,5 +1,6 @@
-// Extremely simplified mixin(...) example
+// EXPLICIT MIXINS AND PSEUDO-POLYMORPHISM
 
+// Extremely simplified mixin(...) example
 function mixin (sourceObject, targetObject) {
   for (var key in sourceObject) {
     if (!(key in targetObject)) {
@@ -29,6 +30,9 @@ var Car = mixin(Vehicle, {
   }
 });
 
+// Car has a copy of the properties and functions from Vehicle.
+// Technically, functions are not actually duplicated but rather the function references themselves are copied.
+
 Car.drive();
 // Turning on my engine.
 // Steering and moving forward!
@@ -37,3 +41,10 @@ Car.drive();
 console.log(Object.keys(Car));
 // ['wheels, 'drive', 'engines', 'ignition']
 // Notice that drive() isn't included twice!
+
+// Line 27 is an example of  "explicit pseudo-polymorphism".
+// Because both Car and Vehicle had a function of the same name, drive(), we had to make an absolute (not relative) reference to distinguish a call to one or the other.
+// We explicitly specified the Vehicle object by name, invoked its drive function, and specified Car as the THIS context.
+
+// While explicit pseudo-polymorphism can emulate the behavior of multiple inheritance, it only makes your code needlessly complex and harder to read/maintain!
+// Just avoid it whenever possible.
