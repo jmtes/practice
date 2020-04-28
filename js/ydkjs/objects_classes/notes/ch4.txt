@@ -145,3 +145,15 @@
 <--- IMPLICIT MIXINS --->
 - Closely related to explicit pseudo-polymorphism and thus come with the same caveats.
 - See ../examples/implicit_mixins.js
+
+<--- REVIEW --->
+- Classes are a design pattern that many languages provide syntax for.
+    - JS has a similar syntax, but it behaves very differently from what one may be used to.
+- Classes imply copies.
+    - When traditional classes are instantiated, a copy of behavior from class to instance occurs.
+    - When classes are inherited, a copy of behavior from parent to child also occurs.
+- JS does not automatically create copies between objects.
+- The mixin pattern is used to sort of emulate class copy behavior.
+    - It usually leads to ugly/brittle syntax that results in code that's harder to understand and maintain.
+    - They're also not exactly the same as class copy since objects and functions only have their references, and not themselves, duplicated.
+- Faking classes in JS often sets more landmines for future coding instead of solving present real problems!
