@@ -15,4 +15,10 @@ CHAPTER 5: PROTOTYPES
 
 <--- SETTING AND SHADOWING PROPERTIES --->
 - Setting properties on an object is more nuanced than getting them.
-- See ../examples/setting_shadowing_properties.js
+  - See ../examples/setting_shadowing_properties.js
+- Shadowing methods leads to ugly explicit pseudo-polymorphism if you need to delegate between them.
+- Shadowing can even occur implicitly in subtle ways.
+  - See Example C in above file.
+- Shadowing in general is more complicated than it's worth, so just avoid it if possible.
+  - See Chapter 6 notes for cleaner alternative design patterns.
+
