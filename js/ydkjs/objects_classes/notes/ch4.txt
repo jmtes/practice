@@ -117,3 +117,11 @@
 - JS's object mechanism does not automatically perform copy behavior when you "inherit" or "instantiate".
     - There are no "classes" in JS to instantiate, only objects.
     - Moreover, objects don't get copied to other objects; they get LINKED TOGETHER (see Chapter 5 notes).
+- JS developers fake the missing copy behavior of classes with mixins.
+	- There are two types of mixins: explicit and implicit.
+
+<--- EXPLICIT MIXINS --->
+- Revisiting our Vehicle and Car example from before, JS will not automatically copy behavior from Vehicle to Car.
+- We can instead create a utility that manually copies.
+	- Such a utility is often called extend(...) by many libraries/frameworks, but we will call it mixin(...) for illustrative purposes.
+- See ../examples/explicit_mixins.js
