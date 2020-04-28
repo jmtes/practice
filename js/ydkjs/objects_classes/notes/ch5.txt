@@ -1,0 +1,10 @@
+CHAPTER 5: PROTOTYPES
+
+<--- [[PROTOTYPE]] --->
+- Objects in JS have an internal property [[Prototype]].
+  - It is simply a reference to another object.
+  - Almost all objects are given a non-null value for this property at the time of their creation.
+  - It is possible for an object to have an empty [[Prototype]] linkage, but it's not common.
+- All of the attempts to emulate class-copy behavior in Chapter 4, labeled as mixins, completely disregard the [[Prototype]] chain mechanism.
+- See ../examples/prototype.js
+
