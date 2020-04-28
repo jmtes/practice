@@ -8,3 +8,11 @@ CHAPTER 5: PROTOTYPES
 - All of the attempts to emulate class-copy behavior in Chapter 4, labeled as mixins, completely disregard the [[Prototype]] chain mechanism.
 - See ../examples/prototype.js
 
+<--- OBJECT.PROTOTYPE --->
+- The top end of every normal [[Prototype]] chain is the built-in Object.prototype.
+  - This object includes common utilities used all over JS because all normal objects descend from it.
+  - These utilities include toString(), valueOf(), hasOwnProperty(), isPrototypeOf(), etc.
+
+<--- SETTING AND SHADOWING PROPERTIES --->
+- Setting properties on an object is more nuanced than getting them.
+- See ../examples/setting_shadowing_properties.js
