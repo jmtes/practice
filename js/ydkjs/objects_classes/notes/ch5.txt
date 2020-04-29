@@ -82,3 +82,8 @@ CHAPTER 5: PROTOTYPES
 <--- CREATE()ING LINKS --->
 - So what's the point of the [[Prototype]] mechanism? And why do developers go to so much effort wiring up its linkages to emulate classses?
 - See ../examples/object_create.js
+
+<--- LINKS AS FALLBACKS? --->
+- It's tempting to think that links between objects PRIMARILY provide a sort of fallback for "missing" properties or methods.
+- While it may be an observed outcome, it's not the right way to think about [[Prototype]].
+- See ../examples/links_as_fallbacks.js
