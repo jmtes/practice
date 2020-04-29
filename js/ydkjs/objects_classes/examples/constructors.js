@@ -20,11 +20,16 @@ console.log(User.prototype); // Object containing a constructor property
 console.log(User.prototype.constructor === User); // true, so both reference the same function
 
 console.log(user1.constructor === User); // true, so they too reference the same function
-console.log(user1.hasOwnProperty('constructor')); // false, meaning the constructor property was delegated to User.
+console.log(user1.hasOwnProperty('constructor')); // false, meaning the constructor property was delegated to User.prototype.
+
+// By default, a function's prototype object will have a public, non-enumerable constructor property that points to the function itself.
 
 // At decalaration time in Line 3, the User.prototype object by default got a public, non-enumerable constructor property.
 // This property is a reference back to the function (User) that the object is associated with.
-// We also see that the object user1 created by the constructor call in Line 7 SEEMS to have a connstructor property on it which similarly points to the function that "created" it.
+
+// See Example B for more information.
+
+// We also see that the object user1 created by the constructor call in Line 7 SEEMS to have a constructor property on it which similarly points to the function that "created" it.
 
 // We've seen though that user1 in fact has no constructor property.
 // Though user1.constructor does resolve to the User function, "constructor" in this case does not actually mean "was constructed by", as it may appear.
@@ -52,3 +57,31 @@ console.log(a); // Object with a test property!
 
 // In JS, it's most appropriate to say that a "constructor" is any function called with the NEW keyword in front of it.
 // Functions aren't constructors, but function calls are "constructor calls" if and only if NEW is used!
+
+// EXAMPLE B - REPLACING A FUNCTION'S DEFAULT PROTOTYPE OBJECT
+
+// The constructor property in a function's prototype is only there by default on the object created when the function is declared.
+
+// If you replace a function's default prototype object reference with another object, that object will not magically get a constructor on it by default.
+
+function Foo () {
+  // Do stuff
+}
+
+console.log(Foo.prototype); // Object with a constructor property
+
+Foo.prototype = {};
+
+console.log(Foo.prototype); // Object without a constructor property
+
+var b = new Foo();
+console.log(b.constructor === Foo); // false
+console.log(b.constructor === Object); // true
+
+// Object() didn't construct b, did it? It sure seems like Foo() constructed it!
+// This is why in JS it's wrong to think of "constructor" as meaning "was constructed by".
+// By that reasoning, b.constructor should be Foo, but it isn't!
+
+// What's happening is that, since b has no constructor property, it's delegated up the [[Prototype]] chain to Foo.prototype .
+// The Foo.prototype object doesn't have a constructor either though, so it delegates up to Object.prototype (the top of the delegation chain)!
+// The Object.prototype object DOES have a constructor property on it, which points to the built-in Object(...) function!

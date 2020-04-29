@@ -60,3 +60,7 @@ CHAPTER 5: PROTOTYPES
 
 <--- "CONSTRUCTORS" --->
 - See ../examples/constructors.js
+- In JS, there are no constructors, but a function call can be made a constructor call by using the NEW keyword.
+
+<--- MECHANICS --->
+- See ../examples/mechanics.js
