@@ -43,3 +43,36 @@ console.log(alias.isPrototypeOf(user1)); // true
 // The question isPrototypeOf(...) answers is: In the entire [[Prototype]] chain of user1 (object A), does User.prototype (object B) ever appear?
 
 // It's the same question that instanceof answers, but without the indirection of referencing a FUNCTION whose prototype property will automatically be consulted.
+
+// EXAMPLE C - DIRECTLY RETRIEVING AN OBJECT'S [[PROTOTYPE]]
+
+console.log(Object.getPrototypeOf(user1) === User.prototype); // true
+
+// Most browsers also support a non-standard alternate way of accessing the internal [[Prototype]]:
+
+console.log(user1.__proto__ === User.prototype); // true
+
+// __proto__ is helpful if you want to directly inspect the chain.
+// You can even traverse the chain using __proto__.__proto__... !
+
+// Like the constructor property, __proto__ doesn't actually exist on the object you're inspecting.
+// It exists as a non-enumerable on the built-in Object.prototype .
+
+// Although __proto__ looks like a property, it's actually more appropriate to think of it as a getter/setter, and it can roughly be envisioned like so:
+
+// Object.defineProperty(Object.prototype, '__proto__', {
+//   get: function () {
+//     return Object.getPrototypeOf(this);
+//   },
+//   set: function (o) {
+//     Object.setPrototypeOf(this, o);
+//     return o;
+//   }
+// });
+
+user1.__proto__ = {}; // Remove link to User
+console.log(user1);
+user1.__proto__ = User.prototype; // Add link to User
+console.log(user1);
+
+// Although setting __proto__ would certainly avoid having to replace a function's default object entirely with a new linked object, but it's best to treat object [[Prototype]] linkage as read-only.
