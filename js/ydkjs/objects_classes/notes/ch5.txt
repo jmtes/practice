@@ -42,6 +42,21 @@ CHAPTER 5: PROTOTYPES
 - "Prototypal inheritance" is commonly said to be the dynamic language version of "classical inheritance".
   - It's an attempt to piggyback on the common understanding of what inheritance means in the class-oriented world.
   - However, it paves over its understood semantics to fit dynamic scripting.
-- "Delegation" is a much more accurate term for JS's object-linking mechanism.
-  - "Inheritance" implies a copy operation, and JS doesn't copy object properties.
-  - JS creates a link between two objects, where one object can essentially delegate property/function access to another object.
+
+<--- DELEGATION --->
+- A much more accurate term for JS's object-linking mechanism.
+- "Inheritance" implies a copy operation, and JS doesn't copy object properties.
+- JS creates a link between two objects, where one object can essentially delegate property/function access to another object.
+
+<--- "DIFFERENTIAL INHERITANCE" --->
+- Another term that's sometimes thrown around in JS.
+- The idea is that an object's behavior is described in terms of how it's different from a more general descriptor.
+- For example, you explain that a car is a type of vehicle, but one that has exactly four wheels.
+- You say that instead of going into all the specifics of what makes up a general vehicle (engine, etc.)
+- This term kind of fits if you think of any given JS object as the sum total of all behavior that is available via delegation, and in your mind flatten all that behavior into one tangible thing.
+- This overlooks the fact that an object is not actually differentially constructed, but is instead built with specific characteristics defined.
+  - These characteristics come alongside "holes" where nothing is defined.
+  - It is in these holes that delegation CAN take over and fill them in with delegated behavior on the fly.
+
+<--- "CONSTRUCTORS" --->
+- See ../examples/constructors.js
