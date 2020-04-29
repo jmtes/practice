@@ -70,3 +70,15 @@ CHAPTER 5: PROTOTYPES
 - What if you have an object and want to find out which object, if any, it delegates to?
 - Inspecting an object for its delegation linkage is often called introspection (or reflection) in traditional classs-oriented environments.
 - See ../examples/introspection.js
+
+<--- OBJECT LINKS --->
+- As we've seen, the [[Prototype]] mechanism is an internal link that exists on one object that references some other object.
+- The linkage is primarily exercised when a property/method reference is made against the first object and no such property/method exists.
+  - In that case, the [[Prototype]] linkage tells the engine to look up the property/method in the linked object.
+  - If it's not found in that object, its [[Prototype]] is followed.
+  - This goes on until either the property/method is found or the [[Prototype]] chain ends (usually at Object.prototype).
+- The series of links between objects forms what is called the "prototype chain".
+
+<--- CREATE()ING LINKS --->
+- So what's the point of the [[Prototype]] mechanism? And why do developers go to so much effort wiring up its linkages to emulate classses?
+- See ../examples/object_create.js
