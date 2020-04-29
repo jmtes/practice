@@ -22,3 +22,26 @@ CHAPTER 5: PROTOTYPES
 - Shadowing in general is more complicated than it's worth, so just avoid it if possible.
   - See Chapter 6 notes for cleaner alternative design patterns.
 
+<--- "CLASS" --->
+- So why DOES one object need to link to another object? What's the real benefit?
+  - First we must understand what [[Prototype]] is NOT.
+  - Only then can we appreciate what is is and how it's useful.
+- Again, JS has no real classes, just objects.
+  - It is perhaps the only language that can be called object-oriented because it allows an object to be created directly without a class at all!
+  - Clases can't describe what an object can do, the object defines its own behavior directly.
+  - There's JUST the object.
+
+<--- "CLASS" FUNCTIONS --->
+- There is a peculiar behavior in JS that has been abused for years to hack something that looks like classes.
+- This behavior hinges on a strange characteristic of functions.
+  - All functions by default have a public, non-enumerable property on them called 'prototype'.
+  - This property points to an otherwise arbitrary object.
+  - See ../examples/class_functions.js
+
+<--- "PROTOTYPAL" INHERITANCE --->
+- "Prototypal inheritance" is commonly said to be the dynamic language version of "classical inheritance".
+  - It's an attempt to piggyback on the common understanding of what inheritance means in the class-oriented world.
+  - However, it paves over its understood semantics to fit dynamic scripting.
+- "Delegation" is a much more accurate term for JS's object-linking mechanism.
+  - "Inheritance" implies a copy operation, and JS doesn't copy object properties.
+  - JS creates a link between two objects, where one object can essentially delegate property/function access to another object.
