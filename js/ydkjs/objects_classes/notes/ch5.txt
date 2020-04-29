@@ -87,3 +87,17 @@ CHAPTER 5: PROTOTYPES
 - It's tempting to think that links between objects PRIMARILY provide a sort of fallback for "missing" properties or methods.
 - While it may be an observed outcome, it's not the right way to think about [[Prototype]].
 - See ../examples/links_as_fallbacks.js
+
+<--- CHAPTER REVIEW --->
+- The cascading linkage from object to object is known as the "prototype chain" and is traversed for property resolution.
+  - This works somewhat similarly to a nested scope chain.
+- All normal objects have the built-in object Object.prototype as the top of their prototype chain.
+  - It can be likened to the global scope in scope lookup.
+  - It contains common utilities like toString() and valueOf().
+  - This is why all objects are able to access those utilities.
+- Functions called with NEW are often called "constructors".
+  - This is despite the fact that they are not actually instantiating a class as constructors do in class-oriented languages.
+  - Constructor calls are one of the most common ways to link two objects together.
+- "Inheritance" implies copying of properties and methods taking place betweeen objects, but JS does no such thing.
+  - Instead, it links objects together via an internal [[Prototype]] chain.
+  - As such, "delegation" is a much more apt term for what JS does.
