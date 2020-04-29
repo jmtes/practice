@@ -65,3 +65,8 @@ CHAPTER 5: PROTOTYPES
 
 <--- MECHANICS --->
 - See ../examples/mechanics.js
+
+<--- INSPECTING "CLASS" RELATIONSHIPS --->
+- What if you have an object and want to find out which object, if any, it delegates to?
+- Inspecting an object for its delegation linkage is often called introspection (or reflection) in traditional classs-oriented environments.
+- See ../examples/introspection.js
