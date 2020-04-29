@@ -30,3 +30,25 @@ console.log(user1.hasOwnProperty('constructor')); // false, meaning the construc
 // Though user1.constructor does resolve to the User function, "constructor" in this case does not actually mean "was constructed by", as it may appear.
 
 // It's tempting to think that User is a "constructor" because we call it with NEW and can observe that it "constructs" an object.
+// Really though, it is no more a "constructor" than any other function.
+
+// Functions themselves are not constructors.
+// However, when you put the NEW keyword in front of a normal function call, that makes that function call a "constructor call".
+// NEW sort of hijacks any normal function call and calls it in a fashion that constructs an object (almost as a side effect) IN ADDITION TO whatever else it was going to do.
+
+// I'm guessing whenever THIS is used in the constructor call it gets applied to the object created by NEW because of NEW binding?
+
+function NothingSpecial () {
+  console.log("Don't mind me!");
+  this.test = 'test';
+}
+
+// This is a constructor call, but NothingSpecial itself is not a constructor!
+var a = new NothingSpecial();
+
+console.log(a); // Object with a test property!
+
+// It would appear my hypothesis is correct!
+
+// In JS, it's most appropriate to say that a "constructor" is any function called with the NEW keyword in front of it.
+// Functions aren't constructors, but function calls are "constructor calls" if and only if NEW is used!
