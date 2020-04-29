@@ -85,3 +85,15 @@ console.log(b.constructor === Object); // true
 // What's happening is that, since b has no constructor property, it's delegated up the [[Prototype]] chain to Foo.prototype .
 // The Foo.prototype object doesn't have a constructor either though, so it delegates up to Object.prototype (the top of the delegation chain)!
 // The Object.prototype object DOES have a constructor property on it, which points to the built-in Object(...) function!
+
+// By default, the constructor property on an object arbitrarily points to a function that, reciprocally, has a reference back to the object, a reference which it calls prototype.
+
+// The constructor property is NOT a magic immutable property.
+// It is non-enumerable, but its value is writable.
+// You can (intentionally or accidentally) add or overwrite a constructor property on any object in any [[Prototype]] chain.
+
+// By virtue of how the [[Get]] algorithm traveses the [[Prototype]] chain, a constructor property reference found anywhere may resolve quite differently than you'd expect.
+// Some arbitrary reference like b.constructor cannot actually be trusted to be the assumed default function reference.
+// Just by simple omission, b.constructor can even end up pointing somewhere quite surprising and insensible.
+
+// The point is, the constructor property is extremely unreliable and such references should be avoided whenever possible.
