@@ -78,7 +78,18 @@ var b = new Foo();
 console.log(b.constructor === Foo); // false
 console.log(b.constructor === Object); // true
 
-// Object() didn't construct b, did it? It sure seems like Foo() constructed it!
+// Of course, you can "fix" the constructor property on the Foo.prototype object by doing the following:
+
+// EXAMPLE C - "FIXING" A CONSTRUCTOR PROPERTY
+
+Object.defineProperty(Foo.prototype, 'constructor', {
+  enumerable: false,
+  writable: true,
+  configurable: true,
+  value: Foo // point to Foo function
+});
+
+// Anyway, in Line 79, Object() didn't construct b, did it? It sure seems like Foo() constructed it!
 // This is why in JS it's wrong to think of "constructor" as meaning "was constructed by".
 // By that reasoning, b.constructor should be Foo, but it isn't!
 
