@@ -42,6 +42,7 @@ CHAPTER 5: PROTOTYPES
 - "Prototypal inheritance" is commonly said to be the dynamic language version of "classical inheritance".
   - It's an attempt to piggyback on the common understanding of what inheritance means in the class-oriented world.
   - However, it paves over its understood semantics to fit dynamic scripting.
+- See ../examples/prototypal_inheritance.js
 
 <--- DELEGATION --->
 - A much more accurate term for JS's object-linking mechanism.
