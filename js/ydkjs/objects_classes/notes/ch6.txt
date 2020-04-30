@@ -1,0 +1,56 @@
+CHAPTER 6: BEHAVIOR DELEGATION
+
+<--- RECAP --->
+- The [[Prototype]] mechanism is an internal link that exists on one object and which references another object.
+- This linkage is exercised when a property/method reference is made against the first object and no such property/method exists.
+  - In this case, the [[Prototype]] linkage tells the engine to look for the property/method in the linked-to object.
+- The [[Prototype]] chain is followed until either the property/method is found or the chain ends (usually at Object.prototype).
+
+<--- TOWARDS DELEGATION-ORIENTED DESIGN --->
+- Some principles of class-oriented design, namely encapsulation, are still valid and compatible with delegation.
+  - It's still not commonly seen, though.
+
+<--- CLASS THEORY --->
+- Let's say we have several similar tasks (XYZ, ABC, etc.) that we need to model in our software.
+- With the class design pattern, you'd:
+  1. Define a general parent (base) class, say `Task`.
+    - This defines shared behavior for all "alike" tasks.
+  2. Define child classes like `ABC` and `XYZ`.
+  - Both inherit from Task and add specialized behavior to handle their respective tasks.
+  3. Instantiate one or more copies of the XYZ child class and use those instances to perform task "XYZ".
+- The class design pattern will encourage you to employ method overriding and polymorphism to get the most out of inheritance.
+  - You may even use SUPER to call to the base version of some method while adding more behavior to it.
+- After construction, you will generally only interact with these instances (not the classes!) because each has a copy of all the behavior needed to do the intended task.
+
+<--- DELEGATION THEORY --->
+- Let's think of the same problem, but using behavior delegation instead of classes:
+  1. Define an object called Task.
+    - This object will have concrete behavior on it that includes utility methods that various tasks can use (delegate to).
+  2. For each task (ABC, XYZ), define an object to hold that task-specific data/behavior.
+  3. Link the task specific-object(s) to the Task utility object, allowing them to delegate to it when they need to.
+- Basically, think about performing task XYZ as needing behaviors from two sibling objects (XYZ and Task).
+  - You don't need to compose them together via class copies though. 
+  - Rather, you keep them in their separate objects and allow the XYZ object to DELEGATE TO Task as needed.
+- See ../examples/delegation_theory.js
+
+<--- CLASS THINKING VS DELEGATION THINKING --->
+- Classes visualize objects as vertically oriented.
+  - Parent class behavior flows down to child classes.
+- Delegation visualizes objects as being side-by-side peers.
+  - Links between objects can go in any direction as necessary.
+
+<--- OBJECTS-LINKED-TO-OTHER-OBJECTS (OLOO) STYLE CODE GUIDELINES --->
+- In general, with [[Prototype]] delegation involved, you want state to be on the delegators (XYZ, ABC) and not on the delegate (Task).
+- Avoid shadowing by not naming things the same at different levels of the [[Prototype]] chain.
+  - Having such name collisions creates brittle code to disambiguate references.
+  - Use more descriptive method names so they're not as prone to overriding.
+    - These names should be specific to the type of behavior each object is doing.
+    - This can create code that's easier to understand and maintain because the method names are obvious and thus self-documenting!
+
+<--- CIRCULAR DELEGATION (NOT ALLOWED) --->
+- You cannot create a cycle where two or more objects delegate to each other.
+- If you link object A to object B and then try to link B to A, you will get an error!
+  - If you try to access a property/method that doesn't exist in either object, you'd get stuck indefinitely following the [[Prototype]] chain!
+
+<--- BROWSER DEVELOPER TOOLS --->
+- See ../example/chrome_dev_tools.js
