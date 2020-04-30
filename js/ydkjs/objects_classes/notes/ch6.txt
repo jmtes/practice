@@ -54,3 +54,17 @@ CHAPTER 6: BEHAVIOR DELEGATION
 
 <--- BROWSER DEVELOPER TOOLS --->
 - See ../example/chrome_dev_tools.js
+
+<--- COMPARING MENTAL MODELS --->
+- See ../examples/comparing_mental_models.js
+- OLOO-style code has vastly fewer things to worry about.
+  - This is because OLOO-style code embraces the fact that the only thing we really care about are the links between objects!
+- All the other "class" cruft was just a confusing and complex way of getting the same end result.
+  - Remove that stuff and things get much simpler without losing any capability!
+
+<--- THE INTERNAL CONSISTENCY OF JS'S MECHANISMS --->
+- The ability of a JS function to access call(...), apply(...), and bind(...) is because functions themselves are objects linked to the Function.prototype object.
+  - It defines all those default methods that any function object can delegate to!
+
+<--- CLASSES VS OBJECTS --->
+- See ../examples/classes_vs_objects.js
