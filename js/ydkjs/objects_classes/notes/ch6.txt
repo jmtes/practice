@@ -72,3 +72,24 @@ CHAPTER 6: BEHAVIOR DELEGATION
 
 <--- NICER ES6 SYNTAX --->
 - See ../examples/nicer_syntax.js
+
+<--- INTROSPECTION --->
+- In class-oriented programming, type introspection is when you inspect an instance to find out what kind of object it is.
+  - The goal is to reason about the structure/capabilities of the object based on HOW IT WAS CREATED.
+- We've previously seen the use of the INSTANCEOF operator for type introspection.
+- "Duck typing" is another common pattern for type introspection.
+  - The term comes from the saying, "If it looks like a duck and it quacks like a duck, then it must be a duck."
+  - See ../examples/duck_typing.js
+  - Use it sparingly and in controlled conditions!
+- A notable example of duck typing comes with ES6 Promises.
+  - To determine if any arbitrary object reference is a Promise, that object is usually tested for the presence of a then(...) function.
+  - If any object happens to have a then(...) method, ES6 Promises will assume unconditionally that the object is "thenable" and therefore will behave conformantly to all standard behaviors of Promises.
+  - If you have any non-Promise object that for whatever reason has a then(...) method on it, keep it FAR AWAY from the ES6 Promise mechanism to avoid broken assumptions. 
+
+<--- REVIEW --->
+- Behavior delegation suggests that objects are peers of each other that delegate amongst themselves.
+  - This is in contrast to parent/child class relationships.
+- JS's [[Prototype]] mechanism by its very nature is a behavior delegation mechanism and this fact should be embraced!
+- When you design code with objects only, it leads to simpler syntax and code architecture.
+- OLOO creates and relates objects directly without the abstraction of classes.
+  - It naturally implements [[Prototype]]-based behavior delegation!
