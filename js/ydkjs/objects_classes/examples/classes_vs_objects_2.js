@@ -213,4 +213,6 @@ var controller2 = Object.create(AuthController);
 
 // We didn't need a base Controller class to "share" behavior between LoginController and AuthController because delegation is a powerful enough mechanism to give us the functionality we need.
 
-// There's also no need for composition because delegation gives the two objects to cooperate differentially as needed.
+// There's also no need for composition because delegation allows the two objects to cooperate differentially as needed.
+
+// The bottom line is that we ended up with the same capability, but with a significantly simpler design. That's the power of OLOO!
