@@ -1,0 +1,30 @@
+APPENDIX A: ES6 CLASSES
+
+<--- GOTCHAS --->
+- ES6 classes make it appear as though copying is taking place between classes and instances, but that is not the case.
+  - The underlying mechanism is still [[Prototype]] delegation!
+  - This makes it harder to understand the difference between traditional classes and delegated objects!
+
+<--- CLASS PROPERTIES --->
+- Class syntax only allows you to declare class methods.
+- There's no way to declare a class property that is shared among all instances of that class!
+  - See Example A in ../examples/es6_classes.js
+
+<--- SUPER --->
+- You might assume that SUPER would be bound similarly to how THIS gets bound.
+  - This would assume SUPER will always be bound to one level higher than whatever the current method's position in the [[Prototype]] chain is.
+- However, SUPER is NOT bound dynamically!
+- It is bound statically at declaration time.
+- There may very well be cases where SUPER cannot be properly bound, so you may have to manually bind it with toMethod(...).
+  - It's kind of like what you have to do with bind(...).
+- You're used to being able to assign around methods to different objects to automatically take advantage of THIS via implicit binding.
+  - The same will likely not be true for methods that use SUPER.
+  - See Example C in ../examples/es6_classes.js
+
+<--- STATIC > DYNAMIC? --->
+- Class syntax implies that once you declare a class, it's a static definition of a thing that will be instantiated.
+  - In traditional class-oriented languages, you never readjust the definition of a class later.
+- You lose sight of the fact that the class itself is an object that you can directly interact with!
+- One of the most powerful parts of JS is that it IS dynamic!
+  - Unless you make it immutable, the definition of any object is fluid and mutable!
+- Class syntax is essentially telling you "Dynamic is too hard, let's pretend to be static!"
