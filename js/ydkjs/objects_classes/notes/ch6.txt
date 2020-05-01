@@ -68,3 +68,4 @@ CHAPTER 6: BEHAVIOR DELEGATION
 
 <--- CLASSES VS OBJECTS --->
 - See ../examples/classes_vs_objects.js
+- See ../examples/classes_vs_objects_2.js
