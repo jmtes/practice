@@ -1,0 +1,14 @@
+CHAPTER 1: TYPES
+
+<--- BUILT-IN TYPES --->
+- JS defines seven built-in types:
+  1. null
+  2. undefined
+  3. boolean
+  4. number
+  5. string
+  6. object
+  7. symbol
+- All of the above typees except OBJECT are called "primitives".
+- The TYPEOF operator is used to inspect the type of any given value.
+  - See ../examples/typeof.js
