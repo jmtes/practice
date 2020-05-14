@@ -12,3 +12,66 @@ CHAPTER 1: TYPES
 - All of the above typees except OBJECT are called "primitives".
 - The TYPEOF operator is used to inspect the type of any given value.
   - See ../examples/typeof.js
+
+<--- VALUES AS TYPES --->
+- In JS, variables don't have types; VALUES do.
+  - When using the TYPEOF operator, you're asking what the type of the VALUE stored in the variable is, not the type of the variable itself.
+- The integer value 42 has an intrinsic type of NUMBER which cannot be changed.
+  - The string "42", however, can be created FROM the integer value 42 through coercion.
+
+<--- UNDEFINED VS UNDECLARED --->
+- Variables that currently have no value actually have the UNDEFINED value.
+  - Using TYPEOF with such variabled will return "undefined".
+- It's tempting to think of "undefined" as a synonym for "undeclared", but in JS these are distinct concepts.
+  - An undefined variable is one that has been declared in the accessible scope but has no other value in it at the moment.
+  - An undeclared variable is one that has NOT been formally declared in the accessible scope.
+- See Example F in ../examples/typeof.js
+
+<--- THE TYPEOF SAFETY GUARD --->
+- See Example F in ../examples/typeof.js
+- Using TYPEOF on an undeclared variable will return "undefined" rather than throwing a ReferenceError.
+  - This safety guard is useful when dealing with JS in the browser, where multiple files can load variables into the shared global namespace.
+- Example: Say you have a debug mode in your program that is controlled by a global variable called DEBUG.
+  - You'd want to make sure that variable was declared before performing a debug task like logging a message to the console.
+  - A top-level global `var DEBUG = true` declaration would only be included in a "debug.js" file.
+  - Such a file would only load into the browser when you're in development/testing, but not in production.
+  - You have to take care with how you check for the DEBUG variable in the rest of your application code so that you don't throw a ReferenceError.
+  - This is when the TYPEOF safety guard comes in handy!
+  - See Example G in ../examples/typeof.js
+- Of course, many believe there should never be any variables in the global namespace.
+  - Rather, everything should be contained in modules and private/separate namespaces.
+  - This is great in theory but nearly impossible in practicality.
+  - Regardless it's a good goal to strive toward!
+  - It's certainly much more practical with ES6's added support for modules.
+- You can use TYPEOF to check for things non-global variables as well!
+
+<--- OTHER WAYS TO CHECK FOR VARIABLE EXISTENCE --->
+- If you want to check for the existence of global variables without using TYPEOF, simply check if a property of the same name exists on the global object.
+  - All global variables are also properties of the global object, after all!
+  - No ReferenceError is thrown if you try to access an object property that doesn't exist.
+  - In the browser, the global object would be the window object!
+  - See Example A in ../examples/existence_checking.js
+  - Avoid using this method if your code needs to run in multiple JS environments wherein the global object may not always have the same name.
+- Some developers prefer a design pattern called "dependency injection".
+  - Instead of a function testing implicitly for a feature to be defined outside/around it, it has the dependency explicitly passed in.
+  - See Example B in ../examples/existence_checking.js
+- No pattern is right or wrong and there are various tradeoffs to each approach of existence checking!
+  - Overall though, it's nice that the TYPEOF undeclared safety guard gives you more options.
+
+<--- REVIEW --->
+- JS has seven built-in types:
+  1. null
+  2. undefined
+  3. boolean
+  4. number
+  5. string
+  6. object
+  7. symbol
+- Variables don't have types, but the values in them do.
+  - These types define the intrinsic behavior of the values.
+- There is a difference between a variable that is undefined and one that is undeclared.
+  - "undefined" is a value that a declared variable can hold.
+  - "Undeclared" means a variable has never been declared.
+- JS conflates the two terms in its error messages and the return values of TYPEOF ("undefined" for both cases).
+- TYPEOF does not throw an error when used on an undeclared variable.
+  - Thus it's helpful when checking for variable existence.
