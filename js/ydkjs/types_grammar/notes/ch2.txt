@@ -9,3 +9,17 @@ CHAPTER 2: VALUES
   - Generally, just don't add string properties to arrays.
   - If you find yourself wanting to do so, you're probably better off using a plain object.
   - See Example B in ../examples/arrays.js
+
+<--- ARRAY-LIKES --->
+- Sometimes you will need to convert an array-like value (a numerically indexed collection of values) into a true array.
+  - This is so you can use utilities like indexOf(...), forEach(...), etc.
+- Various DOM query operations return lists of DOM elements that are not true arrays but are array-like enough for conversion.
+- Functions can also expose the array-like arguments object to access the arguments as a list.
+  - arguments has been deprecated as of ES6 though.
+- Ways to convert an array-like value to a true array:
+  1. With the slice(...) utility.
+    - See Example A in ../examples/array_likes.js
+  2. With ES6's Array.from(...) utility.
+    - See Example B in ../examples.array_likes.js
+
+
