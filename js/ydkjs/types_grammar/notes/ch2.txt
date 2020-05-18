@@ -1,0 +1,11 @@
+CHAPTER 2: VALUES
+
+<--- ARRAYS --->
+- Using DELETE On an array value will remove that slot from the array, but it does not update the length property, so be careful!
+  - While logging the array at the empty slot will output "undefined", it will not behave the same as if it had been explicitly set to undefined.
+  - See Example A in ../examples/arrays.js
+- Arrays are numerically indexed, but because they are also objects, they can have STRING keys/properties added to them.
+  - These do not count toward the length of the array.
+  - Generally, just don't add string properties to arrays.
+  - If you find yourself wanting to do so, you're probably better off using a plain object.
+  - See Example B in ../examples/arrays.js
