@@ -22,4 +22,15 @@ CHAPTER 2: VALUES
   2. With ES6's Array.from(...) utility.
     - See Example B in ../examples.array_likes.js
 
-
+<--- STRINGS --->
+- It's a common belief that strings are essentially just arrays of characters, but that's not the case in JS!
+  - See Example A in ../examples/strings.js
+- Strings are immutable while arrays are mutable.
+  - Many array methods that change an array's contents modify it in-place.
+  - None of the string methods that alter a string's contents can modify it in-place.
+  - Rather, they create and return new strings.
+- Array methods that perform no mutations can be "borrowed" to deal with strings.
+  - See Example B in ../examples/strings.js
+- If you find yourself trying to use strings as arrays of characters, you're better off actually storing them as arrays of characters rather than as strings.
+  - You will save yourself the hassle of converting between string and array!
+  - You can always call join(...) on the array of characters whenever you actually need the string representation.
