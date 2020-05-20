@@ -34,3 +34,63 @@ CHAPTER 2: VALUES
 - If you find yourself trying to use strings as arrays of characters, you're better off actually storing them as arrays of characters rather than as strings.
   - You will save yourself the hassle of converting between string and array!
   - You can always call join(...) on the array of characters whenever you actually need the string representation.
+
+<--- NUMBERS --->
+- JS has just one numeric type, NUMBER.
+  - It includes both "integer" values and fractional decimal numbers.
+- In JS, there are no true integers like there are in other languages.
+  - An integer in JS is just a value that has no fractional decimal value.
+  - The value 42.0 is as much an "integer" as 42.
+
+<--- NUMBER SYNTAX --->
+- Very large or very small numbers will by default be outputted in exponent form.
+  - It looks the same as the output of the toExponential() method.
+  - See Example A in ../examples/numbers.js
+- You can specify how many decimal places a value is represented with using the toFixed(...) method.
+  - See Example B in ../examples/numbers.js
+- The toPrecision(...) method behaves similarly, but instead the amount of significant digits is specified.
+  - See Example C in ../examples/numbers.js
+- Number methods can be accessed directly on number literals.
+  - You'd have to be careful with the dot notation though.
+  - See Example D in ../examples/numbers.js
+  - Overall, it's pretty uncommon to access methods directly on any of the primitive values.
+- Numbers can be expressed in bases other than 10.
+  - This includes binary, octal, and hexadecimal.
+  - See Example E in ../examples/numbers.js
+
+<--- DECIMAL VALUES --->
+- Basically, floating point numbers cannot be trusted to be exact.
+- A tiny "rounding error" value must be used as the tolerance for comparison.
+  - This value is often called "machine epsilon".
+  - ES6 predefines it as Number.EPSILON with the value 2^-52 .
+- See Example F in ../examples/numbers.js
+- The maximum floating point value that can be represented is roughly 1.798e+308 and is predefined as Number.MAX_VALUE .
+- On the other hand, the minimum floating point value is roughly 5e-324 and is predefined as Number.MIN_VALUE .
+
+<--- SAFE INTEGER RANGES --->
+- Because of how numbers are represented, there's a range of "safe" values for the whole number "integers".
+- The largest integer that can be safely represented is 2^53 - 1, which is 9007199254740991.
+  - It's predefined in ES6 as Number.MAX_SAFE_INTEGER .
+- The smallest integer that can be safely represented is -9007199254740991.
+  - It's predefined in ES6 as Number.MIN_SAFE_INTEGER .
+- The main way JS programs are confronted with such large numbers is when dealing with 64-bit IDs from databases.
+  - These numbers cannot be represented accurately with the number type.
+  - They must be stored in JS using their string representations.
+  - Usually the strings only need to be compared and it's fine though.
+
+<--- TESTING FOR INTEGERS --->
+- You can use the ES6-specified Number.isInteger(...) method.
+- See Example G in ../examples/numbers.js
+
+<--- 32 BIT (SIGNED) INTEGERS --->
+- Some numeric operations (like the bitwise operators) are only defined for 32-but numbers.
+- The safe range for numbers used in that way has to be much smaller.
+- Specifically, it is -2^31 to 2^31 - 1.
+  - This would be -2147483648 to 2147483647.
+- You may have to force a number value to a 32-bit signed integer value.
+  - See Example H in ../examples/numbers.js
+
+<--- SPECIAL VALUES --->
+
+<--- NON-VALUE VALUES -->
+
