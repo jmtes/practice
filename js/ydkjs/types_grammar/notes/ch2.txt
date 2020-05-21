@@ -93,4 +93,44 @@ CHAPTER 2: VALUES
 <--- SPECIAL VALUES --->
 
 <--- NON-VALUE VALUES -->
+- UNDEFINED and NULL are often taken to be interchangeable as "empty" values.
+- NULL is a special keyword rather than an identifier.
+  - Thus, you cannot treat it as a variable to assign to.
+- On the other hand, UNDEFINED is unfortunately an identifier.
+  - It is entirely possible to assign a value to the globally provided UNDEFINED identifier.
+  - You can even create a local variable of the name UNDEFINED.
+  - Why would you do either though lol
 
+<--- THE VOID OPERATOR --->
+- While UNDEFINED is a built-in identifier that holds the built-in UNDEFINED value.
+- You can also get it using the VOID operator though.
+- The void operator voids out any value so that the result of the expression is always the UNDEFINED value.
+- It does not modify the existing value, it just ensures no value comes back from the operator expression.
+- See Example A in ../examples/special_values.js
+- Realistically, you should not find yourself having to use the void operator too often.
+
+<--- SPECIAL NUMBERS --->
+
+<--- NaN --->
+- Performing a successful mathematic operation requires that both operands be numbers.
+- If at least one operand is not a number, you'll get the NaN value.
+- Although NaN literally stands for "not a number", it's more apt to think of it as meaning "invalid number" or "bad number".
+  - The value NaN still has the type of number after all!
+  - See Example B in ../examples/special_values.js
+- NaN is a special numeric value in that it is not equal to itself.
+  - NaN !== NaN
+- In order to test whether or not a value is NaN, you'd have to use the Number.isNaN(...) utility.
+  - The global isNaN(...) utility pre-ES6.
+  - See Example C in ../examples/special_values.js
+
+<--- INFINITY --->
+- When a number is divided by infinity in JS, the result is either Infinity or -Infinity.
+  - See Example D in ../examples/special_values.js
+- Because JS uses finite numeric representations, it is possible to overflow even with an operation like addition or subtraction.
+  - In these cases, you'd get Infinity or -Infinity.
+- Once you overflow to either of the infinities, there's no going back.
+  - You can go from finite to infinite, but not from infinite to finite!
+- In JS, Infinity divided by Infinity is not a defined operation and results in NaN.
+- Any finite positive number divided by infinity is zero.
+- On the other hand, any negative number divided by infinity is negative zero.
+  - More on this in "ZEROS" section.
