@@ -147,3 +147,11 @@ CHAPTER 2: VALUES
   - Using the above example, if a variable arrives at zero and loses its sign, then you wouldn't know which direction it was moving in prior to arriving at zero.
   - Basically, preserving the sign of the zero prevents potentially unwanted information loss.
 - See Example E in ../examples/special_values.js
+
+<--- SPECIAL EQUALITY --->
+- As of ES6, a utility called Object.is(...) can be used to test two values for absolute equality.
+- Object.is(...) probably shouldn't be used in cases where == or === are known to be safe.
+  - It should mainly be used specifically for the special cases of -0 and NaN.
+  - == and === are likely more efficient and certainly more idiomatic/common.
+  - See Chapter 4 for more info on coercion and ==/=== safety.
+- See ../examples/object_dot_is.js
