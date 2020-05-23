@@ -86,6 +86,42 @@ console.log(Number.NEGATIVE_INFINITY); // -Infinity
 
 console.log(Number.MAX_VALUE + Number.MAX_VALUE); // Infinity
 
+// Dividing by infinity
 console.log(Infinity / Infinity); // NaN
 console.log(1 / Infinity); // 0
 console.log(-1 / Infinity); // -0, huh?
+
+// EXAMPLE E - NEGATIVE ZERO
+
+// Only multiplication and division operations can result in a negative zero:
+console.log(0 / -3); // -0
+console.log(0 * -3); // -0
+
+// Negative zero is always represented as just "0" in string form:
+console.log((0 / -3).toString()); // 0
+
+// Even JSON does this:
+console.log(JSON.stringify((0 / -3))); // 0
+
+// Going from string to number doesn't give you lies though:
+console.log(+'-0'); // -0
+console.log(Number('-0')); // -0
+console.log(JSON.parse('-0')); // -0
+
+// SIDE NOTE: The '+' in Line 107 is a unary operator that returns the numeric representation of the object following it.
+
+// Comparison operators will also lie to you regarding negative zero:
+
+console.log(0 == -0); // true
+console.log(0 === -0); // true
+console.log(0 > -0); // false
+
+// If you need to distinguish -0 from 0, you're gonna have to be more clever:
+
+function isNegZero (n) {
+  n = Number(n);
+  return (n === 0) && (1 / n === -Infinity);
+}
+
+console.log(isNegZero(-0)); // true
+console.log(isNegZero(0)); // false

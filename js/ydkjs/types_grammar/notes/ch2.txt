@@ -134,3 +134,16 @@ CHAPTER 2: VALUES
 - Any finite positive number divided by infinity is zero.
 - On the other hand, any negative number divided by infinity is negative zero.
   - More on this in "ZEROS" section.
+
+<--- ZEROS --->
+- JS has a normal zero (0) and a negative zero (-0).
+- A negative zero can result from multiplying or dividing zero by a negative number.
+  - Neither addition nor subtraction can result in a negative zero.
+- If you try to stringify a negative zero value, it will always be represented as "0".
+- When compared with 0, -0 lies and pretends it's equal to it.
+  - To determine whether or not a value truly is -0, you'd have to test whether it is equal to 0 and if 1 divided by the it is equal to -Infinity.
+- Negative zero exists because there are cases where a developer might use the magnitude of a number to represent a piece of info and the number's sign to represent another piece of info.
+  - Ex: the speed of a movement per animation frame (magnitude) and the direction of that movement (sign)
+  - Using the above example, if a variable arrives at zero and loses its sign, then you wouldn't know which direction it was moving in prior to arriving at zero.
+  - Basically, preserving the sign of the zero prevents potentially unwanted information loss.
+- See Example E in ../examples/special_values.js
