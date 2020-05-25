@@ -155,3 +155,29 @@ CHAPTER 2: VALUES
   - == and === are likely more efficient and certainly more idiomatic/common.
   - See Chapter 4 for more info on coercion and ==/=== safety.
 - See ../examples/object_dot_is.js
+
+<--- VALUE VS. REFERENCE --->
+- In many other languages, values can either be assigned/passed by value-copy or by reference-copy.
+- In JS, there are no pointers and references work a bit differently when compared to other languages.
+- You cannot have a reference from one JS variable to another variable.
+- A reference in JS points to a (shared) value.
+  - If you have 10 different references, they are all always distinct references to a single shared value.
+  - None of them, however, are references/pointers to each other!
+- In JS, there are no syntactic hints that control value vs. reference assignment/passing.
+  - Instead, the type of the value solely controls whether it will be assigned by value-copy or by reference-copy!
+- See ../examples/value_vs_reference.js
+- Simple values (scalar primitives) are always assigned/passed by value-copy.
+  - These include NULL, UNDEFINED, STRING, NUMBER, BOOLEAN, and SYMBOL.
+- Compund values are always assigned/passed by reference copy.
+  - These include objects, arrays, functions, and all boxed object wrappers.
+  - See Chapter 3 for more on boxed object wrappers.
+- Because references point to the values themselves and not to the variables, you cannot use one reference to change where another is pointed.
+  - See Example C in ../examples/value_vs_reference.js
+- To effectively pass a compound value by value-copy, you need to manually make a copy of it so that the reference passed doesn't point to the original.
+  - See Example E in ../examples/value_vs_reference.js
+- To pass a scalar primitive value kind of like a reference, you have to wrap it with a compound value that CAN be passed by reference-copy.
+  - See Example F in ../examples/value_vs_reference.js
+- Bottom line: the only control you have over reference- vs. value-copy behavior is the type of the value itself, so be mindful of which value types you choose to use.
+
+<--- REVIEW --->
+- In JS, arrays are simply numerically indexed collections of any value-type.
