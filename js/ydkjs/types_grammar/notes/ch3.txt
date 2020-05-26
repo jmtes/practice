@@ -113,3 +113,28 @@ CHAPTER 3: NATIVES
 - While symbols are not actually private, using them for private or special properties is their primary use case.
   - For most developers, they may take the place of property names with underscore prefixes, which is the conventional indicator of a private/special/internal property.
 - NOTE: Symbols are not objects, they are simple scalar primitives!
+
+<--- NATIVE PROTOTYPES --->
+- Each of the built-in native constructors has its own prototype object.
+  - There's Array.prototype, String.prototype, etc.
+  - Each contains behavior unique to their particular object subtype.
+- As an example, all string objects and by extension (via boxing) string primitives have access to the default behavior as methods defined on the String.prototype object.
+  - This is by virtue of prototype delegation!
+- Some of the native prototypes aren't JUST plain objects though.
+  - Function.prototype is an empty function!
+  - RegExp.prototype is an empty (non-matching) regular expression!
+  - Array.prototype is an empty array!
+- You can modify any of the native prototypes but that is a bad idea.
+
+<--- PROTOTYPES AS DEFAULTS --->
+- Function.prototype being an empty function, RegExp.prototype being an empty regex, and Array.prototype being an empty array make them all nice "default" values to assign to variables if those variables wouldn't already have had a value of the proper type.
+  - Be careful not to use Array.prototype asa a default value that will subsequently be modified though! You don't want to modify Array.prototype itself!
+  - Of course, you want to be wary of modifying any of the native prototypes.
+  - See Example I in ../examples/natives.js
+- As of ES6, we don't need to use this trick anymore because default values can be set for parameters via native syntax in the function declaration (see Chapter 5).
+- See Appendix A for more discussion.
+
+<--- REVIEW --->
+- JS provides object wrappers around primitive values known as natives.
+- JS automatically boxes simple scalar primitive values like "abc" with their appropriate object wrappers.
+- These allow them access to the properties and methods of their object subtype because primitive values don't have properties/methods themselves!

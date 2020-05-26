@@ -113,3 +113,37 @@ obj = {};
 obj[mySym] = 'season';
 
 console.log(Object.getOwnPropertySymbols(obj)); // [Symbol(my symbol)]
+
+// EXAMPLE I - PROTOTYPES AS DEFAULTS
+
+function isThisCool (vals, fn, rx) {
+  vals = vals || Array.prototype;
+  fn = fn || Function.prototype;
+
+  // rx = rx || RegExp.prototype;
+  // The above is the original example in the book, but it appears to not work.
+
+  // It was supposed to work because RegExp.prototype was said to be an empty regex, but the typeof operator and [[Class]] property say it's just a regular object:
+  console.log(typeof RegExp.prototype); // object
+  console.log(Object.prototype.toString.call(RegExp.prototype)); // "[object Object]"
+
+  // Maybe this was a thing that has changed between ES5 and ES6?
+
+  // Anyway, here we're just defaulting rx to the empty regex literal:
+  rx = rx || /(?:)/;
+
+  console.log(rx.test(vals.map(fn).join('')));
+}
+
+isThisCool(); // true
+
+isThisCool(
+  ['a', 'b', 'c'],
+  function (v) {
+    return v.toUpperCase();
+  },
+  /D/); // false
+
+// A benefit of this approach is that the prototypes are already created and built-in, thus created only once.
+// By contrast, using [], function(){}, and /(?:)/ values for those defaults would likely be recreating those values for EACH call of isThisCool(...).
+// This could be memory/CPU wasteful!
