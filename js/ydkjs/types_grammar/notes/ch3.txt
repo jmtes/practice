@@ -28,3 +28,88 @@ CHAPTER 3: NATIVES
   - This means they are automatically boxed by their respective object wrappers.
   - See Example C in ../examples/internal_class.js
 - NOTE: The behavior of toString() and [[Class]] as illustrated here has changed since ES6, but that will be covered in a later book in the series.
+
+<--- BOXING WRAPPERS --->
+- Object wrappers for primitive values serve a very important purpose!
+- Primitive values don't have properties or methods, so to access .length or .toString(), you need an object wrapper around the value.
+- JS automatically boxes/wraps primitive values to fulfill such accesses.
+- There is no reason to manually create the object form of a primitive directly.
+  - In fact, it can hinder your performance.
+  - Just stick with the literal primitive values!
+
+<--- UNBOXING --->
+- If you have an object wrapper you want to get the underlying primitive value out of, you can use the valueOf() method.
+  - See Example D in ../examples/internal_class.js
+- Unboxing can also happen implicitly when using an object wrapper value in a way that requires the primitive value.
+  - This is an example of coercion and will be covered in Chapter 4.
+  - See Example E in ../examples/internal_class.js
+
+<--- NATIVES AS CONSTRUCTORS --->
+- For array, constructor, function, and regexp values, it's almost universally preferred that you use the literal form for creating the values.
+- The literal form creates the same object that the constructor form would.
+- That is, there is no non-wrapped value.
+- As with the other natives though, these constructor forms should be avoided.
+
+<--- ARRAY(...) --->
+- Honestly, just never use this so you don't have to deal with potential sparse arrays.
+
+<--- OBJECT() --->
+- There is no reason to ever use the object constructor form, especially since it forces you to add properties one by one.
+
+<--- FUNCTION() --->
+- The function constructor is helpful only in the rarest of cases where you need to dynamically define a function's parameters or body.
+  - It should not be treated as an alternate form of eval(...)!
+  - See Example B in ../examples/natives.js
+
+<--- FUNCTION(), AND REGEXP() --->
+- Regular expressions defined in the literal form are strongly preferred for ease of syntax and performance.
+- Unlike the other constructor forms seen so far though, RegExp(...) actually has some reasonable utility!
+- It's useful if you want to dynamically define the pattern for a regular expression.
+  - See Example C in ../examples/natives.js
+
+<--- DATE() AND ERROR() --->
+- These native constructors are much more useful than the others because there is no literal form for either.
+
+<--- DATE() --->
+- The Date() constructor accepts optional arguments to specify the date/time to use.
+  - If omitted, the current date/time is assumed.
+- The most common reason you construct a date object is to get the current timestamp value.
+  - This is a signed integer number of milliseconds since Jan 1, 1970.
+  - You can do this by calling getTime() on a date object instance.
+  - An easier way is to just call the Date.now() helper function defined in ES5.
+  - See Example D in ../examples/natives.js
+- Calling Date() without the NEW keyword returns a string representation of the current date/time.
+  - See Example E in ../examples/natives.js
+
+<--- ERROR() --->
+- Unlike the date constructor, it behaves the same regardless of whether or not the NEW keyword is omitted.
+- An error object captures the current execution stack into it.
+  - In most JS engines, this is revealed as a read-only `.stack` property.
+  - This stack context includes the function call-stack and line number where the error object was created.
+  - This makes debugging the error much easier!
+- You would typically uses such an error object with the THROW operator.
+- Error object instances generally have at least a message property.
+  - Sometimes they have others, like `type`, which should be treated as read-only.
+- Other than inspecting the stack property, it's usually best to just call toString() on the error object to get a nice, formatted error message.
+  - This can be done either explicitly or implicitly through coercion.
+- See Example F in ../examples/natives.js
+- In addition to the general Error() native, there are several other specific-error-type natives.
+  - These include ReferenceError(), SyntaxError(), TypeError(), etc.
+  - It's rare to manually use these specific error natives though because they're automatically used if your program actually suffers from a real exception.
+
+<--- SYMBOL() --->
+- Symbols are special "unique" (not strictly guaranteed!) values that can be used as properties on obejcts with little fear of any collision.
+- They're primarily designed for special built-in behaviors of ES6 constructs, but you can also define your own.
+- While Symbols can be used as property names, you cannot see or access the actual value of a symbol from your program nor form the developer console.
+  - If you evaluate a Symbol in the console, what's shown looks like Symbol(Symbol.create)
+- There are several predefined symbols in ES6.
+  - They're accessed as static properties of the Symbol function object.
+  - These include Symbol.create, Symbol.iterator, etc.
+  - See Example G in ../examples/natives.js for a usage example.
+- To define your own custom symbols, simply use the Symbol() native.
+  - Keep in mind it's unique in that you're not allowed to use the NEW keyword with it.
+  - Doing so will throw an error!
+  - See Example H in ../examples/natives.js for a usage example.
+- While symbols are not actually private, using them for private or special properties is their primary use case.
+  - For most developers, they may take the place of property names with underscore prefixes, which is the conventional indicator of a private/special/internal property.
+- NOTE: Symbols are not objects, they are simple scalar primitives!
