@@ -1,0 +1,30 @@
+CHAPTER 3: NATIVES
+
+<--- INTRO --->
+- In previous chapters, various built-in functions, usually called "natives", were alluded to.
+- These are the most commonly used natives in JS:
+  - String()
+  - Number()
+  - Boolean()
+  - Array()
+  - Object()
+  - Function()
+  - RegExp()
+  - Date()
+  - Error()
+  - Symbol()
+- Although each of these natives can be used as a constructor, what's actually being constructed is not what you'd think.
+- See Example A in ../examples/natives.js
+
+<--- INTERNAL [[CLASS]] --->
+- Values that are typeof "object" are tagged with an internal [[Class]] property.
+  - While it may harken back to classes in class-oriented coding, it's more apt to think of it as more an internal classification.
+- The [[Class]] property cannot be accessed directly, byt can be revealed by using the default Object.prototype.toString(...) method against a value.
+  - See Example A in ../examples/internal_class.js
+- Most of the time the [[Class]] value corresponds to the built-in native costructor, but that's not always the case.
+- Although there are no Null() or Undefined() native constructors, they still have corresponding [[Class]] values.
+  - See Example B in ../examples/internal_class.js
+- The other primitive types (string, number, and boolean) display a behavior called "boxing".
+  - This means they are automatically boxed by their respective object wrappers.
+  - See Example C in ../examples/internal_class.js
+- NOTE: The behavior of toString() and [[Class]] as illustrated here has changed since ES6, but that will be covered in a later book in the series.
