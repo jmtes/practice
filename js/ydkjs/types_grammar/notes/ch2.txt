@@ -181,3 +181,11 @@ CHAPTER 2: VALUES
 
 <--- REVIEW --->
 - In JS, arrays are simply numerically indexed collections of any value-type.
+- Strings are somewhat array-like, but they have distinct behaviors and care must be taken if you want to treat them as arrays.
+- Numbers in JS include both "integers" and floating-point values.
+- Undefined is the basically the default value in any variable or property if no other value is present.
+- The void operator lets you create the undefined value from any other value.
+- NaN can be more appropriately thought of as "invalid number" rather than "not a number".
+- Simple scalar primitives are assigned/passed by value-copy.
+- Compound values are passed assignedd/passed by reference copy.
+- References can never point at other variables/references, only at the shared underlying values.
