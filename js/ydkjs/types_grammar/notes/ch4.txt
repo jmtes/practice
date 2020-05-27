@@ -38,6 +38,9 @@ CHAPTER 4: COERCION
 <--- JSON STRINGIFICATION --->
 - Serializing a value to a JSON-compatible string value is not the same thing as coercion!
 - For most simple values, JSON stringification behaves exactly the same as toString() conversions, except the serialization result is ALWAYS a string.
+  - These values include strings, numbers, booleans, and null.
+
+<--- JSON-SAFE VALUES --->
 - Any JSON-safe value can be stringified with JSON.stringify().
 - The following values are NOT JSON-safe:
   - undefined
@@ -47,4 +50,35 @@ CHAPTER 4: COERCION
 - JSON.stringify() will automatically omit undefined, function, and symbol values when it comes across them.
   - If such a value is found in an array, that value is replaced by NULL so as to preserve the original array indices.
   - If such a value is found in an object, that property will simply be excluded.
-- See ../examples/json.js
+  - See Example A in ../examples/json.js
+
+<--- TOJSON() --->
+- If an object value has a toJSON() method defined, this method will be called first to get a value to use for serialization.
+  - This is helpful if you intend to JSON stringify an object that may contain non JSON-safe values!
+  - See Example B in ../examples/json.js
+- It's a common misconception that a toJSON() method should return the JSON stringification representation.
+  - Unless you want to stringify the string itself though, which you likely won't, this is incorrect!
+  - You should just return an object of whatever type of object you're trying to stringify and let JSON.stringify itself handle the stringification.
+  - toJSON() should be interpreted as "to a JSON-safe value suitable for stringification" rather than "to a JSON string".
+
+<--- JSON REPLACER --->
+- An optional second argument can be passed to JSON.stringify() that is called the replacer.
+- It's used to customize the recursive serialization of an object by providing a filtering mechanism for which properties should and should not be included.
+  - It works similarly to how toJSON() can prepare a value for serialization.
+- Replacer can be either an array or a function.
+- If replacer is an array, it should be an array of strings.
+  - Each string should specify a property name that is allowed to be included in the serialization of an object.
+  - If a property exists that isn't in this list, it will be skipped.
+- If replacer is a function, it will be called once for the object itself and then once for each property in the object.
+  - Each time is passed two arguments: key and value.
+  - To skip a key in the serialization, return undefined.
+  - Otherwise, return the value provided.
+- See Example C in ../examples/json.js
+
+<--- JSON SPACE --->
+- A third optional argument called space can also be passed to JSON.stringify(). 
+- It's used as indentation for prettier human-friendly output.
+- It can be a positive integer to indicate how many space characters can be used at each indentation level,
+- OR it can be a string, in which case up to the first 10 characters will be used for each indentation level.
+
+
