@@ -1,0 +1,50 @@
+CHAPTER 4: COERCION
+
+<--- INTRO --->
+- Coercion is quite the controversial topic!
+- There have been many a debate over whether coercion is a useful feature or a design flaw of the language.
+- The overwhelmingly prevalent opinion is that coercion is magical, evil, confusing, and just bad.
+- Coercion has its pros and cons and it's up to you to decide whether or not it's appropriate for your program.
+
+<--- CONVERTING VALUES --->
+- There are two different terms for converting a value from one type to another:
+  - If done explicitly, it's called "type casting".
+  - If done implicitly (forced by the rules of how a value is used), it's called "coercion".
+- In JS, most people refer to both as "coercion", so it may be more apt to distinguish the two with the terms "implicit coercion" and "explicit coercion".
+  - Explicit coercion is when it's obvious from looking at the code that a type conversion is intentionally occurring.
+  - Implicit coercion is when the type conversion occurs as a less obvious side effect of some other intentional operation.
+  - See Example A in ../examples/coercion.js.
+- The terms "explicit" and "implicit" are relative.
+  - Remember that it's rare that you're the only one who'll ever read your code.
+  - Even if you're an expert on JS and all its quirks, you must write your code with consideration for others that may have to work on it and that have less experience.
+  - What is explicit for one developer may be implicit for another developer!
+- JS coercions always result in one of the scalar primitives.
+- No coercion can result in a complex value like an object or function.
+  - The concept of boxing from Chapter 3 may seem to contradict this, but it's not really coercion in an accurate sense.
+
+<--- ABSTRACT VALUE OPERATIONS --->
+- An abstract operation in JS is basically an internal-only operation.
+
+<--- TOSTRING --->
+- When any non-string value is coerced to a string, the conversion is handled by the ToString abstract operation.
+  - Technically it goes through the ToPrimitive abstract operation, but that will be covered in more detail later.
+- Built-in primitive values have natural stringification.
+- For regular objects, unless you specify your own, the default toString() will return the internal [[Class]].
+  - Ex. "[object Object]"
+- If an object has its own toString() method and you use the object in a string-like way, its toString() will be called automatically and the string result of that call will be used instead.
+- Arrays have an overridden default toString() that stringifies as the string concatenation of all its values (each stringified themselves) with a comma between each one.
+- See Example B in ../examples/coercion.js
+
+<--- JSON STRINGIFICATION --->
+- Serializing a value to a JSON-compatible string value is not the same thing as coercion!
+- For most simple values, JSON stringification behaves exactly the same as toString() conversions, except the serialization result is ALWAYS a string.
+- Any JSON-safe value can be stringified with JSON.stringify().
+- The following values are NOT JSON-safe:
+  - undefined
+  - Functions
+  - Symbols
+  - Objects with circular references
+- JSON.stringify() will automatically omit undefined, function, and symbol values when it comes across them.
+  - If such a value is found in an array, that value is replaced by NULL so as to preserve the original array indices.
+  - If such a value is found in an object, that property will simply be excluded.
+- See ../examples/json.js
