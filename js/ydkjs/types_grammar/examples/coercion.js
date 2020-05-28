@@ -35,3 +35,36 @@ console.log(`${user}`); // Angelique from London, UK
 console.log(user.interests.toString()); // bowling,movies,history
 console.log(user.interests + ''); // bowling,movies,history
 console.log(`${user.interests}`); // bowling,movies,history
+
+// EXAMPLE C - TOPRIMITVE AND TONUMBER
+
+var user2 = {
+  name: 'Cleo',
+  location: 'Omaha, NE',
+  age: 26,
+  valueOf: function () {
+    return this.age;
+  }
+};
+
+var user3 = {
+  name: 'Leon',
+  location: 'Boise, ID',
+  age: 29,
+  toString: function () {
+    return `${this.age}`;
+  }
+};
+
+var d = [2, 3];
+d.toString = function () {
+  return this.join('');
+};
+
+console.log(Number(user2)); // 26
+console.log(Number(user3)); // 29
+console.log(Number(d)); // 23
+
+console.log(Number('')); // 0
+console.log(Number([])); // 0
+console.log(Number(['abc'])); // NaN

@@ -81,4 +81,62 @@ CHAPTER 4: COERCION
 - It can be a positive integer to indicate how many space characters can be used at each indentation level,
 - OR it can be a string, in which case up to the first 10 characters will be used for each indentation level.
 
+<--- TONUMBER --->
+- If any non-number value is used in a way that requires it to be a number, such as in a mathematical operation, the conversion is handled by the ToNumber abstract operation.
+- Examples:
+  - true become 1
+  - false becomes 0
+  - undefined becomes NaN
+  - null becomes 0
+- ToNumber for a string value essentially works for the most part like the rules/syntax for numeric literals.
+  - If it fails, the result is NaN instead of a syntax error as with number literals.
+  - Another thing to be aware of is that 0-prefixed octal numbers, while valid as number literals, are not handled as octals in this operation but rather as just normal base-10 decimals.
+  - Refer back to Chapters 2 and 3 for a refresher!
+- Before going through the ToNumber abstract operation, objects and arrays will first be converted to their primitive value equivalents.
+  - They are then coerced into numbers according to the ToNumber rules just mentioned.
+  - Refer to the TOPRIMITIVE section below.
 
+<--- TOPRIMITIVE --->
+- Object and arrays will first be converted to their primitive value before being coerced into something like a number.
+- The ToPrimitve abstract operation will consult the array/object in question to see if it has a valueOf() method.
+- If valueOf() is available and returns a primitive value, THAT value is used for the coercion.
+- If valueOf() is NOT available but toString() is, then the latter will provide the value for coercion.
+- If neither can provide a primitive value, then a TypeError is thrown.
+- See Example C in ../examples/coercion.js
+
+<--- TOBOOLEAN --->
+- JS has actual keywords TRUE and FALSE, and they behave exactly as you'd expect of boolean values.
+- It's a common misconception that the values 1 and 0 are identical to true/false.
+  - This is true in other languages, but not JS!
+- In JS, the numbers are numbers and the booleans are booleans.
+  - You can coerce 1 to true (and vice versa) or 0 to false (and vice versa), but they're not the same.
+
+<--- TRUTHY AND FALSY VALUES --->
+- All of JS's values can be divided into two categories:
+  1. Values that become false if coerced into a boolean
+  2. Values that become true if coerced into a boolean
+
+<--- FALSY VALUES --->
+- JS defines a specific, narrow list of values that will result in false if coerced into a boolean value:
+  - undefined
+  - null
+  - false
+  - +0, -0, and NaN
+  - ''
+
+<--- TRUTHY VALUES --->
+- JS doesn't really define a list of truthy values like it does for falsy ones.
+- Basically, anything not explicitly on the falsy list is truthy.
+- Really, the only thing the spec says explicitly on the matter is that all objects are truthy.
+  - Is that really the case though?
+  - See section FALSY OBJECTS below!
+
+<--- FALSY OBJECTS --->
+- You might be tempted to think a falsy object implies an object wrapper around a falsy value such as '', 0, or false.
+  - See Example A in ../examples/falsy_objects.js
+- In actuality, falsy objects can show up in your JS program, but are not actually a part of JS themselves.
+- There are cases where browsers have created they own sort of exotic values behavior, namely this idea of "falsy objects", on top of regular JS semantics.
+- A "falsy object" is a value that looks and acts like a normal object (with properties, etc.), but when it's coerced into a boolean, it becomes false.
+
+<--- DOCUMENT.ALL --->
+- This is the most well-known case of a falsy object.
