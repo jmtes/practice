@@ -260,3 +260,35 @@ CHAPTER 4: COERCION
 - Refers to type coercions that are hidden, with non-obvious side effects that implicitly occur from other actions.
   - In other words, they're any type conversions that aren't obvious to you.
 - The majority of complaints about JS coercion are actually aimed at implicit coercion.
+- Implicit coercion can be so much more than just "the bad kind of coercion" though!
+- The goals of implicit coercion can be boiled down to reducing the following:
+  1. Verbosity
+  2. Boilerplate (pieces of code copied again and again throughout a program)
+  3. Unnecessary implementation detail that clutters code and distracts from the more important intent.
+
+<--- SIMPLIFYING IMPLICITLY --->
+- It can be argued that implicit coercion aids in the readability of your code by abstracting or hiding away unnecessary details.
+- There are still plenty of evils lurking around implicit coercion that will harm your code too much to justify any readability improvements.
+- You have to learn to avoid such constructs.
+- Many devs believe that if a mechanism can do some useful thing A but can also be abused/misused too do some awful thing Z, then the mechanism should be thrown out altogether just to be safe.
+- It doesn't have to be like that for implicit coercion though and you should learn to embrace its good parts!
+
+<--- IMPLICIT COERCION BETWEEN STRINGS AND NUMBERS --->
+- It's a common misconception that, when using the + binary operator, it will assume string concatenation if one or both operands is a string.
+  - Essentially, if either operand is a string (or becomes one via the ToPrimitive operation), the operation will be string concatenation.
+  - Otherwise, it's always numeric addition.
+- You can coerce a number to a string simply by adding the number and an empty string, like `a + ''`.
+ - Be aware that this method invokes the valueOf() method of a, whose value is then converted to a string with ToString.
+ - In contrast, String(a) invokes the toString() method of a directly.
+ - Both approaches result in a string, but if you're using an object instead of a regular primitive value, you may not necessarily get the same string value!
+- If a is a string, it can be coerced into a number via:
+  1. a - 0
+  2. a * 1
+  3. a / 1
+- As with +, when an operand on either side of a '-' is not a primitive, it is converted to one via ToPrimitive.
+  - valueOf() will be referenced first with toString() as a fallback.
+- See Example A in ../examples/implicit_coercion.js
+
+<--- IMPLICITLY COERCING BOOLEANS INTO NUMBERS --->
+- A case where implicit coercion can really shine is in simplifying certain types of complicated boolean logic into simple numeric addition.
+- See Example B in ../examples/implicit_coercion .js
