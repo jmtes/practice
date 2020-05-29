@@ -13,7 +13,7 @@ CHAPTER 4: COERCION
 - In JS, most people refer to both as "coercion", so it may be more apt to distinguish the two with the terms "implicit coercion" and "explicit coercion".
   - Explicit coercion is when it's obvious from looking at the code that a type conversion is intentionally occurring.
   - Implicit coercion is when the type conversion occurs as a less obvious side effect of some other intentional operation.
-  - See Example A in ../examples/coercion.js.
+  - See Example A in ../examples/explicit_coercion.js.
 - The terms "explicit" and "implicit" are relative.
   - Remember that it's rare that you're the only one who'll ever read your code.
   - Even if you're an expert on JS and all its quirks, you must write your code with consideration for others that may have to work on it and that have less experience.
@@ -33,7 +33,7 @@ CHAPTER 4: COERCION
   - Ex. "[object Object]"
 - If an object has its own toString() method and you use the object in a string-like way, its toString() will be called automatically and the string result of that call will be used instead.
 - Arrays have an overridden default toString() that stringifies as the string concatenation of all its values (each stringified themselves) with a comma between each one.
-- See Example B in ../examples/coercion.js
+- See Example B in ../examples/explicit_coercion.js
 
 <--- JSON STRINGIFICATION --->
 - Serializing a value to a JSON-compatible string value is not the same thing as coercion!
@@ -102,7 +102,7 @@ CHAPTER 4: COERCION
 - If valueOf() is available and returns a primitive value, THAT value is used for the coercion.
 - If valueOf() is NOT available but toString() is, then the latter will provide the value for coercion.
 - If neither can provide a primitive value, then a TypeError is thrown.
-- See Example C in ../examples/coercion.js
+- See Example C in ../examples/explicit_coercion.js
 
 <--- TOBOOLEAN --->
 - JS has actual keywords TRUE and FALSE, and they behave exactly as you'd expect of boolean values.
@@ -115,6 +115,7 @@ CHAPTER 4: COERCION
 - All of JS's values can be divided into two categories:
   1. Values that become false if coerced into a boolean
   2. Values that become true if coerced into a boolean
+- The importance of truthiness and falsiness is in understanding how a value will behave if you coerce it (either explicitly or implicitly) into a boolean value.
 
 <--- FALSY VALUES --->
 - JS defines a specific, narrow list of values that will result in false if coerced into a boolean value:
@@ -140,3 +141,122 @@ CHAPTER 4: COERCION
 
 <--- DOCUMENT.ALL --->
 - This is the most well-known case of a falsy object.
+- It is an array-like object provided by the DOM (not the JS engine itself) and exposes elements in a page to your JS program.
+- document.all was never really "standard" and has long since been deprecated.
+  - There are too many legacy codebases that rely on using it for it to be removed though.
+- It used to behave like a normal object in that it would act truthy, but not anymore!
+- It made to act falsy so that coercions of it into a boolean (like in if statements) could be used to detect old, nonstandard IE.
+  - Essentially, if (document.all) evaluates to true, then it's IE.
+  - This led to a bad browsing experience for users of modern versions of IE though.
+  - IE decided it doesn't want old (document.all) code to work anymore so that users in modern IE get new, standards-compliant code logic.
+  - So, they decided to pretend document.all is falsy.
+- Bottom line: IE sucks.
+
+<--- EXPLICIT COERCION --->
+- Refers to type conversions that are obvious and explicit.
+- You want to identify patterns in your code where you can make it clear and obvious that you're converting a value from one type to another so as to minimize confusion for future developers!
+- The more explicit you are, the more likely someone later will be able to read your code and understand your intent without any unnecessary effort.
+
+<--- EXPLICITLY: STRINGS <-> NUMBERS --->
+- WAYS TO DO IT
+  1. The built-in String() and Number() functions
+    - You want to do this WITHOUT the NEW keyword in front so as to not create object wrappers!
+  2. The toString() method on number.
+    - There's some hidden implicitness here in that JS automatically boxes the number in an object wrapper before calling toString().
+    - Again, this is because primitive values themselves do not have methods.
+    - You may call this way of coercion "explicitly implicit".
+  3. The unary + operator on a string.
+    - Instead of performing addition or string concatenation, unary + explicitly coerces its operand into a number.
+    - This may not be explicit to some developers though because not everyone knows + can be used as a unary operator!
+    - There are also cases where it can look very confusing.
+    - In the open-source JS community though, it has been generally accepted that this is a form of explicit coercion.
+    - It's your call, really.
+  4. The - unary operator on a string.
+    - This works exactly the same as + except the sign of the number is flipped.
+    - It comes with the same caveats as + as well.
+    - Note that you cannot put two - unary operators next to each other or else it will be interpreted as a prefix decrement!
+      - This can be fixed by putting a space between the -'s though!
+- Avoid using unary +/- coercion operators immediately adjacent to other operators!
+  - It just adds confusion, which is the exact opposite of what we're trying to achieve with explicit coercion!
+
+<--- DATE TO NUMBER --->
+- Another common usage of the unary + operator is to coerce a Date object into a number.
+  - The result is the Unix timestamp representation of the date/time value.
+  - It's the milliseconds elapsed since January 1, 1970 00:00:00 UTC.
+  - The most common usage of this is to get the current moment as a timestamp like `timestamp = +new Date()`.
+- A noncoercive approach that is more preferable would be using the getTime() on a Date object because it's even more explicit.
+- An even more preferable noncoercive option is to use ES5's Date.now() function.
+- See Example D in ../examples/explicit_coercion.js for usage exmaples.
+- It's recommended that you use the noncoercive methods to get numbers from date objects.
+  - Use Date.now() for current timestamps.
+  - Use new Date(...).getTime() for getting a timestamp for a specific date/time that may not be current.
+
+<--- BITWISE OPERATORS --->
+- Bitwise operators are defined only for 32-bit operations, which means they force their operands to conform to 32-bit value representations.
+  - See Section TOINT32 below for more info.
+- Using bitwise operators like | or ~ with certain special number values produce a coercive effect that results in a different number value.
+  - This is not technically coercion itself though since type doesn't change.
+- As with every other coercion shown thus far, use ~ and ~~ only if you're sure everyone who reads/writes your code is properly aware of how these operators work!
+
+<--- THE CURIOUS CASE OF THE ~ --->
+- The ~ operator (bitwise NOT) is a coercive operator that is often overlooked and usually very confused.
+- The ~ operator first "coerces" a value into a 32-bit number and then performs bitwise negation (flipping each bit's parity).
+- The point is that ~ performs a two's complement.
+  - ~x is roughly the same as -(x + 1).
+  - In other words, ~ produces the falsy number -0 for just the -1 input value, and a truthy number for any other number input.
+- It's common in a language like C for a return of -1 to signify the failure of a function.
+  - JS adopted this convention in methods like String.indexOf(...), which returns -1 if the substring is not found.
+  - It is commonly called a "sentinel value" because it's given an arbitrary semantic meaning within the greater set of values of its same type.
+- See Example E in ../examples/explicit_coercion.js
+
+<--- DOUBLE TILDE --->
+- Some developers use the double tilde ~~ to truncate the decimal part of a number ("coerce" it into an integer).
+- The first ~ applies the ToInt32 "coercion" and does the bitwise flip.
+- The second ~ does another bitwise flip, flipping all the bits, and thus the number itself, back to the original state sans decimals.
+- It works the same as Math.floor(...) on positive values only.
+- Additionally, it only works reliably on 32-bit values.
+- `x | 0` can generally be used to truncate decimal values into 32-bit integers with slightly less effort.
+  - Use ~~ only when you need a truncation to have operator precedence over another operation.
+
+<--- TOINT32 --->
+- The abstract operation ToInt32 first and foremost does a ToNumber coercion.
+- This means if the value is "123", then it's goig to become 123 before the ToInt32 rules are applied.
+
+<--- EXPLICITLY PARSING NUMERIC STRINGS --->
+- A similar outcome to coercing a string to a number can be achieved by parsing a number out of a string's character contents.
+- Parsing should not be seen as a substitute for coercion, each has their own purpose.
+  - Parse a string as a number when you don't know/care what other non-numeric characters there may be in the string.
+  - Coerce a string into a number when the only acceptable values are numeric and something like "42px" should be deemed an invalid number.
+- Only string values should be passed to parseInt().
+  - If you pass a non-string, the value passed will automatically be coerced into a string first.
+  - This is clearly a kind of hidden implicit coercion and it's a bad idea to rely on such a behvaior in your program.
+- parseInt(...) can be passed a second argument (radix) that specifies the base to use.
+  - It defaults to base-10 unless the string is prefixed with "0x", in which case it uses base-16.
+  - Be careful if your code has to run in pre-ES5 environments, in which case you need to pass 10 for the radix.
+- See Example F in ../examples/explicit_coercion.js
+
+<--- EXPLICITLY CONVERTING ANY VALUE TO A BOOLEAN --->
+- WAYS TO DO IT
+  1. Boolean(...) without new keyword in front of it
+    - While this way is certainly explicit, it's not at all common or idiomatic.
+  2. The unary ! operator
+    - Be aware that while it DOES coerce a value to a boolean, it also flips the value from truthy to falsy and vice versa!
+    - A lot of developers use !! to cancel the negation.
+- Any ToBoolean coercion would happen implicitly if used in a boolean context such as in an if statement.
+  - The goal is to explicitly force the value to a boolean to make it clearer that the coercion is intended though.
+- An example use case for explicit ToBoolean coercion is if you want to force a true/false value coercion in the JSON serialization of a data structure.
+  - See Example G in ../examples/explicit_coercion.js
+
+<--- THE TERNARY ? : OPERATOR --->
+- Consider the expression `return a ? true : false`.
+- On its surface, it looks like a form of explicit ToBoolean coercion.
+- However, there is a hidden implicit coercion occurring in that a has to first be coerced into a boolean to perform the truthiness test.
+- You may call this "explicitly implicit".
+- It is suggested that you avoid this idiom entirely in JS.
+  - It offers no real benefit and also masquerades as something it's not.
+- Boolean(a) and !!a are much better as explicit coercion options.
+
+<--- IMPLICIT COERCION --->
+- Refers to type coercions that are hidden, with non-obvious side effects that implicitly occur from other actions.
+  - In other words, they're any type conversions that aren't obvious to you.
+- The majority of complaints about JS coercion are actually aimed at implicit coercion.
