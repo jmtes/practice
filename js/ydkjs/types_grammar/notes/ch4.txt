@@ -392,3 +392,31 @@ CHAPTER 4: COERCION
 - The question of == vs === is "Should you allow coercion for a comparison or not?"
 - There are lots of cases where such coercion can be helpful in that it allows you to more tersely express some comparison logic.
 - There are really only a few cases where implicit coercion is truly dangerous. In those places, use === for safety's sake.
+
+<--- ABSTRACT RELATIONAL COMPARISON --->
+- So what happens in a comparison like `a < b`?
+- The Abstract Relational Comparison algorithm divides itself into two parts:
+  1. What to do if the comparison involves two string values
+  2. Every other scenario
+- The algorithm is only defined for `a < b`. `a > b` is handled as `b < a`.
+- If the values are not both strings, the algorithm first calls ToPrimitive on both values.
+  - If the return result of either call is not a string, then both values are coerced to numbers using ToNumber, after which they are compared numerically.
+  - Similar caveats for -0 and NaN apply here as they do in ==.
+- If both values ARE strings, simple alphabetic comparison on the characters is performed.
+  - The string that would appear later in alphabetical order is greater.
+
+<--- OBJECT RELATIONAL COMMPARISON --->
+- See Example G in ../examples/implicit_coercion.js
+- You've probably been thinking about <= as meaning "less than or equal to".
+- JS more accurately considers <= as "not greater than".
+- There is no "strict relational comparison" as there is for equality, so there's no way to prevent implicit coercion from occuring.
+- All you can do is ensure that both values are the same type explicitly before making the comparison.
+
+<--- REVIEW --->
+- Explicit coercion improves readability and maintainability of code by reducing confusion.
+- Implicit coercion can also improve the readability of code.
+- Especially for the implicit kind, coercion must be used responsibly and consciously.
+- Know why you're writing the code you're writing and how it works.
+- Strive to write code that others will easily be able to learn from and understand as well.
+- Remember explicitness/implicitness is relative, something that's obvious for one developer may not be to another!
+

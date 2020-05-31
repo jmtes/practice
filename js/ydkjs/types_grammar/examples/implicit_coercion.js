@@ -185,4 +185,41 @@ function exampleF () {
   console.log(0 == '\n'); // true
 }
 
-exampleF();
+// exampleF();
+
+// EXAMPLE G - OBJECT RELATIONAL COMPARISON
+
+function exampleG () {
+  var a = { b: 42 };
+  var b = { b: 43 };
+
+  console.log(a < b); // false
+  console.log(a > b); // false
+  console.log(a == b); // false
+
+  // In the above comparisons, both a and b are coerced to the string "[object Object]" via ToPrimitive.
+  // Because a string cannot be lexicographically less than or greater than an identical string, the results of Lines 196 and 197 make sense.
+  // Despite being identical though, they're not seen as equal in Line 198 because == (and also ===) says variables with object values are equal only if they refer to the exact same object.
+
+  console.log(a <= b); // true
+  console.log(a >= b); // true
+
+  // Huh? How are these true given the results above?
+
+  // It's because the spec says that for `a <= b`, it will actually evaluate `b < a` and then negate the result.
+  // Since `b < a` is false, as we've seen above, Line 204 evaluates to true.
+
+  // JS sees <= as meaning "not greater than" rather than "less than or equal to", so
+  a <= b;
+  // is basically the same as:
+  !(b < a);
+
+  // There's no strict relational comparison as there is for equality, so the only way to prevent implicit coercion from occurring when performing such comparisons is to make sure both operands are the same type first:
+  var c = [42];
+  var d = '043';
+
+  console.log(c < d); // false, string comparison!
+  console.log(Number(c) < Number(d)); // true, number comparison!
+}
+
+exampleG();
