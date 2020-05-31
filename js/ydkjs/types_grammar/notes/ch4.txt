@@ -259,7 +259,9 @@ CHAPTER 4: COERCION
 <--- IMPLICIT COERCION --->
 - Refers to type coercions that are hidden, with non-obvious side effects that implicitly occur from other actions.
   - In other words, they're any type conversions that aren't obvious to you.
-- The majority of complaints about JS coercion are actually aimed at implicit coercion.
+- The majority of complaints about JS and JS coercion are actually aimed at implicit coercion.
+  - JS is not bad because you can do weird stuff with coercion. 
+  - A DEVELOPER is bad if they do weird stuff with coercion.
 - Implicit coercion can be so much more than just "the bad kind of coercion" though!
 - The goals of implicit coercion can be boiled down to reducing the following:
   1. Verbosity
@@ -271,6 +273,8 @@ CHAPTER 4: COERCION
 - There are still plenty of evils lurking around implicit coercion that will harm your code too much to justify any readability improvements.
 - You have to learn to avoid such constructs.
 - Many devs believe that if a mechanism can do some useful thing A but can also be abused/misused too do some awful thing Z, then the mechanism should be thrown out altogether just to be safe.
+  - Potential abuses of a mechanism are not sufficient evidence to condemn the mechanism.
+  - Don't ever think that your programming langauge should protect you from yourself.
 - It doesn't have to be like that for implicit coercion though and you should learn to embrace its good parts!
 
 <--- IMPLICIT COERCION BETWEEN STRINGS AND NUMBERS --->
@@ -292,3 +296,99 @@ CHAPTER 4: COERCION
 <--- IMPLICITLY COERCING BOOLEANS INTO NUMBERS --->
 - A case where implicit coercion can really shine is in simplifying certain types of complicated boolean logic into simple numeric addition.
 - See Example B in ../examples/implicit_coercion .js
+
+<--- IMPLICIT BOOLEAN COERCION --->
+- Expression operations that require/force (implicitly) a boolean coercion:
+  1. The test expression in an if (...) statement.
+  2. The test expression (second clause) in a for (... ; ... ; ...) header.
+  3. The test expressions in while (...) and do...while(...) loops.
+  4. The test expression (first clause) in ? : ternary expressions.
+  5. The left-hand operand to the || and && operators.
+- Any value used in these contexts that is not already a boolean will be implicitly coerced to a one via ToBoolean.
+
+<--- || AND && --->
+- Unlike in other languages, || or && do not actually result in a logic value (aka a boolean) in JS.
+- Rather, they result in the value of one (and only one) of their two operands.
+- They would be more aptly referred to as "operand selector operators" than "logical operators".
+- Both || and && perform a boolean test on the left-hand operand, which is coerced to a boolean if not already one.
+  - ||
+    - If the test is true, the left-hand operand is selected.
+    - If it's false, the value of the right-hand operand is selected.
+  - &&
+    - If the test is true, the right-hand operand is selected.
+    - If it's false, the left-hand operand is selected.
+  - The result is always the underlying value of one of the operands, not the (possibly coerced) result of the test.
+  - See Example C in ../examples/implicit_coercion.js
+- An extremely common and helpful usage of this behavior is for providing backup default values and for "guarding" expressions.
+  - See Example D in ../examples/implicit_coercion.js for an example of the former.
+  - See Example E in ../examples/implicit_coercion.js for an example of the latter.
+
+<--- SYMBOL COERCION --->
+- EXPLICIT symbol-to-string coercion is allowed, but implicit coercion of the same throws an error.
+- Symbol values cannot coerce to a number at all and an error is thrown either way.
+- Symbols CAN however be coerced into booleans (always true).
+- It's going to be exceedingly rare for you to need to coerce a symbol value though, so you likely don't have to think about these.
+- The way they're typically used, as object properties that avoid collisions, will likely not call for coercion on a normal basis.
+
+<--- LOOSE EQUALS VS STRICT EQUALS --->
+- Loose equals is the == operator.
+- Strict equals is the === operator.
+- A very common misconception is that "== checks values for equality while === checks both values and types for equality".
+- In reality, the difference is that == allows coercion in the equality comparison while === disallows it.
+- Both == and === check the types of their operands, the difference is in how they respond if the types don't match.
+
+<--- EQUALITY PERFORMANCE --->
+- The performance difference between == and === is negligible.
+- If you're comparing two values of the same types, == and === use an identical algorithm.
+- When choosing one of the two operators for a comparison between values of different types, the question you should be asking yourself is, "Do I want coercion or not when I compare these two values?"
+
+<--- ABSTRACT EQUALITY WITH == --->
+- If the two values being compared are the same type, they are compared via identity as you'd expect.
+  - Exceptions to this rule:
+    1. NaN is never equal to itself.
+    2. 0 and -0 are equal to each other.
+- If two objects (including functions and arrays) are being compared, they are only equal if they both reference the same object.
+  - NOTE: === behaves identically in this scenario.
+- If the two values being compared are different types, one or both of the values need to be implicitly coerced.
+  - This is so that both values end up as the same type and can then be compared via identity.
+- != behaves the same as ==, except the result is negated.
+
+<--- COMPARING A STRING TO A NUMBER WITH == --->
+- The string will first be coerced into a number, after which a comparison via identity occurs.
+
+<--- COMPARING ANYTHING TO A BOOLEAN WITH == --->
+- The boolean will first be coerced into a number.
+- If the types are still different, the coercion algorithm is reconsulted until they're not, after which a comparison via identity occurs.
+- Because of this ToNumber coercion, comparisons like `a == true` and `a == false` would not behave like you'd expect them to.
+  - true will always be coerced to 1, and false to 0.
+  - Avoid loose equality with booleans altogether and just don't use == for such comparisons.
+  - Use === instead!
+
+<--- COMPARING NULL TO UNDEFINED WITH == --->
+- null and undefined equate/coerce only to each other (as well as themselves).
+- They do not equate and cannnot coerce to any other value in the language.
+- Essentially, null and undefined can be treated as the same value when loosely compared.
+  - `if (a == null)` will pass if a is either null or undefined.
+  - Code readability was improved in a reliably safe way!
+  - The strictly compared form of this check, `if (a === undefined || a === null)`, is uglier and a little bit less performant.
+
+<--- COMPARING AN OBJECT TO A SIMPLE SCALAR PRIMITIVE WITH == --->
+- The object is coerced to a primitive via ToPrimitive, after which a comparison via identity occurs.
+  - See Section TOPRIMITIVE above.
+- An object wrapper around a primitive value would be unwrapped, after which the underlying primitive value is used in the comparison.
+  - Exceptions where this comparison wouldn't work:
+    1. null and undefined because they have no object wrapper equivalent
+      - `Object(null)` and `Object(undefined)` are essentially the same as `Object()`.
+    2. NaN because it can never equal itself
+
+<--- GOTCHAS/FALSE POSITIVES WITH == --->
+- See Example F in ../examples/implicit_coercion.js
+
+<--- SAFELY USING IMPLICIT COERCION --->
+- Examine your program and reason about what values can show up on either side of a == comparison.
+- To effectively avoid issues with such comparisons, adhere to the following:
+  1. If either side of the comparison can have TRUE or FALSE values, DON'T EVER USE ==.
+  2. If either side of the comparison can have [], "", or 0 values, Seriously Consider not using ==.
+- The question of == vs === is "Should you allow coercion for a comparison or not?"
+- There are lots of cases where such coercion can be helpful in that it allows you to more tersely express some comparison logic.
+- There are really only a few cases where implicit coercion is truly dangerous. In those places, use === for safety's sake.
