@@ -1,0 +1,78 @@
+CHAPTER 5: GRAMMAR
+
+<--- INTRO --->
+- You may think you know how to write JS, but there's an awful lot of nuance to various part of the language grammar that lead to confusion and misconception.
+- The grammar for JS is a structured way to describe how the syntax (operators, keywords, etc.) fits together into well-formed, valid programs.
+
+<--- STATEMENTS AND EXPRESSIONS --->
+- Consider the English language:
+  - A sentence is a complete formation of words that expresses a thought.
+  - Sentences are made of phrases.
+  - The phrases are connected together with conjunction words or punctuation marks.
+  - Some phrases can stand on their own, while others are incomplete and don't accomplish much by themselves.
+- Parallels can be drawn in JS:
+  - Statements are sentences.
+  - Expressions are phrases.
+  - Operators are the conjunctions/puncutation.
+- As an example, declaration statements declare a variable and optionally assign a value to it:
+  - `var a = b`;
+    - `a = b` is considered an assignment expression.
+  - `let c`;
+
+<--- STATEMENT COMPLETION VALUES --->
+- All statements have completion values, even if that value is undefined.
+- When you execute a statement in the browser console, the console will report the statement's completion value by default.
+  - That's why you see "undefined" a lot when you run things in the console!
+- Example: the statement `var b = a` returns a completion value of undefined.
+  - Although an assignment expression like `b = a` returns the value that was assigned (a in this case), var statements were made to return undefined in the spec.
+- Any regular { ... } block has a completion value of the last contained statement/expression's completion value.
+  - So if an assignment of `b = 42` were the last statement in your block, then the entire block's completion value would be 42.
+
+<--- CAPTURING COMPLETION VALUES --->
+- eval() returns the completion value of whatever code it runs.
+  - You know not to use eval() though.
+- There is a proposal for ES7 called the do expression, which should execute a block and return the final completion value.
+- For now, completion values are not much more than trivia.
+- They're probably going to take on more significance as JS evolves though!
+
+<--- EXPRESSION SIDE EFFECTS --->
+- Most expressions don't have them.
+- The most common example of an expression with possible side effects is a function call expression.
+- See Example A in ../examples/expression_side_effects.JS
+
+<--- ++ and -- --->
+- Postfix (a++, a--) returns `a` first and then increments it.
+- Prefix (++a, --a) increments `a` first and then returns it.
+- ++a++ is not legal syntax, you'd get a reference error.
+- See Example B in ../examples/expression_side_effects.js
+
+<--- THE , OPERATOR --->
+- `,` is known as the statement-series operator.
+- It allows you to string together multiple standalone expression statements into a single statement.
+- See Example C in ../examples/expression_side_effects.js
+
+<--- THE DELETE OPERATOR --->
+- Another side-effecting operator.
+- It returns true if the object property or array slot can be deleted, and false otherwise.
+- Obviously, its side effect is that it removes the property or array slot in question.
+- See Example D in ../examples/expression_side_effects.js
+
+<--- THE = ASSIGNMENT OPERATOR --->
+- Another side-effecting operator.
+- Returns the value that was just assigned (the right-hand operand).
+- Example: `a = b += 2`
+  1. `b += 2` is processed first as `b = b + 2`
+  2. The result of that, `b + 2` is then assigned to `a`.
+- This is particular useful for chained assignments like `a = b = c = 42`.
+- This won't work for something like `var a = b = 42` unless a separate `var b` had been declared elsewhere in the scope.
+  - Depending on strict mode, either an error will be thrown or an accidental global will be created.
+
+<--- OPERATOR PRECEDENCE --->
+- Refer to the Operator Precedence page on MDN.
+
+<--- SHORT-CIRCUITING --->
+- In Chapter 4, we mentioned the "short-circuiting" nature of the && and || operators.
+- Basically, what this means is that the right-hand operand will not be evaluated if the left-hand operand is sufficient to determine the outcome of that operation.
+- In `a && b`, b will not be evaluated if a is falsy.
+- In  `a || b`, b will not be evaluated if a is truthy.
+- See ../examples/short_circuiting.js
