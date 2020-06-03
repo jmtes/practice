@@ -33,6 +33,7 @@ function assignChore (person) {
 }
 
 function logPersonChore (person) {
+  // Check for person.chore first and if it's present, skip the call to assignChore().
   if (person.chore || assignChore(person)) {
     console.log(`${person.name} needs to ${person.chore}`);
   }

@@ -76,3 +76,37 @@ CHAPTER 5: GRAMMAR
 - In `a && b`, b will not be evaluated if a is falsy.
 - In  `a || b`, b will not be evaluated if a is truthy.
 - See ../examples/short_circuiting.js
+
+<--- ASSOCIATIVITY --->
+- Operators are either left-associative or right-associative when grouped with like operators.
+  - This refers to whether grouping happens from the left or from the right.
+  - Grouping is NOT the same thing as left-to-right or right-to-left processing/evaluation!
+- Refer to the Operator precedence page on MDN.
+
+<--- DISAMBIGUATION --->
+- As with explicit and implicit coercion, use operator precedence and associativity where it leads to shorter and cleaner code.
+- Use manual () grouping in places where it helps create clarity and reduce confusion.
+
+<--- ERRORS --->
+- JS has different subtypes of errors (TypeError, ReferenceError, SyntaxError, etc.)
+- The JS grammar defines certain errors to be enforced at compile time (early errors), as compared to all other errors that happen during runtime.
+- Any straight-up syntax error is an early error.
+  - The grammar also defines things that are syntactically valid but disallowed nonetheless.
+  - Since execution of your code has not begun yet, these errors are not catchable with try...catch.
+  - They will just fail the parsing/compilation of your program.
+
+<--- TRY...FINALLY --->
+- TRY only requires either CATCH or FINALLY, though both can be present if needed.
+- The code in the FINALLY clause always runs right AFTER the TRY (and CATCH if it's present) clause finishes and BEFORE any other code runs.
+- If there's a return statement inside a TRY clause, the calling code that receives the value runs AFTER the FINALLY.
+  - See Example A in ../examples/try_finally.js
+- The same behavior can be observed when there's a THROW inside of a TRY clause.
+  - See Example B in ../examples/try_finally.js
+- If an exception is thrown inside a FINALLY clause, it will override as the primary completion of that function.
+  - If a previous return in the TRY block had already set a completion value for the function, that value will be abandoned.
+  - See Example C in ../examples/try_finally.js
+- Any return inside a FINALLY clause is also able to override a previous RETURN from the TRY or CATCH clause, but only if the RETURN keyword is explicitly called.
+  - See Example D in ../examples/try_finally.js
+- ES6 adds a yield statement in generators, which in some ways can be seen as an intermediate return statement.
+  - Unlike a return though, a yield isn't complete until the generator is resumed, which means a `try { .. yield .. }` has not completed.
+  - An attached FINALLY clause will not run right after the yield like it does with a return.

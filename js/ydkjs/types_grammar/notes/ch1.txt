@@ -44,6 +44,7 @@ CHAPTER 1: TYPES
   - Regardless it's a good goal to strive toward!
   - It's certainly much more practical with ES6's added support for modules.
 - You can use TYPEOF to check for things non-global variables as well!
+- NOTE: The TYPEOF safeguard does not work for variables in the TDZ!
 
 <--- OTHER WAYS TO CHECK FOR VARIABLE EXISTENCE --->
 - If you want to check for the existence of global variables without using TYPEOF, simply check if a property of the same name exists on the global object.
