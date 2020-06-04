@@ -36,3 +36,36 @@
 ## Components
 * Components can be functions or classes.
 * It used to be that only class components can have a state, but hooks allow functional components to have a state as well.
+* Class components must extend the `Component` class.
+### `render()`
+* `render()` is what's called a life cycle method, meaning it runs at a certain point when the component's loaded.
+* There are other life cycle methods that you can run at certain points, but `render()` is the one that's actually required.
+
+## JSX
+* It looks like HTML but it's actually JS under the hood.
+* The main differences are that you use the `className` and `htmlFor` attributes instead of the `class` and `for` attributes respectively.
+* There can only be one parent element! Putting any more than that will throw an error.
+### Syntax Exmaples
+Templating:
+'''
+<h2>hello {name}!</h2>
+'''
+Conditionals:
+'''
+{loading ? <h4>loading...</h4> : <h4>content loaded!</h4>}
+'''
+Double ampersand for conditionals where you want to do one thing if something is true, but nothing otherwise:
+'''
+{!loading && <h4>content is still loaded</h4>}
+'''
+### Fragments
+* If you don't want your rendered output to be wrapped in a div, you can choose to wrap it inside a Fragment instead.
+* A Fragment will not show up in the DOM. It will be as if you injected all of its children directly into the root element.
+Syntax example:
+'''
+<Fragment>
+  <h1>where learning react. where MAKING THIS HAPEN</h1>
+</Fragment>
+'''
+
+## Props
