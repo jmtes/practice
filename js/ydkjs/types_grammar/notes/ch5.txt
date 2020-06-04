@@ -110,3 +110,12 @@ CHAPTER 5: GRAMMAR
 - ES6 adds a yield statement in generators, which in some ways can be seen as an intermediate return statement.
   - Unlike a return though, a yield isn't complete until the generator is resumed, which means a `try { .. yield .. }` has not completed.
   - An attached FINALLY clause will not run right after the yield like it does with a return.
+
+<--- SWITCH --->
+- See Example A in ../examples/switch.js for a syntax example.
+- The matching that occurs with each case expression is identical to the === algorithm.
+  - See Example B in ../examples/switch.js for an example of what to do if you want to allow coercion in the comparisons.
+- The default case does not strictly have to be at the end of the switch clause.
+  - If no matches are found and the default case is not last, the flow of the code will jump back up to the default case and start executing the code there.
+  - If there's no break in the default case, the code will then continuing executing top-down from the default case until it does encounter a break or it reaches the end of the switch clause.
+  - If you find yourself wanting to create such a circular logic flow in your code, make sure to include plenty of code comments to explain what you're up to!
