@@ -1,0 +1,113 @@
+APPENDIX A: MIXED ENVIORNMENT JAVASCRIPT
+
+<--- INTRODUCTION --->
+- If JS were executing purely inside an engine, it'd be entirely predictable  based on nothing but the spec.
+- However, JS pretty much always runs in the context of a hosting environment, which exposes your code to some degree of unpredictability.
+- Things may behave differently when your code runs alongside code from other sources, when it runs in JS engines other than browsers, etc.
+
+<--- ANNEX B (ECMASCRIPT) --->
+- The official name of the language is actually ECMAScript.
+- Javscript is the common tradename of the language and is basically the browser implementation of the spec.
+- The ES spec includes Annex B, which discusses specific deviations from the official spec for the purposes of JS compatibility in browsers.
+- If your code runs in browsers, you won't see any observable difference.
+- If not, and you run it in Node or something, then you should tread carefully!
+- Main Compatibility Differences:
+  1. Octal number literals like `0123` are allowed in non-strict mode.
+  2. window.escape() and window.unescape() allow you to escape or unescape strings with %-delimited hexadecimal escape sequences.
+  3. String.prototype.substr is similar to String.prototype.substring, except that instead of the 2nd parameter being the noninclusive end index, it is instead the number of characters to include.
+
+<--- WEB ECMASCRIPT --->
+- The Web ES spec covers the differences between the official ES spec and the current JS implementations in browsers.
+- These items are required of browsers to be compatible with each other, but are not listed in Annex B:
+  1. <!-- and --> are valid single-line comment delimiters.
+  2. String.prototype additions for returning HTML-formatted strings.
+    - big(), bold(), fontcolor(), fontsize(), italics(), link(), etc.
+    - These are rarely used in practice and generally discouraged in favor of other built-in DOM APIs or user-defined utilities.
+  3. RegExp extensions
+    - RegExp.$1 ... RegExp.$9 (match-groups)
+    - RegExpp.lastMatch or RegExp['$&'] (most recent match)
+  4. Function.prototype additions
+    - Function.prototype.arguments (aliases internal arguments object)
+    - Function.caller (aliases internal arguments.caller)
+    - arguments and arguments.caller are deprecated, so avoid using them if possible.
+- These differences are hardly ever used, so the deviations from the spec are not significant concerns. Just be careful if you rely on any of them.
+
+<--- HOST OBJECTS --->
+- The rules for how variables in JS behave have exceptions when it comes to host objects.
+- Host objects are variables that are auto-defined or otherwise created and provided to JS by the environment that hosts your code (brower, etc.)
+- They can include both built-in objects and functions.
+- DOM elements are examples of host objects.
+  - Although using typeof on one will return "object", its internal [[Class]] value will be something along the lines of "HTMLDivElement".
+  - It comes with predefined and often immutable properties.
+- The console object is another example of a host object.
+  - It is provided by the hosting environment specifically so your code can interact with it for various development-related output tasks.
+  - In browsers, console hooks up to the developer tools' console display.
+  - In node and other server-side JS environments, console is generally connected to the stdout and stderr streams of the JS environment system process.
+- Behavior Variations with Host Objects:
+  1. Not having access to normal object built-ins like toString()
+  2. Not being overwritable
+  3. Having certain predefined read-only properties
+  4. Having methods that cannot be THIS-overridden to other Objects
+  5. And more!
+- Host objects are critical to making our JS code work with its surrounding environment. 
+- When interacting with one, be careful about assuming its behaviors because they will often not conform to regular JS objects.
+
+<--- GLOBAL DOM VARIABLES --->
+- Declaring a variable in the global scope creates not only a global variable, but also a mirrored property of the same name on the global object (window in the browser).
+- Because of legacy browser behavior, creating DOM elements with id attributes creates global variables of those same names.
+- This can throw off your existence check logic (using typeof or `x in window` checks) if you're not careful!
+- This is yet another reason why you should avoid using global variables if possible.
+  - If you have to, use variables with unique names that likely won't collide.
+  - Also make sure to not collide with the HTML content!
+
+<--- NATIVE PROTOTYPES --->
+- Just never ever modify or extend them.
+- If you really must, make sure you have a full set of unit/regression tests of your code that runs in all known environments to surface some issues that may arise.
+- Bear in mind though that this doesn't do anything to actually protect you from these conflicts.
+
+<--- SHIMS/POLYFILLS --->
+- It's said that the only safe place ot extend a native is in an older (non-spec-compliant) environment since it's unlikely to ever change.
+  - Extending natives is never 100% safe however!
+  - The same goes for relying upon (possibly extended) natives in the presence of others' code.
+  - Either should be done with caution, defensive code, and lots of documentation about the risks.
+- That being said though, polyfills are very useful to include in your codebase to "patch" older browser environments and create predictable code across all your supported environments.
+- ES5-Shim is a comprehensive collection of polyfills for bringing a project up to ES5 baseline.
+- ES6-Shim does the same for ES6.
+- While APIs can be polyfilled, new syntax generally cannot.
+  - To bridge the syntactic divide, you'll want to also use an ES6-to-ES5 transpiler like Babel or Traceur.
+- Some developers believe that the IF guard around a polyfill/shim should include some form of conformance test, replacing the existing method either if it's absent or fails the tests.
+  - This extra layer of compliance testing is sometimes used to distinguish "shim" (compliance tested) from "polyfill" (existence checked).
+
+<--- <SCRIPT>s --->
+- Most browser-viewed websites/applications have several external <script> elements in the page that load separately as well as embedded <script>s.
+- Each of these script act more like independent JS programs in most, but not all, respects.
+- The one thing they share is the single global object (window).
+  - This means multiple files can append their code to that shared namespace and they can all interact!
+  - If one script element defines a global function foo(), any script that runs later can access and call foo() just as if it had defined the function itself.
+  - Global variable scope hoisting does not occur across these boundaries though!
+  - You cannot reference a variable in one script if it is not initialized until a separate, later script runs!
+- If an error occurs in a script element, as a separate standalone JS program it alone will fail and stop.
+  - Any subsequent scripts will still run with the shared global unimpeded.
+- You can create script elements dynamically in your code and inject them into the DOM.
+  - The code will behave as if loaded normally in a separate file.
+
+<--- IMPLEMENTATION LIMITS --->
+- The JS spec does not place limits on things such as the number of arguments to a function or the length of a string literal.
+- These limits exist nonetheless though because of implementation details in different engines.
+- In some JS engines, passing a ridiculous amount of arguments to a function can result in a RangeError.
+- Other Limits Known to Exist:
+  1. Max number of chars allowed in a string literal (not just a string value)
+  2. Size (bytes) of data that can be sent in arguments to a function call (stack size)
+  3. Number of params in a function declaration
+  4. Max depth of non-optimized call stack (i.e. with recursion)
+  5. Number of seconds a JS program can run continuously blocking the browser
+  6. Max length allowed for a variable name
+  7. And more...
+- It's not very common to run into these limits, but you should be aware that they exist and vary between engines.
+
+<--- REVIEW --->
+- We can rely on the fact that the JS language itself has one standard that is predictably implemented by all modern browsers/engines.
+- JS rarely runs in isolation though.
+- It runs in an environment mixed in with code form 3rd-party libraries.
+- Sometimes it even runs in engines/environments that differ form those found in browsers.
+- Paying attention to these issues improves the readability and robustness of your code.
