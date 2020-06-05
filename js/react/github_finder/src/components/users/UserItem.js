@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
+/* CLASS COMPONENT SYNTAX
 export class UserItem extends Component {
   // Adding state with a constructor:
   // constructor() {
@@ -46,5 +48,37 @@ export class UserItem extends Component {
     );
   }
 }
+*/
+
+// FUNCTIONAL COMPONENT SYNTAX
+
+// In the params, we deconstruct login, avatar_url,and html_url from props.user:
+const UserItem = ({ user: { login, avatar_url, html_url } }) => {
+  // We don't really need a state because we're just going to use props.
+
+  return (
+    <div className='card text-center'>
+      <img
+        src={avatar_url}
+        alt=''
+        className='round-img'
+        style={{ width: '60px' }}
+      />
+      <h3>{login}</h3>
+
+      <div>
+        <a href={html_url} className='btn btn-dark btn-sm my-1'>
+          More
+        </a>
+      </div>
+    </div>
+  );
+};
+
+UserItem.propTypes = {
+  user: PropTypes.object.isRequired
+};
+
+// Functional components with hooks cut out a lot of code from the class syntax and look cleaner!
 
 export default UserItem;
