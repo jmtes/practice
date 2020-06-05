@@ -85,3 +85,4 @@ Syntax example:
 * Use destructuring so that you don't have to keep typing `this.state`!
 ### Stateless Components
 * Traditionally, before hooks, functional components were used for stateless components.
+* Basically, if your component neither has a state nor uses life cycle methods other than `render()`, it has no reason to be a class!
