@@ -37,6 +37,7 @@
 * Components can be functions or classes.
 * It used to be that only class components can have a state, but hooks allow functional components to have a state as well.
 * Class components must extend the `Component` class.
+* Use the `rce` shortcut in VSCode to quickly make one!
 ### `render()`
 * `render()` is what's called a life cycle method, meaning it runs at a certain point when the component's loaded.
 * There are other life cycle methods that you can run at certain points, but `render()` is the one that's actually required.
@@ -69,3 +70,18 @@ Syntax example:
 '''
 
 ## Props
+* Are passed to components for them to use
+* Default props can be set for a component.
+* Can be type-checked with PropTypes.
+
+## Component State
+* Component-level state means that your state is contained within a single component.
+### Ways to Add State to a Component
+#### Constructor
+* A function that runs when the component runs.
+* Not recommended unless you're also gonna use the constructor for something else.
+#### Object Literal Inside Class
+* This is the recommended way to do it!
+* Use destructuring so that you don't have to keep typing `this.state`!
+### Stateless Components
+* Traditionally, before hooks, functional components were used for stateless components.
