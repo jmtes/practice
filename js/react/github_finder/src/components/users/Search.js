@@ -11,7 +11,8 @@ export class Search extends Component {
   static propTypes = {
     searchUsers: PropTypes.func.isRequired,
     clearUsers: PropTypes.func.isRequired,
-    showClear: PropTypes.bool.isRequired
+    showClear: PropTypes.bool.isRequired,
+    setAlert: PropTypes.func.isRequired
   };
 
   onChange = event =>
@@ -25,6 +26,8 @@ export class Search extends Component {
       this.props.searchUsers(this.state.text);
 
       this.setState({ text: '' });
+    } else {
+      this.props.setAlert('Please enter something.', 'light');
     }
   };
 

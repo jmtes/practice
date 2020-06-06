@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
 import Navbar from './components/layout/Navbar';
+import Alert from './components/layout/Alert';
 import Search from './components/users/Search';
 import Users from './components/users/Users';
 
 class App extends Component {
   state = {
     users: [],
-    loading: false
+    loading: false,
+    alert: null
   };
 
   // Life cycle method that runs after the first time render() is called in a component and the DOM gets updated as a result.
@@ -38,18 +40,27 @@ class App extends Component {
   // Clear users
   clearUsers = () => this.setState({ users: [], loading: false });
 
+  // Set alert
+  setAlert = (msg, type) => {
+    this.setState({ alert: { msg: msg, type: type } });
+
+    setTimeout(() => this.setState({ alert: null }), 3000);
+  };
+
   // This method is invoked every time rerendering happens in a component. It may happen through a state change or a prop change. Rendering returns the elements to be mounted in the DOM.
   render() {
-    const { users, loading } = this.state;
+    const { users, loading, alert } = this.state;
 
     return (
       <div className='App'>
         <Navbar title='Github Finder' />
         <div className='container'>
+          <Alert alert={alert} />
           <Search
             searchUsers={this.searchUsers}
             clearUsers={this.clearUsers}
             showClear={users.length > 0 ? true : false}
+            setAlert={this.setAlert}
           />
           <Users loading={loading} users={users} />
         </div>
