@@ -7,10 +7,12 @@ import Navbar from './components/layout/Navbar';
 import Alert from './components/layout/Alert';
 import Search from './components/users/Search';
 import Users from './components/users/Users';
+import User from './components/users/User';
 
 class App extends Component {
   state = {
     users: [],
+    user: {},
     loading: false,
     alert: null
   };
@@ -39,6 +41,17 @@ class App extends Component {
     this.setState({ users: res.data.items, loading: false });
   };
 
+  // Get a single Github user
+  getUser = async username => {
+    this.setState({ loading: true });
+
+    const res = await axios.get(
+      `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+    );
+
+    this.setState({ user: res.data, loading: false });
+  };
+
   // Clear users
   clearUsers = () => this.setState({ users: [], loading: false });
 
@@ -51,7 +64,7 @@ class App extends Component {
 
   // This method is invoked every time rerendering happens in a component. It may happen through a state change or a prop change. Rendering returns the elements to be mounted in the DOM.
   render() {
-    const { users, loading, alert } = this.state;
+    const { users, user, loading, alert } = this.state;
 
     return (
       // The Router component wraps the main app routing. It will be the parent of all of our Route components.
@@ -79,6 +92,19 @@ class App extends Component {
                 )}
               />
               <Route exact path='/about' component={About} />
+              <Route
+                exact
+                path='/user/:login'
+                render={props => (
+                  // We're using the spread operator for props so that the User component has access to Route's props, which include history, location, match, etc.
+                  <User
+                    {...props}
+                    getUser={this.getUser}
+                    user={user}
+                    loading={loading}
+                  />
+                )}
+              />
             </Switch>
           </div>
         </div>
