@@ -45,12 +45,6 @@ export class User extends Component {
         <Link to='/' className='btn btn-light'>
           Back to Search
         </Link>
-        Hireable:{' '}
-        {hireable ? (
-          <i className='fas fa-check text-success'></i>
-        ) : (
-          <i className='fas fa-times-circle text-danger'></i>
-        )}
         <div className='card grid-2'>
           <div className='all-center'>
             <img
@@ -61,6 +55,14 @@ export class User extends Component {
             />
             <h1>{name}</h1>
             <p>Location: {location}</p>
+            <p>
+              Hireable:{' '}
+              {hireable ? (
+                <i className='fas fa-check text-success'></i>
+              ) : (
+                <i className='fas fa-times-circle text-danger'></i>
+              )}
+            </p>
           </div>
           <div>
             {bio && (
