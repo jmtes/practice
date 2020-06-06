@@ -2,17 +2,21 @@ import React, { Component, Fragment } from 'react';
 import Spinner from '../layout/Spinner';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import Repos from '../repos/Repos';
 
 export class User extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     user: PropTypes.object.isRequired,
-    getUser: PropTypes.func.isRequired
+    repos: PropTypes.array.isRequired,
+    getUser: PropTypes.func.isRequired,
+    getUserRepos: PropTypes.func.isRequired
   };
 
   componentDidMount() {
     // This supplies the value of :login from the route path, which should be the Github user's username, to getUser.
     this.props.getUser(this.props.match.params.login);
+    this.props.getUserRepos(this.props.match.params.login);
   }
 
   render() {
@@ -32,7 +36,7 @@ export class User extends Component {
       company
     } = this.props.user;
 
-    const { loading } = this.props;
+    const { loading, repos } = this.props;
 
     // When props.getUser() is called, the App component state is changed because loading is set to true.
     // I'm guessing this sort of trickles down to every component that loading is passed as a prop to?
@@ -106,6 +110,9 @@ export class User extends Component {
           <div className='badge badge-danger'>Public Repos: {public_repos}</div>
           <div className='badge badge-dark'>Public Gists: {public_gists}</div>
         </div>
+
+        <h2>Latest Repos</h2>
+        <Repos repos={repos} />
       </Fragment>
     );
   }
