@@ -48,26 +48,26 @@
 * There can only be one parent element! Putting any more than that will throw an error.
 ### Syntax Exmaples
 Templating:
-'''
+```
 <h2>hello {name}!</h2>
-'''
+```
 Conditionals:
-'''
+```
 {loading ? <h4>loading...</h4> : <h4>content loaded!</h4>}
-'''
+```
 Double ampersand for conditionals where you want to do one thing if something is true, but nothing otherwise:
-'''
+```
 {!loading && <h4>content is still loaded</h4>}
-'''
+```
 ### Fragments
 * If you don't want your rendered output to be wrapped in a div, you can choose to wrap it inside a Fragment instead.
 * A Fragment will not show up in the DOM. It will be as if you injected all of its children directly into the root element.
 Syntax example:
-'''
+```
 <Fragment>
   <h1>where learning react. where MAKING THIS HAPEN</h1>
 </Fragment>
-'''
+```
 
 ## Props
 * Are passed to components for them to use
@@ -86,3 +86,19 @@ Syntax example:
 ### Stateless Components
 * Traditionally, before hooks, functional components were used for stateless components.
 * Basically, if your component neither has a state nor uses life cycle methods other than `render()`, it has no reason to be a class!
+
+## Hooks and Context API
+
+### Hooks
+* They're functions that let us hook into state and life cycle features from a function component.
+* Some of the most common hooks are `useState`, ``useEffect`, `useContext`, `useReducer`, and `useRef`.
+* You can even make your own custom hooks!
+
+### Context API
+* Allows you to remove state from the main app component and put it into a context instead.
+* You can have multiple contexts.
+#### Your Context Directory
+* Your context files would be where you initialize the context API.
+* The state file is where you'd store your global state along with any actions that request an API, etc. You'd also export a provider that you can wrap your entire application in. This way, you can easily access anything from the state, including the actions, from any component without having to prop-drill.
+* The reducer is what decides what our state looks like after each action. It can manipulate the state in some way or send data and then send the data back down to any component where it's needed.
+* Essentially, you can think of the context as a cloud that hovers over your app from which you can consistently directly interact with and get/call stuff from.
