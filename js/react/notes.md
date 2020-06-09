@@ -95,10 +95,12 @@ Syntax example:
 * You can even make your own custom hooks!
 
 ### Context API
+* An alternative to Redux for smaller applications where you want to manage app-level state.
 * Allows you to remove state from the main app component and put it into a context instead.
 * You can have multiple contexts.
 #### Your Context Directory
 * Your context files would be where you initialize the context API.
 * The state file is where you'd store your global state along with any actions that request an API, etc. You'd also export a provider that you can wrap your entire application in. This way, you can easily access anything from the state, including the actions, from any component without having to prop-drill.
 * The reducer is what decides what our state looks like after each action. It can manipulate the state in some way or send data and then send the data back down to any component where it's needed.
+* Different resources should be broken up into different contexts.
 * Essentially, you can think of the context as a cloud that hovers over your app from which you can consistently directly interact with and get/call stuff from.
