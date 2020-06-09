@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import About from './components/pages/About';
@@ -9,10 +9,9 @@ import Users from './components/users/Users';
 import User from './components/users/User';
 
 import GithubState from './context/github/GithubState';
+import AlertState from './context/alert/AlertState';
 
 const App = () => {
-  const [alert, setAlert] = useState(null);
-
   // Life cycle method that runs after the first time render() is called in a component and the DOM gets updated as a result.
   // Mounting refers to the actual addition of the DOM elements created by the React component into the DOM.
   // This method is where you'd want to make HTTP requests to query external APIs!
@@ -26,43 +25,38 @@ const App = () => {
   //   this.setState({ users: res.data, loading: false });
   // }
 
-  // Set alert
-  const showAlert = (msg, type) => {
-    setAlert({ msg: msg, type: type });
-
-    setTimeout(() => setAlert(null), 3000);
-  };
-
   // This method is invoked every time rerendering happens in a component. It may happen through a state change or a prop change. Rendering returns the elements to be mounted in the DOM.
 
   return (
     <GithubState>
-      {/* The Router component wraps the main app routing. It will be the parent
+      <AlertState>
+        {/* The Router component wraps the main app routing. It will be the parent
       of all of our Route components. */}
-      <Router>
-        {/* All child routes must be wrapped in a div since each React component can only have one child component. */}
-        <div className='App'>
-          <Navbar title='Github Finder' />
-          <div className='container'>
-            <Alert alert={alert} />
-            {/* The Switch component will only render the first route that matches/includes the path! It's very handy for nested components! */}
-            <Switch>
-              <Route
-                exact
-                path='/'
-                render={props => (
-                  <Fragment>
-                    <Search showAlert={showAlert} />
-                    <Users />
-                  </Fragment>
-                )}
-              />
-              <Route exact path='/about' component={About} />
-              <Route exact path='/user/:login' component={User} />
-            </Switch>
+        <Router>
+          {/* All child routes must be wrapped in a div since each React component can only have one child component. */}
+          <div className='App'>
+            <Navbar title='Github Finder' />
+            <div className='container'>
+              <Alert />
+              {/* The Switch component will only render the first route that matches/includes the path! It's very handy for nested components! */}
+              <Switch>
+                <Route
+                  exact
+                  path='/'
+                  render={props => (
+                    <Fragment>
+                      <Search />
+                      <Users />
+                    </Fragment>
+                  )}
+                />
+                <Route exact path='/about' component={About} />
+                <Route exact path='/user/:login' component={User} />
+              </Switch>
+            </div>
           </div>
-        </div>
-      </Router>
+        </Router>
+      </AlertState>
     </GithubState>
   );
   // The main difference between mounting and rendering is that mounting happens once, but rendering can happen any number of times!

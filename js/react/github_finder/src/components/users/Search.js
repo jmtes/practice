@@ -1,9 +1,13 @@
 import React, { useState, useContext } from 'react';
-import PropTypes from 'prop-types';
 import GithubContext from '../../context/github/githubContext';
+import AlertContext from '../../context/alert/alertContext';
 
-const Search = ({ showAlert }) => {
+const Search = () => {
   const githubContext = useContext(GithubContext);
+  const alertContext = useContext(AlertContext);
+
+  const { searchUsers, clearUsers, users } = githubContext;
+  const { setAlert } = alertContext;
 
   const [text, setText] = useState('');
 
@@ -14,11 +18,11 @@ const Search = ({ showAlert }) => {
 
     if (text !== '') {
       // Here we're sending the search query back up to the App component!
-      githubContext.searchUsers(text);
+      searchUsers(text);
 
       setText('');
     } else {
-      showAlert('Please enter something.', 'light');
+      setAlert('Please enter something.', 'light');
     }
   };
 
@@ -38,20 +42,13 @@ const Search = ({ showAlert }) => {
           className='btn btn-dark btn-block'
         />
       </form>
-      {githubContext.users.length > 0 && (
-        <button
-          className='btn btn-light btn-block'
-          onClick={githubContext.clearUsers}
-        >
+      {users.length > 0 && (
+        <button className='btn btn-light btn-block' onClick={clearUsers}>
           Clear
         </button>
       )}
     </div>
   );
-};
-
-Search.propTypes = {
-  showAlert: PropTypes.func.isRequired
 };
 
 export default Search;
