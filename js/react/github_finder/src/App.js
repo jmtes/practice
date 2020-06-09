@@ -9,6 +9,8 @@ import Search from './components/users/Search';
 import Users from './components/users/Users';
 import User from './components/users/User';
 
+import GithubState from './context/github/GithubState';
+
 const App = () => {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
@@ -81,50 +83,53 @@ const App = () => {
   // This method is invoked every time rerendering happens in a component. It may happen through a state change or a prop change. Rendering returns the elements to be mounted in the DOM.
 
   return (
-    // The Router component wraps the main app routing. It will be the parent of all of our Route components.
-    <Router>
-      {/* All child routes must be wrapped in a div since each React component can only have one child component. */}
-      <div className='App'>
-        <Navbar title='Github Finder' />
-        <div className='container'>
-          <Alert alert={alert} />
-          {/* The Switch component will only render the first route that matches/includes the path! It's very handy for nested components! */}
-          <Switch>
-            <Route
-              exact
-              path='/'
-              render={props => (
-                <Fragment>
-                  <Search
-                    searchUsers={searchUsers}
-                    clearUsers={clearUsers}
-                    showClear={users.length > 0 ? true : false}
-                    showAlert={showAlert}
+    <GithubState>
+      {/* The Router component wraps the main app routing. It will be the parent
+      of all of our Route components. */}
+      <Router>
+        {/* All child routes must be wrapped in a div since each React component can only have one child component. */}
+        <div className='App'>
+          <Navbar title='Github Finder' />
+          <div className='container'>
+            <Alert alert={alert} />
+            {/* The Switch component will only render the first route that matches/includes the path! It's very handy for nested components! */}
+            <Switch>
+              <Route
+                exact
+                path='/'
+                render={props => (
+                  <Fragment>
+                    <Search
+                      searchUsers={searchUsers}
+                      clearUsers={clearUsers}
+                      showClear={users.length > 0 ? true : false}
+                      showAlert={showAlert}
+                    />
+                    <Users loading={loading} users={users} />
+                  </Fragment>
+                )}
+              />
+              <Route exact path='/about' component={About} />
+              <Route
+                exact
+                path='/user/:login'
+                render={props => (
+                  // We're using the spread operator for props so that the User component has access to Route's props, which include history, location, match, etc.
+                  <User
+                    {...props}
+                    getUser={getUser}
+                    getUserRepos={getUserRepos}
+                    user={user}
+                    repos={repos}
+                    loading={loading}
                   />
-                  <Users loading={loading} users={users} />
-                </Fragment>
-              )}
-            />
-            <Route exact path='/about' component={About} />
-            <Route
-              exact
-              path='/user/:login'
-              render={props => (
-                // We're using the spread operator for props so that the User component has access to Route's props, which include history, location, match, etc.
-                <User
-                  {...props}
-                  getUser={getUser}
-                  getUserRepos={getUserRepos}
-                  user={user}
-                  repos={repos}
-                  loading={loading}
-                />
-              )}
-            />
-          </Switch>
+                )}
+              />
+            </Switch>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </GithubState>
   );
   // The main difference between mounting and rendering is that mounting happens once, but rendering can happen any number of times!
 
