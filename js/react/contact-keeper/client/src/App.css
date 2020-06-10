@@ -3,10 +3,10 @@
 /* Global Styles */
 :root {
   --primary-color: #56a3a6;
-  --dark-color: #484538;
-  --light-color: #d4eac8;
-  --danger-color: #cad49d;
-  --success-color: #c0d8e0;
+  --dark-color: #635f4c;
+  --light-color: #ffffff;
+  --danger-color: #b1b989;
+  --success-color: #a8bdc4;
 }
 
 * {
