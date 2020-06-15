@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { v4 as uuid } from 'uuid';
+import axios from 'axios';
 import ContactContext from './contactContext';
 import contactReducer from './contactReducer';
 import {
@@ -9,54 +9,42 @@ import {
   CLEAR_CURRENT,
   UPDATE_CONTACT,
   FILTER_CONTACTS,
-  CLEAR_FILTER
+  CLEAR_FILTER,
+  CONTACT_ERROR
 } from '../types';
 
 const ContactState = props => {
   const initialState = {
-    contacts: [
-      {
-        id: 1,
-        name: 'Josiah Sandoval',
-        email: 'josiah@domain.tld',
-        phone: '111-1111',
-        type: 'personal'
-      },
-      {
-        id: 2,
-        name: 'Melissa Carr',
-        email: 'melissa@domain.tld',
-        phone: '222-2222',
-        type: 'personal'
-      },
-      {
-        id: 3,
-        name: 'Laela Russell',
-        email: 'laela@domain.tld',
-        phone: '333-3333',
-        type: 'professional'
-      },
-      {
-        id: 4,
-        name: 'Nora Cohen',
-        email: 'nora@domain.tld',
-        phone: '444-4444',
-        type: 'professional'
-      }
-    ],
+    contacts: [],
     filtered: null,
-    current: null
+    current: null,
+    error: null
   };
 
   const [state, dispatch] = useReducer(contactReducer, initialState);
 
   // Add contact
-  const addContact = contact => {
-    contact.id = uuid();
-    dispatch({
-      type: ADD_CONTACT,
-      payload: contact
-    });
+  const addContact = async contact => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    try {
+      // We're not including the x-auth-token header here because we set it up to include it globally in setAuthToken!
+      const res = await axios.post('api/contacts', contact, config);
+
+      dispatch({
+        type: ADD_CONTACT,
+        payload: res.data
+      });
+    } catch (error) {
+      dispatch({
+        type: CONTACT_ERROR,
+        payload: error.response.msg
+      });
+    }
   };
 
   // Delete contact
@@ -109,6 +97,7 @@ const ContactState = props => {
         contacts: state.contacts,
         filtered: state.filtered,
         current: state.current,
+        error: state.error,
         addContact,
         deleteContact,
         updateContact,
