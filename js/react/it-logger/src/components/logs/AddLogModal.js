@@ -101,8 +101,5 @@ AddLogModal.propTypes = {
   addLog: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  log: state.log
-});
-
-export default connect(mapStateToProps, { addLog })(AddLogModal);
+// We're passing null here because we're not actually getting anything from the state.
+export default connect(null, { addLog })(AddLogModal);
