@@ -48,7 +48,8 @@ export const Logs = ({ log: { logs, loading }, getLogs }) => {
 };
 
 Logs.propTypes = {
-  log: PropTypes.object.isRequired
+  log: PropTypes.object.isRequired,
+  getLogs: PropTypes.func.isRequired
 };
 
 // The first parameter to connect() should be a map state to props.
