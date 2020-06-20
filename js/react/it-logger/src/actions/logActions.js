@@ -6,7 +6,8 @@ import {
   DELETE_LOG,
   SET_CURRENT,
   CLEAR_CURRENT,
-  UPDATE_LOG
+  UPDATE_LOG,
+  SEARCH_LOGS
 } from './types';
 
 // From here you COULD just return an object to the reducer like you do with the context API, but we want to make an async call to our backend here.
@@ -128,6 +129,24 @@ export const setCurrent = log => {
 // Clear current log
 export const clearCurrent = log => {
   return { type: CLEAR_CURRENT };
+};
+
+// Search Logs
+export const searchLogs = query => async dispatch => {
+  try {
+    const res = await fetch(`/logs?q=${query}`);
+    const data = await res.json();
+
+    dispatch({
+      type: SEARCH_LOGS,
+      payload: data
+    });
+  } catch (err) {
+    dispatch({
+      type: LOGS_ERROR,
+      payload: err.response.message
+    });
+  }
 };
 
 export const setLoading = () => {
