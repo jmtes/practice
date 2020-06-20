@@ -17,7 +17,6 @@ export const EditLogModal = ({ current, updateLog, clearCurrent }) => {
       setMessage(current.message);
       setAttention(current.attention);
       setTech(current.tech);
-      console.log(current.tech);
     }
   }, [current]);
 
