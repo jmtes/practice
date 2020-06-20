@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 
 import { addLog } from '../../actions/logActions';
 
+import TechSelectOptions from '../techs/TechSelectOptions';
+
 export const AddLogModal = ({ addLog }) => {
   const [message, setMessage] = useState('');
   const [attention, setAttention] = useState(false);
@@ -49,16 +51,13 @@ export const AddLogModal = ({ addLog }) => {
             <select
               name='tech'
               value={tech}
-              className='broswer-default'
+              className='browser-default'
               onChange={e => setTech(e.target.value)}
             >
               <option value='' disabled>
                 Select Technician
               </option>
-              <option value='Andrea Delgado'>Andrea Delgado</option>
-              <option value='Brenda Powell'>Brenda Powell</option>
-              <option value='Rita Juarez'>Rita Juarez</option>
-              <option value='Julia Hamilton'>Julia Hamilton</option>
+              <TechSelectOptions />
             </select>
           </div>
         </div>
