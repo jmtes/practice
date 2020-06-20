@@ -3,8 +3,10 @@
 import { combineReducers } from 'redux';
 
 import logReducer from './logReducer';
+import techReducer from './techReducer';
 
 // combineReducers() takes in an object containing all of your reducers!
 export default combineReducers({
-  log: logReducer
+  log: logReducer,
+  tech: techReducer
 });
